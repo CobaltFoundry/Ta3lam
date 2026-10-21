@@ -1,0 +1,8 @@
+{
+  // ...
+  "vars": {
+    "ALLOWED_ORIGIN": "https://cobaltfoundry.github.io",
+    "APP_URL": "https://cobaltfoundry.github.io/Ta3lam/"
+  },
+  // ...
+}
