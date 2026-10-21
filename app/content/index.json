@@ -1,0 +1,253 @@
+{
+ "version": 1,
+ "tracks": [
+  {
+   "id": "native",
+   "title": {
+    "ar": "من الصواب إلى الاحتراف",
+    "en": "Master Arabic (for Arabic speakers)"
+   },
+   "levels": [
+    {
+     "id": "l1",
+     "title": {
+      "ar": "المستوى ١ · الأساس المتين",
+      "en": "Level 1 · Solid foundations"
+     },
+     "units": [
+      {
+       "id": "nt-l1-u1",
+       "title": {
+        "ar": "الهمزات",
+        "en": "Hamzas"
+       },
+       "lessons": [
+        {
+         "id": "nt-l1-u1-01",
+         "title": {
+          "ar": "همزة الوصل وهمزة القطع",
+          "en": "Hamzat al-wasl and al-qat'"
+         }
+        },
+        {
+         "id": "nt-l1-u1-02",
+         "title": {
+          "ar": "الهمزة المتوسطة",
+          "en": "The medial hamza"
+         }
+        },
+        {
+         "id": "nt-l1-u1-03",
+         "title": {
+          "ar": "الهمزة المتطرفة",
+          "en": "The final hamza"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l1-u2",
+       "title": {
+        "ar": "التاء والألف",
+        "en": "Taa and Alif"
+       },
+       "lessons": [
+        {
+         "id": "nt-l1-u2-01",
+         "title": {
+          "ar": "التاء المربوطة والمفتوحة والهاء",
+          "en": "Taa marbuta, taa maftuha and haa"
+         }
+        },
+        {
+         "id": "nt-l1-u2-02",
+         "title": {
+          "ar": "الألف المقصورة واللينة",
+          "en": "Alif maqsura and alif layyina"
+         }
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "l2",
+     "title": {
+      "ar": "المستوى ٢ · النحو الأساس",
+      "en": "Level 2 · Core grammar"
+     },
+     "units": [
+      {
+       "id": "nt-l2-u1",
+       "title": {
+        "ar": "أقسام الكلام",
+        "en": "Parts of speech"
+       },
+       "lessons": [
+        {
+         "id": "nt-l2-u1-01",
+         "title": {
+          "ar": "الاسم وعلاماته",
+          "en": "Nouns and their signs"
+         }
+        },
+        {
+         "id": "nt-l2-u1-02",
+         "title": {
+          "ar": "الفعل وأنواعه",
+          "en": "Verbs and their types"
+         }
+        },
+        {
+         "id": "nt-l2-u1-03",
+         "title": {
+          "ar": "الحرف والتمييز بين الأقسام الثلاثة",
+          "en": "Particles and distinguishing the three parts"
+         }
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "learner",
+   "title": {
+    "ar": "العربية من الصفر",
+    "en": "Arabic from zero"
+   },
+   "levels": [
+    {
+     "id": "l0",
+     "title": {
+      "ar": "المستوى ٠ · الحروف والأصوات",
+      "en": "Level 0 · Letters & sounds"
+     },
+     "units": [
+      {
+       "id": "ln-l0-u1",
+       "title": {
+        "ar": "الحروف الثمانية والعشرون",
+        "en": "The 28 letters"
+       },
+       "lessons": [
+        {
+         "id": "ln-l0-u1-01",
+         "title": {
+          "ar": "الحروف: ا ب ت ث",
+          "en": "Letters: ا ب ت ث"
+         }
+        },
+        {
+         "id": "ln-l0-u1-02",
+         "title": {
+          "ar": "الحروف: ج ح خ د",
+          "en": "Letters: ج ح خ د"
+         }
+        },
+        {
+         "id": "ln-l0-u1-03",
+         "title": {
+          "ar": "الحروف: ذ ر ز س",
+          "en": "Letters: ذ ر ز س"
+         }
+        },
+        {
+         "id": "ln-l0-u1-04",
+         "title": {
+          "ar": "الحروف: ش ص ض ط",
+          "en": "Letters: ش ص ض ط"
+         }
+        },
+        {
+         "id": "ln-l0-u1-05",
+         "title": {
+          "ar": "الحروف: ظ ع غ ف",
+          "en": "Letters: ظ ع غ ف"
+         }
+        },
+        {
+         "id": "ln-l0-u1-06",
+         "title": {
+          "ar": "الحروف: ق ك ل م",
+          "en": "Letters: ق ك ل م"
+         }
+        },
+        {
+         "id": "ln-l0-u1-07",
+         "title": {
+          "ar": "الحروف: ن ه و ي",
+          "en": "Letters: ن ه و ي"
+         }
+        }
+       ]
+      },
+      {
+       "id": "ln-l0-u2",
+       "title": {
+        "ar": "الحركات والعلامات",
+        "en": "Vowels & signs"
+       },
+       "lessons": [
+        {
+         "id": "ln-l0-u2-01",
+         "title": {
+          "ar": "الحركات القصيرة: فتحة، كسرة، ضمة",
+          "en": "Short vowels: fatha, kasra, damma"
+         }
+        },
+        {
+         "id": "ln-l0-u2-02",
+         "title": {
+          "ar": "السكون والشدة والتنوين",
+          "en": "Sukun, shadda and tanween"
+         }
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "l1",
+     "title": {
+      "ar": "المستوى ١ · جمل بسيطة",
+      "en": "Level 1 · Simple sentences"
+     },
+     "units": [
+      {
+       "id": "ln-l1-u1",
+       "title": {
+        "ar": "التحيات والتعارف",
+        "en": "Greetings & introductions"
+       },
+       "lessons": [
+        {
+         "id": "ln-l1-u1-01",
+         "title": {
+          "ar": "التحيات",
+          "en": "Greetings"
+         }
+        },
+        {
+         "id": "ln-l1-u1-02",
+         "title": {
+          "ar": "الضمائر والاسم",
+          "en": "Pronouns and names"
+         }
+        },
+        {
+         "id": "ln-l1-u1-03",
+         "title": {
+          "ar": "مِنْ أَيْنَ أَنْتَ؟",
+          "en": "Where are you from?"
+         }
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

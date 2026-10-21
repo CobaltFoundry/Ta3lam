@@ -1,0 +1,21 @@
+name = "ta3lam-api"
+main = "src/index.js"
+compatibility_date = "2025-01-01"
+
+[vars]
+# رابط الميني آب على GitHub Pages (غيّره لرابطك)
+APP_URL = "https://YOUR-GITHUB-USERNAME.github.io/ta3lam/"
+# الأصل المسموح له باستدعاء الـ API (نفس الدومين بدون مسار)
+ALLOWED_ORIGIN = "https://YOUR-GITHUB-USERNAME.github.io"
+
+# تذكير يومي: يشتغل كل ساعة
+[triggers]
+crons = ["0 * * * *"]
+
+# أنشئ القاعدة ثم ضع الـ id هنا (الخطوات في docs/DEPLOY.md)
+[[d1_databases]]
+binding = "DB"
+database_name = "ta3lam"
+database_id = "PUT-YOUR-D1-ID-HERE"
+
+# الأسرار (لا تُكتب هنا أبدًا): BOT_TOKEN, WEBHOOK_SECRET, SETUP_SECRET

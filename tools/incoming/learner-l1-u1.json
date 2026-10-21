@@ -1,0 +1,486 @@
+{
+ "track": "learner",
+ "level": "l1",
+ "levelTitle": {
+  "ar": "المستوى ١ · جمل بسيطة",
+  "en": "Level 1 · Simple sentences"
+ },
+ "units": [
+  {
+   "n": 1,
+   "title": {
+    "ar": "التحيات والتعارف",
+    "en": "Greetings & introductions"
+   },
+   "lessons": [
+    {
+     "title": {
+      "ar": "التحيات",
+      "en": "Greetings"
+     },
+     "teach": [
+      {
+       "type": "text",
+       "text": "Say **مَرْحَبًا** (marhaban) for “hello.” You can also greet someone with **السَّلَامُ عَلَيْكُمْ** (as-salaamu 'alaykum), meaning “peace be upon you.” The reply is **وَعَلَيْكُمُ السَّلَامُ** (wa 'alaykumu s-salaam), “and upon you peace.”"
+      },
+      {
+       "type": "text",
+       "text": "Say **صَبَاحُ الْخَيْرِ** (sabaaHu l-khayr) for “good morning” and **مَسَاءُ الْخَيْرِ** (masaa'u l-khayr) for “good evening.”"
+      },
+      {
+       "type": "text",
+       "text": "Use **مَعَ السَّلَامَةِ** (ma'a s-salaama) to say “goodbye.” Say **شُكْرًا** (shukran) for “thank you” and **عَفْوًا** ('afwan) for “you're welcome.”"
+      },
+      {
+       "type": "text",
+       "text": "Use **مِنْ فَضْلِكَ** (min faDlika) to say “please.” It is addressed to one male."
+      }
+     ],
+     "practice": [
+      {
+       "type": "mcq",
+       "prompt": "Which Arabic phrase means “good morning”?",
+       "options": [
+        "مَسَاءُ الْخَيْرِ",
+        "صَبَاحُ الْخَيْرِ",
+        "مَعَ السَّلَامَةِ"
+       ],
+       "answer": 1,
+       "explain": "صَبَاحُ الْخَيْرِ means “good morning.” مَسَاءُ الْخَيْرِ means “good evening.”"
+      },
+      {
+       "type": "tf",
+       "prompt": "شُكْرًا means “thank you.”",
+       "answer": true,
+       "explain": "شُكْرًا is the Arabic phrase for “thank you.”"
+      },
+      {
+       "type": "type",
+       "prompt": "Write the Latin pronunciation for “hello.”",
+       "answers": [
+        "marhaban"
+       ],
+       "explain": "مَرْحَبًا means “hello” and is pronounced marhaban."
+      },
+      {
+       "type": "match",
+       "prompt": "Match each Arabic phrase to its English meaning.",
+       "pairs": [
+        [
+         "عَفْوًا",
+         "You're welcome"
+        ],
+        [
+         "مَعَ السَّلَامَةِ",
+         "Goodbye"
+        ],
+        [
+         "مِنْ فَضْلِكَ",
+         "Please, to one male"
+        ]
+       ],
+       "explain": "عَفْوًا means “you're welcome,” مَعَ السَّلَامَةِ means “goodbye,” and مِنْ فَضْلِكَ means “please” when speaking to one male."
+      }
+     ],
+     "quiz": [
+      {
+       "type": "mcq",
+       "prompt": "Someone says السَّلَامُ عَلَيْكُمْ. Which reply means “and upon you peace”?",
+       "options": [
+        "وَعَلَيْكُمُ السَّلَامُ",
+        "شُكْرًا",
+        "مَرْحَبًا"
+       ],
+       "answer": 0,
+       "explain": "وَعَلَيْكُمُ السَّلَامُ is the reply meaning “and upon you peace.”"
+      },
+      {
+       "type": "tf",
+       "prompt": "مَسَاءُ الْخَيْرِ is used to say “good morning.”",
+       "answer": false,
+       "explain": "مَسَاءُ الْخَيْرِ means “good evening.” صَبَاحُ الْخَيْرِ means “good morning.”"
+      },
+      {
+       "type": "type",
+       "prompt": "Write the Latin pronunciation of the Arabic phrase for “thank you.”",
+       "answers": [
+        "shukran"
+       ],
+       "explain": "شُكْرًا means “thank you” and is pronounced shukran."
+      },
+      {
+       "type": "mcq",
+       "prompt": "Which phrase means “you're welcome”?",
+       "options": [
+        "عَفْوًا",
+        "مِنْ فَضْلِكَ",
+        "مَعَ السَّلَامَةِ"
+       ],
+       "answer": 0,
+       "explain": "عَفْوًا means “you're welcome.”"
+      },
+      {
+       "type": "match",
+       "prompt": "Match each phrase to its meaning.",
+       "pairs": [
+        [
+         "صَبَاحُ الْخَيْرِ",
+         "Good morning"
+        ],
+        [
+         "مَسَاءُ الْخَيْرِ",
+         "Good evening"
+        ],
+        [
+         "شُكْرًا",
+         "Thank you"
+        ]
+       ],
+       "explain": "صَبَاحُ الْخَيْرِ is “good morning,” مَسَاءُ الْخَيْرِ is “good evening,” and شُكْرًا is “thank you.”"
+      },
+      {
+       "type": "tf",
+       "prompt": "مِنْ فَضْلِكَ means “please” when speaking to one male.",
+       "answer": true,
+       "explain": "مِنْ فَضْلِكَ is the phrase for “please” addressed to one male."
+      },
+      {
+       "type": "mcq",
+       "prompt": "Which phrase is a way to say goodbye?",
+       "options": [
+        "وَعَلَيْكُمُ السَّلَامُ",
+        "مَعَ السَّلَامَةِ",
+        "عَفْوًا"
+       ],
+       "answer": 1,
+       "explain": "مَعَ السَّلَامَةِ means “goodbye.”"
+      },
+      {
+       "type": "type",
+       "prompt": "Write the Latin pronunciation of the reply meaning “and upon you peace.”",
+       "answers": [
+        "wa 'alaykumu s-salaam"
+       ],
+       "explain": "وَعَلَيْكُمُ السَّلَامُ is pronounced wa 'alaykumu s-salaam."
+      }
+     ]
+    },
+    {
+     "title": {
+      "ar": "الضمائر والاسم",
+      "en": "Pronouns and names"
+     },
+     "teach": [
+      {
+       "type": "text",
+       "text": "**أَنَا** (ana) means “I.” **أَنْتَ** (anta) means “you” when speaking to one male. **أَنْتِ** (anti) means “you” when speaking to one female."
+      },
+      {
+       "type": "text",
+       "text": "**هُوَ** (huwa) means “he,” and **هِيَ** (hiya) means “she.” These forms refer to one person."
+      },
+      {
+       "type": "text",
+       "text": "**اِسْمِي** (ismii) means “my name.” For example, **اِسْمِي سَارَة** (ismii saara) means “My name is Sarah.” Names are written here without their final case vowel, as people normally say them when speaking."
+      },
+      {
+       "type": "text",
+       "text": "Ask a male **مَا اسْمُكَ؟** (maa smuka?), “What is your name?” Ask a female **مَا اسْمُكِ؟** (maa smuki?). The first vowel of اِسْمُكَ is dropped after مَا, so you say maa smuka, not maa ismuka."
+      },
+      {
+       "type": "text",
+       "text": "**أَنَا طَالِبٌ** (ana Taalib) means “I am a male student.” **أَنَا طَالِبَةٌ** (ana Taaliba) means “I am a female student.”"
+      }
+     ],
+     "practice": [
+      {
+       "type": "mcq",
+       "prompt": "Which Arabic pronoun means “she”?",
+       "options": [
+        "هُوَ",
+        "أَنَا",
+        "هِيَ"
+       ],
+       "answer": 2,
+       "explain": "هِيَ means “she.” هُوَ means “he.”"
+      },
+      {
+       "type": "tf",
+       "prompt": "أَنْتَ is “you” when speaking to one male.",
+       "answer": true,
+       "explain": "أَنْتَ is the form of “you” used when speaking to one male."
+      },
+      {
+       "type": "type",
+       "prompt": "Write the Latin pronunciation of اِسْمِي.",
+       "answers": [
+        "ismii"
+       ],
+       "explain": "اِسْمِي means “my name” and is pronounced ismii."
+      },
+      {
+       "type": "match",
+       "prompt": "Match each Arabic word to its meaning.",
+       "pairs": [
+        [
+         "أَنَا",
+         "I"
+        ],
+        [
+         "هُوَ",
+         "He"
+        ],
+        [
+         "أَنْتِ",
+         "You, to one female"
+        ]
+       ],
+       "explain": "أَنَا means “I,” هُوَ means “he,” and أَنْتِ is “you” addressed to one female."
+      }
+     ],
+     "quiz": [
+      {
+       "type": "mcq",
+       "prompt": "You are speaking to one female. Which question asks her name?",
+       "options": [
+        "مَا اسْمُكَ؟",
+        "مَا اسْمُكِ؟",
+        "اِسْمِي"
+       ],
+       "answer": 1,
+       "explain": "مَا اسْمُكِ؟ is the question for one female. مَا اسْمُكَ؟ is for one male."
+      },
+      {
+       "type": "tf",
+       "prompt": "هُوَ means “she.”",
+       "answer": false,
+       "explain": "هُوَ means “he.” هِيَ means “she.”"
+      },
+      {
+       "type": "type",
+       "prompt": "Write the Latin pronunciation of the Arabic word for “I.”",
+       "answers": [
+        "ana"
+       ],
+       "explain": "أَنَا means “I” and is pronounced ana."
+      },
+      {
+       "type": "mcq",
+       "prompt": "Which phrase means “I am a female student”?",
+       "options": [
+        "أَنَا طَالِبٌ",
+        "أَنَا طَالِبَةٌ",
+        "اِسْمِي سَارَة"
+       ],
+       "answer": 1,
+       "explain": "أَنَا طَالِبَةٌ means “I am a female student.”"
+      },
+      {
+       "type": "match",
+       "prompt": "Match each Arabic phrase to its meaning.",
+       "pairs": [
+        [
+         "مَا اسْمُكَ؟",
+         "What is your name? To one male"
+        ],
+        [
+         "مَا اسْمُكِ؟",
+         "What is your name? To one female"
+        ],
+        [
+         "اِسْمِي",
+         "My name"
+        ]
+       ],
+       "explain": "The final form differs: مَا اسْمُكَ؟ is for a male, and مَا اسْمُكِ؟ is for a female. اِسْمِي means “my name.”"
+      },
+      {
+       "type": "tf",
+       "prompt": "أَنْتِ is used when speaking to one male.",
+       "answer": false,
+       "explain": "أَنْتِ is “you” when speaking to one female. أَنْتَ is for one male."
+      },
+      {
+       "type": "mcq",
+       "prompt": "Which pronoun means “he”?",
+       "options": [
+        "أَنْتَ",
+        "هِيَ",
+        "هُوَ"
+       ],
+       "answer": 2,
+       "explain": "هُوَ means “he.”"
+      },
+      {
+       "type": "type",
+       "prompt": "Write the Latin pronunciation of مَا اسْمُكَ؟, asked to one male.",
+       "answers": [
+        "maa smuka?",
+        "maa ismuka?"
+       ],
+       "explain": "مَا اسْمُكَ؟ is asked to one male and is pronounced maa smuka?"
+      }
+     ]
+    },
+    {
+     "title": {
+      "ar": "مِنْ أَيْنَ أَنْتَ؟",
+      "en": "Where are you from?"
+     },
+     "teach": [
+      {
+       "type": "text",
+       "text": "Ask one male **مِنْ أَيْنَ أَنْتَ؟** (min ayna anta?) to mean “Where are you from?”"
+      },
+      {
+       "type": "text",
+       "text": "Say **أَنَا مِنْ …** (ana min …) to mean “I am from …” Add a country after مِنْ."
+      },
+      {
+       "type": "text",
+       "text": "**مِصْر** (miSr) means Egypt. **الْأُرْدُن** (al-urdunn) means Jordan. Country names are shown in their basic form, without a final case vowel."
+      },
+      {
+       "type": "text",
+       "text": "**الْمَغْرِب** (al-maghrib) means Morocco. **أَمْرِيكَا** (amriikaa) means America."
+      },
+      {
+       "type": "text",
+       "text": "**فَرَنْسَا** (faransaa) means France. For example, **أَنَا مِنْ فَرَنْسَا** means “I am from France.”"
+      }
+     ],
+     "practice": [
+      {
+       "type": "mcq",
+       "prompt": "Which Arabic question means “Where are you from?” when speaking to one male?",
+       "options": [
+        "أَنَا مِنْ …",
+        "مِنْ أَيْنَ أَنْتَ؟",
+        "مَا اسْمُكَ؟"
+       ],
+       "answer": 1,
+       "explain": "مِنْ أَيْنَ أَنْتَ؟ asks one male where he is from."
+      },
+      {
+       "type": "tf",
+       "prompt": "مِصْر means Egypt.",
+       "answer": true,
+       "explain": "مِصْر is the Arabic name for Egypt."
+      },
+      {
+       "type": "type",
+       "prompt": "Write the Latin pronunciation of أَنَا مِنْ …",
+       "answers": [
+        "ana min …",
+        "ana min..."
+       ],
+       "explain": "أَنَا مِنْ … means “I am from …” and is pronounced ana min …."
+      },
+      {
+       "type": "match",
+       "prompt": "Match each Arabic country name to its English meaning.",
+       "pairs": [
+        [
+         "الْأُرْدُن",
+         "Jordan"
+        ],
+        [
+         "الْمَغْرِب",
+         "Morocco"
+        ],
+        [
+         "فَرَنْسَا",
+         "France"
+        ]
+       ],
+       "explain": "الْأُرْدُن means Jordan, الْمَغْرِب means Morocco, and فَرَنْسَا means France."
+      }
+     ],
+     "quiz": [
+      {
+       "type": "mcq",
+       "prompt": "Which Arabic word means America?",
+       "options": [
+        "أَمْرِيكَا",
+        "مِصْر",
+        "فَرَنْسَا"
+       ],
+       "answer": 0,
+       "explain": "أَمْرِيكَا means America."
+      },
+      {
+       "type": "tf",
+       "prompt": "الْمَغْرِب means Morocco.",
+       "answer": true,
+       "explain": "الْمَغْرِب is the Arabic name for Morocco."
+      },
+      {
+       "type": "type",
+       "prompt": "Write the Latin pronunciation of the Arabic word for Jordan.",
+       "answers": [
+        "al-urdunn",
+        "al-urdun"
+       ],
+       "explain": "الْأُرْدُن means Jordan and is pronounced al-urdunn."
+      },
+      {
+       "type": "mcq",
+       "prompt": "You want to say “I am from Egypt.” Which country name completes أَنَا مِنْ …?",
+       "options": [
+        "فَرَنْسَا",
+        "مِصْر",
+        "الْمَغْرِب"
+       ],
+       "answer": 1,
+       "explain": "مِصْر means Egypt, so it completes the phrase meaning “I am from Egypt.”"
+      },
+      {
+       "type": "match",
+       "prompt": "Match each Arabic country name to its English meaning.",
+       "pairs": [
+        [
+         "مِصْر",
+         "Egypt"
+        ],
+        [
+         "أَمْرِيكَا",
+         "America"
+        ],
+        [
+         "فَرَنْسَا",
+         "France"
+        ]
+       ],
+       "explain": "مِصْر means Egypt, أَمْرِيكَا means America, and فَرَنْسَا means France."
+      },
+      {
+       "type": "tf",
+       "prompt": "أَنَا مِنْ … means “Where are you from?”",
+       "answer": false,
+       "explain": "أَنَا مِنْ … means “I am from …” The question is مِنْ أَيْنَ أَنْتَ؟"
+      },
+      {
+       "type": "mcq",
+       "prompt": "Which Arabic country name means Morocco?",
+       "options": [
+        "الْأُرْدُن",
+        "الْمَغْرِب",
+        "أَمْرِيكَا"
+       ],
+       "answer": 1,
+       "explain": "الْمَغْرِب means Morocco."
+      },
+      {
+       "type": "type",
+       "prompt": "Write the Latin pronunciation of the Arabic word for France.",
+       "answers": [
+        "faransaa"
+       ],
+       "explain": "فَرَنْسَا means France and is pronounced faransaa."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
