@@ -130,6 +130,23 @@ test("API: مستخدم جديد → إعدادات → درس ناجح → مر
   assert.equal(row.box, 2);
 });
 
+test("API: اختبار تحديد المستوى يعلّم الدروس ناجحة بدون نقاط ولا يُنزل شيئًا", async () => {
+  const env = mkEnv();
+  const today = new Date().toISOString().slice(0, 10);
+  await call(env, "/api/lesson/complete", { lessonId: "ln-l0-u1-01", total: 8, correct: 8, wrongIds: [], today });
+  let r = await call(env, "/api/placement", { passedIds: ["ln-l0-u1-01", "ln-l0-u1-02", "ln-l0-u1-test", "bad id!"], wrongIds: ["ln-l0-u2-03_q1"], today });
+  assert.equal(r.status, 200);
+  const st = Object.fromEntries(r.data.progress.map((p) => [p.lesson_id, p]));
+  assert.equal(st["ln-l0-u1-02"].status, "passed");
+  assert.equal(st["ln-l0-u1-test"].status, "passed");
+  assert.equal(st["ln-l0-u1-01"].best_score, 1); // الدرجة الأعلى محفوظة
+  assert.equal(st["ln-l0-u1-01"].attempts, 1);
+  assert.equal(st["bad id!"], undefined);
+  assert.equal(r.data.user.xp, 115); // 80 + 15 + 20 من الدرس الفعلي فقط
+  r = await call(env, "/api/placement", {});
+  assert.equal(r.status, 200);
+});
+
 test("API: مدخلات خاطئة ترجع 400", async () => {
   const env = mkEnv();
   let r = await call(env, "/api/lesson/complete", { lessonId: "bad id!", total: 8, correct: 7 });

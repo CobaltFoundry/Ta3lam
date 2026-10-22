@@ -179,7 +179,7 @@ const index = {
   tracks: [
     {
       id: "native",
-      title: { ar: "من الصواب إلى الاحتراف", en: "Master Arabic (for Arabic speakers)" },
+      title: { ar: "من الأساس إلى الإتقان", en: "Master Arabic (for Arabic speakers)" },
       levels: [{
         id: "l1", title: { ar: "المستوى ١ · الأساس المتين", en: "Level 1 · Solid foundations" },
         units: [

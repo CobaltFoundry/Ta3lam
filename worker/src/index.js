@@ -1,5 +1,5 @@
 import { validateInitData } from "./auth.js";
-import { decide, xpFor, cleanToday, updateStreak, cleanIds, isId } from "./engine.js";
+import { decide, xpFor, cleanToday, updateStreak, cleanIds, isId, PASS } from "./engine.js";
 import { nextState, newMistake } from "./srs.js";
 
 const TRACKS = ["native", "learner"];
@@ -98,6 +98,25 @@ const routes = {
     }
     await env.DB.batch(stmts);
     return { decision, xp, streak, ...(await snapshot(env, tg.id, today)) };
+  },
+
+  // اختبار تحديد المستوى: يعلّم الدروس المتخطّاة كناجحة دون نقاط خبرة، ويضيف الأسئلة الخاطئة للمراجعة.
+  async "/api/placement"(env, req, tg, b) {
+    const today = cleanToday(b.today);
+    await getOrCreateUser(env, tg, today);
+    const passed = cleanIds(b.passedIds, 300);
+    const wrong = cleanIds(b.wrongIds);
+    const stmts = passed.map((id) => env.DB.prepare(`INSERT INTO progress (tg_id, lesson_id, best_score, status, attempts, updated_at)
+      VALUES (?, ?, ?, 'passed', 0, datetime('now'))
+      ON CONFLICT(tg_id, lesson_id) DO UPDATE SET status = 'passed', best_score = MAX(best_score, excluded.best_score), updated_at = datetime('now')`)
+      .bind(tg.id, id, PASS));
+    const m = newMistake(today);
+    for (const qid of wrong) {
+      stmts.push(env.DB.prepare(`INSERT INTO reviews (tg_id, question_id, box, due_date) VALUES (?, ?, ?, ?)
+        ON CONFLICT(tg_id, question_id) DO UPDATE SET box = 1, due_date = excluded.due_date`).bind(tg.id, qid, m.box, m.due_date));
+    }
+    if (stmts.length) await env.DB.batch(stmts);
+    return snapshot(env, tg.id, today);
   },
 
   async "/api/review/due"(env, req, tg, b) {

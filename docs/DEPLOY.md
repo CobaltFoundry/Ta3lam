@@ -58,7 +58,7 @@ CREATE INDEX IF NOT EXISTS idx_users_reminder ON users (reminder_hour);
    - **Root directory**: `worker`
    - باقي الإعدادات الافتراضية (أمر النشر `npx wrangler deploy`).
    ← Deploy.
-5. **ضع الأسرار**: افتح الـ Worker ← Settings ← Variables and Secrets ← Add، ونوعها **Secret**:
+5. **ضع الأسرار**: افتح الـ Worker ← Settings ← قسم **Runtime** (مش Builds) ← Variables and Secrets ← Add، ونوعها **Secret**. الأسماء بشرطة سفلية `_` بالظبط (مش `-`):
    - `BOT_TOKEN` = توكن البوت
    - `WEBHOOK_SECRET` = السر الأول
    - `SETUP_SECRET` = السر الثاني
@@ -84,6 +84,9 @@ CREATE INDEX IF NOT EXISTS idx_users_reminder ON users (reminder_hour);
 | الواجهة بتقول «وضع تجريبي» جوه تليجرام | `API_URL` لسه فيه كلمة YOUR، أو لسه ما اتنشرتش الواجهة بعد التعديل |
 | «تعذّر الاتصال بالخادم» | `ALLOWED_ORIGIN` غلط (لازم نفس دومين الواجهة بالظبط)، أو الأسرار مش متضافة |
 | `/start` ما بيردش | ما فتحتش رابط `/setup/...`، أو `WEBHOOK_SECRET` غير متضاف |
+| «Variables cannot be added to a worker that only has static assets» | الـ Worker اتنشر من غير كود: تأكد إن **Root directory = `worker`** في Settings ← Builds ثم Retry build. الصح إن رابط الـ Worker يرد `{"ok":true,"app":"ta3lam"}` |
+| الأسرار اتحطت في Builds | قسم Builds للبناء فقط. الأسرار الصح في قسم Runtime |
+| Pages: «Get Pages site failed» | المستودع لازم **Public** وSettings ← Pages ← Source = GitHub Actions |
 | الـ Workflow فشل | افتح تفاصيله من تبويب Actions وابعتلي سطر الخطأ |
 | التذكير اليومي مش بيوصل | لازم تضبط الساعة من «حسابي»، والتذكير بيتبعت فقط لو ما أخذتش درس اليوم |
 

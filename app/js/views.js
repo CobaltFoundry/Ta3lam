@@ -29,8 +29,11 @@ export function homeView(c) {
     h("div", { class: "top" },
       h("span", { class: "track-chip" }, pick(track.title, lang)),
       topStats(c)),
-    c.isDemo ? h("div", { class: "demo-banner", role: "note" }, t.demoBanner) : null,
+    ...(c.isDemo ? [h("div", { class: "demo-banner", role: "note" }, t.demoBanner)] : []),
     h("div", { class: "mascot-row" }, mascot(me.dueCount > 0 ? "think" : "happy", 84), h("div", { class: "bubble" }, greet)),
+    ...(!nodes.some((n) => n.state === "done") ? [h("div", { class: "place-card" },
+      h("h2", {}, t.placementCardH), h("p", {}, t.placementCardP),
+      h("button", { class: "btn ghost", type: "button", onclick: c.onPlacement }, t.placementBtn))] : []),
   );
 
   // مجموعات حسب الوحدة
@@ -152,8 +155,11 @@ export function meView(c) {
     me.user.first_name ? h("p", { class: "lead small" }, me.user.first_name) : null,
     h("section", { class: "set" }, h("h2", {}, t.track),
       seg([["native", "أتقن العربية"], ["learner", "Learn Arabic"]], me.user.track, (v) => c.onSetting({ track: v, ui_lang: v === "native" ? "ar" : "en" }))),
+    h("section", { class: "set" }, h("h2", {}, t.placementMe), h("p", { class: "lead small" }, t.placementMeSub),
+      h("button", { class: "btn ghost", type: "button", onclick: c.onPlacement }, t.placementBtn)),
     h("section", { class: "set" }, h("h2", {}, t.language), seg(Object.entries(t.langNames), lang, (v) => c.onSetting({ ui_lang: v }))),
     h("section", { class: "set" }, h("h2", {}, t.theme), themes),
+    h("section", { class: "set" }, h("h2", {}, t.vibration), seg([[true, t.on], [false, t.offV]], c.hapticOn, (v) => c.onHaptic(v))),
     h("section", { class: "set" }, h("h2", {}, t.reminder), hours),
     c.isDemo ? h("p", { class: "demo-banner", role: "note" }, t.demoBanner) : null);
 }
@@ -196,6 +202,19 @@ export function resultView(c) {
           h("button", { class: "btn ghost", type: "button", onclick: () => onAction(res.decision === "review" ? "study" : "retry") }, res.decision === "review" ? t.studyAgain : t.retryQuiz),
           h("button", { class: "btn ghost", type: "button", onclick: () => onAction("home") }, t.backHome),
         ]));
+  return root;
+}
+
+// ───────────── نتيجة اختبار تحديد المستوى ─────────────
+export function placementResultView(c) {
+  const { t, lang, out, total, onDone } = c;
+  const msg = out.skippedUnits === 0 ? t.placementFromStart
+    : out.nextUnit ? t.placementSkip(num(out.skippedUnits, lang), pick(out.nextUnit.title, lang))
+    : t.placementAll(num(out.skippedUnits, lang));
+  const root = h("div", { class: "result", dir: c.dir });
+  root.append(
+    h("div", { class: "res-body" }, mascot(out.skippedUnits ? "cheer" : "happy", 120), h("h1", {}, t.placementDoneH), h("p", { class: "lead" }, msg)),
+    h("div", { class: "foot col" }, h("button", { class: "btn primary", type: "button", onclick: onDone }, t.backHome)));
   return root;
 }
 

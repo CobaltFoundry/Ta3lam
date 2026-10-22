@@ -33,3 +33,35 @@ export async function unitTestQuestions(unit, count = 15) {
   for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
   return a.slice(0, Math.min(count, a.length));
 }
+
+const PER_UNIT = 4, MAX_UNITS = 6;
+
+/** خطة اختبار تحديد المستوى: عدة وحدات موزّعة على المسار بالتساوي، ولكل وحدة 4 أسئلة من اختبارات دروسها بالتناوب. */
+export async function placementPlan(track) {
+  const units = track.levels.flatMap((lv) => lv.units);
+  const idx = units.length <= MAX_UNITS ? units.map((_, i) => i)
+    : Array.from({ length: MAX_UNITS }, (_, k) => Math.round((k * (units.length - 1)) / (MAX_UNITS - 1)));
+  const shuf = (a) => { a = [...a]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  return Promise.all(idx.map(async (i) => {
+    const u = units[i];
+    const lessons = await Promise.all(u.lessons.map((l) => loadLesson(l.id)));
+    const pools = lessons.map((l) => shuf(l.quiz));
+    const qs = [];
+    for (let r = 0; qs.length < PER_UNIT && r < 50; r++) for (const p of pools) if (p[r] && qs.length < PER_UNIT) qs.push(p[r]);
+    return { unitIndex: i, unit: u, questions: qs, need: Math.ceil(qs.length * 0.75) };
+  }));
+}
+
+/** ينفّذ قرار الاختبار: كل الوحدات حتى آخر وحدة مُختبَرة ناجحة قبل أول فشل تُعتبر مُتخطّاة. */
+export function placementOutcome(track, plan, results) {
+  const ok = new Map(results.map((x) => [x.id, x.correct]));
+  const units = track.levels.flatMap((lv) => lv.units);
+  let last = -1;
+  for (const p of plan) {
+    const right = p.questions.filter((q) => ok.get(q.id)).length;
+    if (right >= p.need) last = p.unitIndex; else break;
+  }
+  const skipped = units.slice(0, last + 1);
+  const passedIds = skipped.flatMap((u) => [...u.lessons.map((l) => l.id), `${u.id}-test`]);
+  return { passedIds, skippedUnits: skipped.length, nextUnit: units[last + 1] || null };
+}

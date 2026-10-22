@@ -1,6 +1,6 @@
 // طبقة الاتصال: الخادم الحقيقي داخل تليجرام، أو وضع تجريبي محلي خارجه.
 import { API_URL } from "./config.js";
-import { decide, xpFor, cleanToday, updateStreak, cleanIds, isId } from "./shared/engine.js";
+import { decide, xpFor, cleanToday, updateStreak, cleanIds, isId, PASS } from "./shared/engine.js";
 import { nextState, newMistake } from "./shared/srs.js";
 
 const tg = window.Telegram?.WebApp;
@@ -66,6 +66,16 @@ async function localCall(path, b) {
       for (const qid of cleanIds(b.wrongIds)) s.reviews[qid] = newMistake(today);
       save(s);
       return { decision, xp, streak, ...snapshot(s, today) };
+    }
+
+    case "/api/placement": {
+      for (const id of cleanIds(b.passedIds, 300)) {
+        const p = s.progress[id] || { best_score: 0, status: "in_progress", attempts: 0 };
+        p.status = "passed"; p.best_score = Math.max(p.best_score, PASS);
+        s.progress[id] = p;
+      }
+      for (const qid of cleanIds(b.wrongIds)) s.reviews[qid] = newMistake(today);
+      save(s); return snapshot(s, today);
     }
 
     case "/api/review/due": {

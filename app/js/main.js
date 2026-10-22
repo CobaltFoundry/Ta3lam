@@ -1,8 +1,8 @@
 // نقطة الدخول: الحالة، التنقل، وربط المشغّل بالخادم.
 import { call, isDemo, telegram } from "./api.js";
-import { loadIndex, loadLesson, flattenTrack, lessonOfQuestion, unitTestQuestions } from "./content.js";
+import { loadIndex, loadLesson, flattenTrack, lessonOfQuestion, unitTestQuestions, placementPlan, placementOutcome } from "./content.js";
 import { runPlayer } from "./player.js";
-import { homeView, reviewView, progressView, meView, onboardingView, resultView, navView, errorView } from "./views.js";
+import { homeView, reviewView, progressView, meView, onboardingView, resultView, placementResultView, navView, errorView } from "./views.js";
 import { T } from "./i18n.js";
 import { h, localDate } from "./util.js";
 
@@ -31,8 +31,16 @@ function applyLook() {
   }
 }
 
+const HK = "ta3lam.haptic";
+const hapticOn = () => { try { return localStorage.getItem(HK) !== "off"; } catch { return true; } };
+function setHaptic(on) {
+  try { localStorage.setItem(HK, on ? "on" : "off"); } catch { /* التخزين غير متاح */ }
+  render();
+  if (on) haptic("light");
+}
+
 const haptic = (kind) => {
-  const hf = telegram?.HapticFeedback;
+  const hf = hapticOn() ? telegram?.HapticFeedback : null;
   if (!hf) return;
   try { if (kind === "success" || kind === "error") hf.notificationOccurred(kind); else hf.impactOccurred("light"); } catch { /* تجاهل */ }
 };
@@ -67,7 +75,7 @@ function ctx() {
   if (!S.me.user.track) return base;
   return {
     ...base, track: trackObj(), nodes: nodesWithState(),
-    onNode: onNode, onStartReview: startReview, onSetting: saveSettings,
+    onNode: onNode, onStartReview: startReview, onSetting: saveSettings, hapticOn: hapticOn(), onHaptic: setHaptic, onPlacement: startPlacement,
   };
 }
 
@@ -160,6 +168,29 @@ async function playUnitTest(n) {
     const action = await showResult({ decision: resp.decision, xp: resp.xp, streak: resp.streak, correct: r.correct, total: r.total }, { weak });
     if (action === "home") return;
   }
+}
+
+async function startPlacement() {
+  if (S.busy) return;
+  S.busy = true;
+  try {
+    const track = trackObj();
+    const plan = await placementPlan(track);
+    const questions = plan.flatMap((p) => p.questions);
+    const r = await runPlayer({ ...playerBase(), title: t().placementTitle, questions });
+    if (!r) return;
+    const out = placementOutcome(track, plan, r.results);
+    const resp = await call("/api/placement", { passedIds: out.passedIds, wrongIds: r.wrongIds, today: today() });
+    S.me = { user: resp.user, progress: resp.progress, dueCount: resp.dueCount };
+    S.tab = "home";
+    await new Promise((resolve) => {
+      const el = placementResultView({ t: t(), lang: lang(), dir: playerBase().dir, out, onDone: () => { el.remove(); resolve(); } });
+      $("overlay").append(el);
+    });
+  } catch (e) {
+    console.error(e);
+    toast(t().loadError);
+  } finally { S.busy = false; render(); }
 }
 
 async function startReview() {

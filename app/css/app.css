@@ -223,3 +223,7 @@ html[dir="rtl"] .bubble::before { transform: rotate(-45deg); }
 .toast { position: fixed; bottom: calc(100px + env(safe-area-inset-bottom)); inset-inline: 20px; margin: 0 auto; max-width: 360px; background: var(--text); color: var(--bg); border-radius: 14px; padding: 12px 16px; font-weight: 700; text-align: center; z-index: 50; animation: rise 0.2s; }
 
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+.place-card { background: var(--card); border: 2px solid var(--line); border-radius: 18px; padding: 14px 16px; margin: 6px 0 14px; display: flex; flex-direction: column; gap: 8px; }
+.place-card h2 { margin: 0; font-size: 18px; }
+.place-card p { margin: 0; color: var(--muted); font-size: 15px; }
