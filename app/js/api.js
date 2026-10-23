@@ -10,7 +10,7 @@ export const isDemo = !initData || API_URL.includes("YOUR");
 export const telegram = tg || null;
 export const tgUser = tg?.initDataUnsafe?.user || null;
 
-const TRACKS = ["native", "learner"], THEMES = ["warm", "night", "sage", "telegram"], LANGS = ["ar", "en"];
+const TRACKS = ["native", "learner"], THEMES = ["warm", "night", "sage", "telegram"], LANGS = ["ar", "en", "fr"];
 
 export async function call(path, payload = {}) {
   if (isDemo) return localCall(path, payload);

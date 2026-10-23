@@ -29,9 +29,9 @@ def check(cond, msg):
 
 def find_question(page):
     prompt = page.locator(".q-prompt").inner_text().strip()
-    opts = tuple(sorted(t.strip() for t in page.locator(".choice .lbl").all_inner_texts()))
+    opts = tuple(sorted(t.strip() for t in page.locator(".m-col:first-child .m-item").all_inner_texts()))
     if not opts:
-        opts = tuple(sorted(t.strip() for t in page.locator(".m-col:first-child .m-item").all_inner_texts()))
+        opts = tuple(sorted(t.strip() for t in page.locator(".choice .lbl").all_inner_texts()))
     for (p, o), qs in BY_SIG.items():
         if p.replace("\n", " ").strip() == prompt.replace("\n", " ") and (o == opts or not o):
             return qs[0]
@@ -165,7 +165,7 @@ def main():
             page.locator(".result .btn.primary").click()
 
             # 7) كل دروس المسار تُلعب بلا أخطاء برمجية (يمشي على كل العقد)
-            for _ in range(20):
+            for _ in range(80):
                 page.wait_for_selector(".node")
                 cur = page.locator(".node.current")
                 if cur.count() == 0: break
@@ -216,9 +216,11 @@ def main():
             pg.screenshot(path=f"{SHOTS}/15-placement-result.png")
             pg.locator(".result .btn.primary").click()
             pg.wait_for_selector(".node")
-            check(pg.locator(".node.done").count() == 7, "placement skipped first two units (7 nodes done)")
+            check(7 <= pg.locator(".node.done").count() < pg.locator(".node").count() - 1, "placement skipped some leading units but not all")
             check(pg.locator(".node.current").count() == 1, "placement leaves exactly one current node")
             check(pg.locator(".place-card").count() == 0, "placement card hidden once progress exists")
+            pg.wait_for_timeout(300)
+            check(pg.evaluate("(() => { const r = document.querySelector('.node.current').getBoundingClientRect(); return r.top >= 0 && r.bottom <= innerHeight; })()"), "home scrolls to the current lesson")
             check("null" not in pg.locator(".home").inner_text(), "no stray 'null' after placement")
             ctx2.close()
 

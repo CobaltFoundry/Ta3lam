@@ -154,7 +154,7 @@ export function meView(c) {
     h("h1", {}, t.meTitle),
     me.user.first_name ? h("p", { class: "lead small" }, me.user.first_name) : null,
     h("section", { class: "set" }, h("h2", {}, t.track),
-      seg([["native", "أتقن العربية"], ["learner", "Learn Arabic"]], me.user.track, (v) => c.onSetting({ track: v, ui_lang: v === "native" ? "ar" : "en" }))),
+      seg([["native", "أتقن العربية"], ["learner", "Learn Arabic"]], me.user.track, (v) => c.onSetting({ track: v }))),
     h("section", { class: "set" }, h("h2", {}, t.placementMe), h("p", { class: "lead small" }, t.placementMeSub),
       h("button", { class: "btn ghost", type: "button", onclick: c.onPlacement }, t.placementBtn)),
     h("section", { class: "set" }, h("h2", {}, t.language), seg(Object.entries(t.langNames), lang, (v) => c.onSetting({ ui_lang: v }))),

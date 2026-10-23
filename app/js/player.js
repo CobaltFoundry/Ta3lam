@@ -176,7 +176,7 @@ export function runPlayer(o) {
         if (m.done.has(k)) cls += "matched";
         else if (side === "left" && m.sel === k) cls += "sel";
         else if (side === "right" && m.flash === k) cls += "wrong";
-        return h("button", { class: `choice m-item ${cls}`, type: "button", disabled: m.done.has(k) || st.checked, onclick: () => tap(side, k) }, rich(text));
+        return h("button", { class: `choice m-item ${cls}`, type: "button", disabled: m.done.has(k) || st.checked, onclick: () => tap(side, k) }, h("span", { class: "lbl" }, rich(text)));
       }));
       function tap(side, k) {
         m.flash = null;

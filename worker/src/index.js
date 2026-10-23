@@ -4,7 +4,7 @@ import { nextState, newMistake } from "./srs.js";
 
 const TRACKS = ["native", "learner"];
 const THEMES = ["warm", "night", "sage", "telegram"];
-const LANGS = ["ar", "en"];
+const LANGS = ["ar", "en", "fr"];
 
 // ---------- أدوات الرد ----------
 function cors(env, req) {
@@ -26,14 +26,42 @@ async function body(req) {
 }
 
 // ---------- الوصول للبيانات ----------
+let langColReady = false;
+async function ensureLangCol(env) {
+  if (langColReady) return;
+  try { await env.DB.prepare("ALTER TABLE users ADD COLUMN lang_code TEXT").run(); } catch { /* موجود مسبقًا */ }
+  langColReady = true;
+}
+
 async function getOrCreateUser(env, tgUser, today) {
+  await ensureLangCol(env);
+  const code = typeof tgUser.language_code === "string" ? tgUser.language_code.toLowerCase().slice(0, 12) : null;
   let u = await env.DB.prepare("SELECT * FROM users WHERE tg_id = ?").bind(tgUser.id).first();
   if (!u) {
-    await env.DB.prepare("INSERT INTO users (tg_id, first_name, last_active_date) VALUES (?, ?, NULL)")
-      .bind(tgUser.id, tgUser.first_name).run();
+    await env.DB.prepare("INSERT INTO users (tg_id, first_name, last_active_date, lang_code) VALUES (?, ?, NULL, ?)")
+      .bind(tgUser.id, tgUser.first_name, code).run();
     u = await env.DB.prepare("SELECT * FROM users WHERE tg_id = ?").bind(tgUser.id).first();
+  } else if (code && u.lang_code !== code) {
+    try { await env.DB.prepare("UPDATE users SET lang_code = ? WHERE tg_id = ?").bind(code, tgUser.id).run(); } catch { /* غير حرج */ }
   }
   return u;
+}
+
+async function ownerStats(env, today) {
+  await ensureLangCol(env);
+  const one = async (sql, ...a) => (await env.DB.prepare(sql).bind(...a).first()) || {};
+  const rows = async (sql, ...a) => (await env.DB.prepare(sql).bind(...a).all()).results || [];
+  const d7 = new Date(Date.parse(today) - 6 * 86400000).toISOString().slice(0, 10);
+  return {
+    total_users: (await one("SELECT COUNT(*) AS n FROM users")).n,
+    active_today: (await one("SELECT COUNT(*) AS n FROM users WHERE last_active_date = ?", today)).n,
+    active_7d: (await one("SELECT COUNT(*) AS n FROM users WHERE last_active_date >= ?", d7)).n,
+    new_7d: (await one("SELECT COUNT(*) AS n FROM users WHERE created_at >= datetime('now','-7 days')")).n,
+    by_track: await rows("SELECT COALESCE(track,'unset') AS track, COUNT(*) AS n FROM users GROUP BY 1 ORDER BY n DESC"),
+    by_language: await rows("SELECT COALESCE(lang_code,'unknown') AS lang, COUNT(*) AS n FROM users GROUP BY 1 ORDER BY n DESC"),
+    lessons_passed: (await one("SELECT COUNT(*) AS n FROM progress WHERE status = 'passed'")).n,
+    note: "من ضغط /start ولم يفتح التطبيق لا يظهر هنا.",
+  };
 }
 
 async function snapshot(env, tgId, today) {
@@ -205,6 +233,11 @@ export default {
         if (req.headers.get("X-Telegram-Bot-Api-Secret-Token") !== env.WEBHOOK_SECRET) return new Response("forbidden", { status: 403 });
         await handleUpdate(env, await req.json());
         return new Response("ok");
+      }
+
+      // إحصائيات للمالك فقط: افتح /stats/<WEBHOOK_SECRET> من المتصفح
+      if (url.pathname === `/stats/${env.WEBHOOK_SECRET}` && env.WEBHOOK_SECRET && req.method === "GET") {
+        return json(env, req, await ownerStats(env, new Date().toISOString().slice(0, 10)));
       }
 
       // إعداد لمرة واحدة من متصفح الموبايل: افتح /setup/<SETUP_SECRET>

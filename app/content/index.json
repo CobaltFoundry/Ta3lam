@@ -12,7 +12,8 @@
      "id": "l1",
      "title": {
       "ar": "المستوى ١ · الأساس المتين",
-      "en": "Level 1 · Solid foundations"
+      "en": "Level 1 · Solid foundations",
+      "fr": "Niveau 1 · Phrases simples"
      },
      "units": [
       {
@@ -67,6 +68,96 @@
          }
         }
        ]
+      },
+      {
+       "id": "nt-l1-u3",
+       "title": {
+        "ar": "الحروف المتشابهة",
+        "en": "Look-alike letters"
+       },
+       "lessons": [
+        {
+         "id": "nt-l1-u3-01",
+         "title": {
+          "ar": "الضاد والظاء",
+          "en": "Ḍād and Ẓāʾ"
+         }
+        },
+        {
+         "id": "nt-l1-u3-02",
+         "title": {
+          "ar": "الذال والزاي",
+          "en": "Dhāl and Zāy"
+         }
+        },
+        {
+         "id": "nt-l1-u3-03",
+         "title": {
+          "ar": "السين والصاد",
+          "en": "Sīn and Ṣād"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l1-u4",
+       "title": {
+        "ar": "الألف واللام",
+        "en": "Definite article (al)"
+       },
+       "lessons": [
+        {
+         "id": "nt-l1-u4-01",
+         "title": {
+          "ar": "«ال» التعريف",
+          "en": "The definite article al-"
+         }
+        },
+        {
+         "id": "nt-l1-u4-02",
+         "title": {
+          "ar": "اللام القمرية والشمسية",
+          "en": "Moon and sun letters"
+         }
+        },
+        {
+         "id": "nt-l1-u4-03",
+         "title": {
+          "ar": "الكتابة والشدة مع الشمسية، ودمج اللام",
+          "en": "Writing sun letters and combining lām"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l1-u5",
+       "title": {
+        "ar": "الكتابة السليمة",
+        "en": "Writing it right"
+       },
+       "lessons": [
+        {
+         "id": "nt-l1-u5-01",
+         "title": {
+          "ar": "علامات الترقيم",
+          "en": "Punctuation marks"
+         }
+        },
+        {
+         "id": "nt-l1-u5-02",
+         "title": {
+          "ar": "أخطاء إملائية شائعة",
+          "en": "Common spelling errors"
+         }
+        },
+        {
+         "id": "nt-l1-u5-03",
+         "title": {
+          "ar": "العدد والمعدود (مدخل)",
+          "en": "Numbers and counted nouns (intro)"
+         }
+        }
+       ]
       }
      ]
     },
@@ -106,6 +197,209 @@
          }
         }
        ]
+      },
+      {
+       "id": "nt-l2-u2",
+       "title": {
+        "ar": "الجملة",
+        "en": "The sentence"
+       },
+       "lessons": [
+        {
+         "id": "nt-l2-u2-01",
+         "title": {
+          "ar": "الجملة الاسمية (مبتدأ وخبر)",
+          "en": "The nominal sentence (subject and predicate)"
+         }
+        },
+        {
+         "id": "nt-l2-u2-02",
+         "title": {
+          "ar": "الجملة الفعلية (فعل وفاعل ومفعول به)",
+          "en": "The verbal sentence (verb, subject, object)"
+         }
+        },
+        {
+         "id": "nt-l2-u2-03",
+         "title": {
+          "ar": "التمييز بين الجملة الاسمية والفعلية",
+          "en": "Distinguishing nominal and verbal sentences"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l2-u3",
+       "title": {
+        "ar": "الإعراب والبناء",
+        "en": "Inflection and fixed forms"
+       },
+       "lessons": [
+        {
+         "id": "nt-l2-u3-01",
+         "title": {
+          "ar": "المعرب والمبني",
+          "en": "Inflected and Fixed Words"
+         }
+        },
+        {
+         "id": "nt-l2-u3-02",
+         "title": {
+          "ar": "علامات الإعراب الأصلية للاسم",
+          "en": "Original Inflection Signs for Nouns"
+         }
+        },
+        {
+         "id": "nt-l2-u3-03",
+         "title": {
+          "ar": "علامات إعراب الفعل المضارع",
+          "en": "Inflection Signs for Present Tense Verbs"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l2-u4",
+       "title": {
+        "ar": "المثنى والجمع",
+        "en": "Dual and plural"
+       },
+       "lessons": [
+        {
+         "id": "nt-l2-u4-01",
+         "title": {
+          "ar": "المثنى",
+          "en": "The Dual"
+         }
+        },
+        {
+         "id": "nt-l2-u4-02",
+         "title": {
+          "ar": "جمع المذكر السالم",
+          "en": "Sound masculine plural"
+         }
+        },
+        {
+         "id": "nt-l2-u4-03",
+         "title": {
+          "ar": "جمع المؤنث السالم",
+          "en": "Sound feminine plural"
+         }
+        },
+        {
+         "id": "nt-l2-u4-04",
+         "title": {
+          "ar": "جمع التكسير",
+          "en": "Broken plural"
+         }
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "l3",
+     "title": {
+      "ar": "المستوى ٣ · النحو المتوسط",
+      "en": "Level 3 · Intermediate grammar"
+     },
+     "units": [
+      {
+       "id": "nt-l3-u1",
+       "title": {
+        "ar": "النواسخ",
+        "en": "Verbs and particles that change the sentence"
+       },
+       "lessons": [
+        {
+         "id": "nt-l3-u1-01",
+         "title": {
+          "ar": "كان وأخواتها",
+          "en": "Kāna and its sisters"
+         }
+        },
+        {
+         "id": "nt-l3-u1-02",
+         "title": {
+          "ar": "إنّ وأخواتها",
+          "en": "Inna and its sisters"
+         }
+        },
+        {
+         "id": "nt-l3-u1-03",
+         "title": {
+          "ar": "التمييز بين كان وإنّ وأخواتهما",
+          "en": "Distinguishing kāna from inna and their sisters"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l3-u2",
+       "title": {
+        "ar": "المنصوبات (١)",
+        "en": "Accusative cases (1)"
+       },
+       "lessons": [
+        {
+         "id": "nt-l3-u2-01",
+         "title": {
+          "ar": "المفعول به",
+          "en": "Direct object"
+         }
+        },
+        {
+         "id": "nt-l3-u2-02",
+         "title": {
+          "ar": "المفعول المطلق",
+          "en": "Absolute object"
+         }
+        },
+        {
+         "id": "nt-l3-u2-03",
+         "title": {
+          "ar": "المفعول لأجله",
+          "en": "Object of reason"
+         }
+        },
+        {
+         "id": "nt-l3-u2-04",
+         "title": {
+          "ar": "المفعول فيه (ظرفا الزمان والمكان)",
+          "en": "Adverb of time and place"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l3-u3",
+       "title": {
+        "ar": "المنصوبات (٢)",
+        "en": "Accusative cases (2)"
+       },
+       "lessons": [
+        {
+         "id": "nt-l3-u3-01",
+         "title": {
+          "ar": "الحال",
+          "en": "Al-Haal (Circumstantial Accusative)"
+         }
+        },
+        {
+         "id": "nt-l3-u3-02",
+         "title": {
+          "ar": "التمييز",
+          "en": "At-Tamyeez (Specification)"
+         }
+        },
+        {
+         "id": "nt-l3-u3-03",
+         "title": {
+          "ar": "المستثنى بـ«إلّا»",
+          "en": "Exception with 'Illa'"
+         }
+        }
+       ]
       }
      ]
     }
@@ -115,70 +409,80 @@
    "id": "learner",
    "title": {
     "ar": "العربية من الصفر",
-    "en": "Arabic from zero"
+    "en": "Arabic from zero",
+    "fr": "L'arabe depuis zéro"
    },
    "levels": [
     {
      "id": "l0",
      "title": {
       "ar": "المستوى ٠ · الحروف والأصوات",
-      "en": "Level 0 · Letters & sounds"
+      "en": "Level 0 · Letters & sounds",
+      "fr": "Niveau 0 · Lettres et sons"
      },
      "units": [
       {
        "id": "ln-l0-u1",
        "title": {
         "ar": "الحروف الثمانية والعشرون",
-        "en": "The 28 letters"
+        "en": "The 28 letters",
+        "fr": "Les 28 lettres"
        },
        "lessons": [
         {
          "id": "ln-l0-u1-01",
          "title": {
           "ar": "الحروف: ا ب ت ث",
-          "en": "Letters: ا ب ت ث"
+          "en": "Letters: ا ب ت ث",
+          "fr": "Lettres : ا ب ت ث"
          }
         },
         {
          "id": "ln-l0-u1-02",
          "title": {
           "ar": "الحروف: ج ح خ د",
-          "en": "Letters: ج ح خ د"
+          "en": "Letters: ج ح خ د",
+          "fr": "Lettres : ج ح خ د"
          }
         },
         {
          "id": "ln-l0-u1-03",
          "title": {
           "ar": "الحروف: ذ ر ز س",
-          "en": "Letters: ذ ر ز س"
+          "en": "Letters: ذ ر ز س",
+          "fr": "Lettres : ذ ر ز س"
          }
         },
         {
          "id": "ln-l0-u1-04",
          "title": {
           "ar": "الحروف: ش ص ض ط",
-          "en": "Letters: ش ص ض ط"
+          "en": "Letters: ش ص ض ط",
+          "fr": "Lettres : ش ص ض ط"
          }
         },
         {
          "id": "ln-l0-u1-05",
          "title": {
           "ar": "الحروف: ظ ع غ ف",
-          "en": "Letters: ظ ع غ ف"
+          "en": "Letters: ظ ع غ ف",
+          "fr": "Lettres : ظ ع غ ف"
          }
         },
         {
          "id": "ln-l0-u1-06",
          "title": {
           "ar": "الحروف: ق ك ل م",
-          "en": "Letters: ق ك ل م"
+          "en": "Letters: ق ك ل م",
+          "fr": "Lettres : ق ك ل م"
          }
         },
         {
          "id": "ln-l0-u1-07",
          "title": {
           "ar": "الحروف: ن ه و ي",
-          "en": "Letters: ن ه و ي"
+          "en": "Letters: ن ه و ي",
+          "fr": "Lettres : ن ه و ي"
          }
         }
        ]
@@ -187,21 +491,24 @@
        "id": "ln-l0-u2",
        "title": {
         "ar": "الحركات والعلامات",
-        "en": "Vowels & signs"
+        "en": "Vowels & signs",
+        "fr": "Voyelles et signes"
        },
        "lessons": [
         {
          "id": "ln-l0-u2-01",
          "title": {
           "ar": "الحركات القصيرة: فتحة، كسرة، ضمة",
-          "en": "Short vowels: fatha, kasra, damma"
+          "en": "Short vowels: fatha, kasra, damma",
+          "fr": "Voyelles courtes : fatha, kasra, damma"
          }
         },
         {
          "id": "ln-l0-u2-02",
          "title": {
           "ar": "السكون والشدة والتنوين",
-          "en": "Sukun, shadda and tanween"
+          "en": "Sukun, shadda and tanween",
+          "fr": "Soukoun, chadda et tanwin"
          }
         }
        ]
@@ -212,35 +519,40 @@
      "id": "l1",
      "title": {
       "ar": "المستوى ١ · جمل بسيطة",
-      "en": "Level 1 · Simple sentences"
+      "en": "Level 1 · Simple sentences",
+      "fr": "Niveau 1 · Phrases simples"
      },
      "units": [
       {
        "id": "ln-l1-u1",
        "title": {
         "ar": "التحيات والتعارف",
-        "en": "Greetings & introductions"
+        "en": "Greetings & introductions",
+        "fr": "Salutations et présentations"
        },
        "lessons": [
         {
          "id": "ln-l1-u1-01",
          "title": {
           "ar": "التحيات",
-          "en": "Greetings"
+          "en": "Greetings",
+          "fr": "Salutations"
          }
         },
         {
          "id": "ln-l1-u1-02",
          "title": {
           "ar": "الضمائر والاسم",
-          "en": "Pronouns and names"
+          "en": "Pronouns and names",
+          "fr": "Les pronoms et les prénoms"
          }
         },
         {
          "id": "ln-l1-u1-03",
          "title": {
           "ar": "مِنْ أَيْنَ أَنْتَ؟",
-          "en": "Where are you from?"
+          "en": "Where are you from?",
+          "fr": "D’où venez-vous ?"
          }
         }
        ]

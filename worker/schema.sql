@@ -10,7 +10,8 @@ CREATE TABLE IF NOT EXISTS users (
   last_active_date TEXT,
   reminder_hour INTEGER,            -- ساعة UTC (0-23) أو NULL = بدون تذكير
   last_reminded_date TEXT,
-  created_at TEXT DEFAULT (datetime('now'))
+  created_at TEXT DEFAULT (datetime('now')),
+  lang_code TEXT                    -- language_code من تليجرام
 );
 
 CREATE TABLE IF NOT EXISTS progress (

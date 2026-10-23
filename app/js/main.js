@@ -1,6 +1,6 @@
 // نقطة الدخول: الحالة، التنقل، وربط المشغّل بالخادم.
 import { call, isDemo, telegram } from "./api.js";
-import { loadIndex, loadLesson, flattenTrack, lessonOfQuestion, unitTestQuestions, placementPlan, placementOutcome } from "./content.js";
+import { loadIndex, loadLesson, setContentLang, flattenTrack, lessonOfQuestion, unitTestQuestions, placementPlan, placementOutcome } from "./content.js";
 import { runPlayer } from "./player.js";
 import { homeView, reviewView, progressView, meView, onboardingView, resultView, placementResultView, navView, errorView } from "./views.js";
 import { T } from "./i18n.js";
@@ -9,7 +9,14 @@ import { h, localDate } from "./util.js";
 const S = { me: null, index: null, tab: "home", busy: false };
 const $ = (id) => document.getElementById(id);
 
-const lang = () => (S.me?.user.ui_lang === "en" ? "en" : "ar");
+const lang = () => { const l = S.me?.user.ui_lang; return l === "en" || l === "fr" ? l : "ar"; };
+/** لغة واجهة المتعلّم الافتراضية: لغة تليجرام إن كانت فرنسية، وإلا الإنجليزية */
+const learnerLang = () => {
+  const cur = S.me?.user.ui_lang;
+  if (cur === "en" || cur === "fr") return cur;
+  const code = String(telegram?.initDataUnsafe?.user?.language_code || navigator.language || "").toLowerCase();
+  return code.startsWith("fr") ? "fr" : "en";
+};
 const t = () => T[lang()];
 const trackObj = () => S.index.tracks.find((x) => x.id === S.me.user.track);
 const today = () => localDate();
@@ -21,6 +28,7 @@ function applyLook() {
   const root = document.documentElement;
   root.lang = l;
   root.dir = l === "ar" ? "rtl" : "ltr";
+  setContentLang(l);
   root.dataset.theme = u?.theme || "warm";
   document.title = T[l].appName;
   if (telegram) {
@@ -84,7 +92,7 @@ function render() {
   applyLook();
   if (!S.me.user.track) {
     nav.replaceChildren();
-    view.replaceChildren(onboardingView({ ...ctx(), onPickTrack: (track) => saveSettings({ track, ui_lang: track === "native" ? "ar" : "en" }) }));
+    view.replaceChildren(onboardingView({ ...ctx(), onPickTrack: (track) => saveSettings({ track }) }));
     return;
   }
   const c = ctx();
@@ -93,6 +101,11 @@ function render() {
   nav.replaceChildren(navView(c));
   view.scrollTo?.(0, 0);
   window.scrollTo(0, 0);
+  // الرئيسية: انتقل إلى العقدة الحالية (آخر درس وصلت إليه)
+  if (S.tab === "home") {
+    const cur = view.querySelector(".node.current");
+    if (cur) requestAnimationFrame(() => cur.scrollIntoView({ block: "center", behavior: "auto" }));
+  }
 }
 
 function showError(retry) {
@@ -102,6 +115,7 @@ function showError(retry) {
 
 // ───────────── الإعدادات ─────────────
 async function saveSettings(patch) {
+  if (patch.track && !("ui_lang" in patch)) patch = { ...patch, ui_lang: patch.track === "native" ? "ar" : learnerLang() };
   try {
     const r = await call("/api/settings", { ...patch, today: today() });
     S.me = r;

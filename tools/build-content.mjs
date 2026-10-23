@@ -245,10 +245,84 @@ if (existsSync(INC)) {
   }
 }
 
+// ---------- الترجمات (tools/translations/<lang>/<lessonId>.json) ----------
+// الملف = نسخة كاملة من الدرس الإنجليزي بنص مترجم. يجب أن تتطابق البنية تمامًا، وتبقى كل الكلمات العربية والكتابة اللاتينية للنطق كما هي.
+const TR = new URL("./translations/", import.meta.url);
+const AR_RUN = /[\u0600-\u06FF\u0750-\u077F]+/g;
+const translated = [];
+function validateTranslation(en, tr, lang) {
+  const bad = (m) => { throw new Error(`translations/${lang}/${en.id}: ${m}`); };
+  const same = (a, b, path) => {
+    if (typeof a === "string") {
+      if (typeof b !== "string" || !b.trim()) bad(`${path}: must be non-empty text`);
+      for (const w of a.match(AR_RUN) || []) if (!b.includes(w)) bad(`${path}: Arabic text "${w}" was changed or dropped`);
+    } else bad(`${path}: unexpected`);
+  };
+  if (tr.id !== en.id) bad("id mismatch");
+  if (!tr.title || typeof tr.title[lang] !== "string" || !tr.title[lang]) bad(`title.${lang} missing`);
+  if (tr.teach.length !== en.teach.length) bad("teach card count differs");
+  en.teach.forEach((c, i) => {
+    const d = tr.teach[i], P = `teach[${i}]`;
+    if (!d || d.type !== c.type) bad(`${P}: type differs`);
+    if (c.type === "letter") {
+      for (const k of ["ch", "name"]) if (d[k] !== c[k]) bad(`${P}.${k} must stay "${c[k]}"`);
+      if (JSON.stringify(d.forms) !== JSON.stringify(c.forms)) bad(`${P}.forms changed`);
+      if (!d.word || d.word.ar !== c.word.ar || !d.word.en) bad(`${P}.word wrong`);
+      for (const k of ["sound", "note", "dots"]) same(c[k], d[k], `${P}.${k}`);
+    } else same(c.text, d.text, `${P}.text`);
+  });
+  for (const part of ["practice", "quiz"]) {
+    if (tr[part].length !== en[part].length) bad(`${part} count differs`);
+    en[part].forEach((q, i) => {
+      const d = tr[part][i], P = `${part}[${i}]`;
+      if (!d || d.type !== q.type || d.id !== q.id) bad(`${P}: type or id differs`);
+      same(q.prompt ?? "", d.prompt ?? "", `${P}.prompt`);
+      same(q.explain, d.explain, `${P}.explain`);
+      if (q.type === "mcq") {
+        if (d.answer !== q.answer) bad(`${P}.answer must stay ${q.answer}`);
+        if (!Array.isArray(d.options) || d.options.length !== q.options.length) bad(`${P}: options count differs`);
+        q.options.forEach((o, j) => same(o, d.options[j], `${P}.options[${j}]`));
+        if (new Set(d.options).size !== d.options.length) bad(`${P}: duplicate options`);
+      } else if (q.type === "tf") {
+        if (d.answer !== q.answer) bad(`${P}.answer must stay ${q.answer}`);
+      } else if (q.type === "type") {
+        if (JSON.stringify(d.answers) !== JSON.stringify(q.answers)) bad(`${P}.answers must stay unchanged`);
+      } else if (q.type === "match") {
+        if (!Array.isArray(d.pairs) || d.pairs.length !== q.pairs.length) bad(`${P}: pairs count differs`);
+        q.pairs.forEach((p, j) => {
+          if (d.pairs[j][0] !== p[0]) bad(`${P}.pairs[${j}] left side must stay "${p[0]}"`);
+          same(p[1], d.pairs[j][1], `${P}.pairs[${j}][1]`);
+        });
+        if (new Set(d.pairs.map((p) => p[1])).size !== d.pairs.length) bad(`${P}: duplicate right sides`);
+      }
+    });
+  }
+}
+function applyTitles(lang, titles) {
+  const put = (o, key) => { if (titles[key]) o.title[lang] = titles[key]; };
+  for (const tk of index.tracks) { put(tk, tk.id); for (const lv of tk.levels) { put(lv, lv.id); for (const u of lv.units) put(u, u.id); } }
+}
+for (const lang of existsSync(TR) ? readdirSync(TR) : []) {
+  const dir = new URL(`${lang}/`, TR);
+  const tfile = new URL("_titles.json", dir);
+  if (existsSync(tfile)) applyTitles(lang, JSON.parse(readFileSync(tfile, "utf8")));
+  for (const f of readdirSync(dir).filter((f) => f.endsWith(".json") && !f.startsWith("_")).sort()) {
+    let tr;
+    try { tr = JSON.parse(readFileSync(new URL(f, dir), "utf8")); } catch (e) { throw new Error(`translations/${lang}/${f}: invalid JSON (${e.message})`); }
+    const en = all.find((l) => l.id === f.replace(/\.json$/, ""));
+    if (!en) throw new Error(`translations/${lang}/${f}: no such lesson`);
+    validateTranslation(en, tr, lang);
+    en.title[lang] = tr.title[lang];
+    for (const u of index.tracks.flatMap((t) => t.levels.flatMap((lv) => lv.units))) { const r = u.lessons.find((x) => x.id === en.id); if (r) r.title[lang] = tr.title[lang]; }
+    translated.push({ lang, lesson: { ...tr, track: en.track, pass_score: en.pass_score, title: { ...en.title } } });
+  }
+}
+
 // ---------- كتابة الملفات ----------
 validateAll(all, index);
 rmSync(new URL("lessons/", OUT), { recursive: true, force: true });
 mkdirSync(new URL("lessons/", OUT), { recursive: true });
 for (const l of all) writeFileSync(new URL(`lessons/${l.id}.json`, OUT), JSON.stringify(l));
+for (const { lang, lesson } of translated) writeFileSync(new URL(`lessons/${lesson.id}.${lang}.json`, OUT), JSON.stringify(lesson));
 writeFileSync(new URL("index.json", OUT), JSON.stringify(index, null, 1));
 console.log(`OK: ${all.length} lessons, ${all.reduce((n, l) => n + l.practice.length + l.quiz.length, 0)} questions`);

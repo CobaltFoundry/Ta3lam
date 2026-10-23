@@ -193,3 +193,17 @@ test("تطبيع الإجابات المكتوبة", () => {
   assert.notEqual(normAnswer("أحمد"), normAnswer("احمد"));       // الهمزة تفرّق في العربي
   assert.equal(normAnswer("كَتَبَ"), normAnswer("كتب"));         // التشكيل لا يفرّق
 });
+
+test("تسجيل language_code وإحصائيات المالك", async () => {
+  const env = mkEnv();
+  const today = new Date().toISOString().slice(0, 10);
+  await call(env, "/api/me", { today }, { id: 1, first_name: "a", language_code: "fr" });
+  await call(env, "/api/me", { today }, { id: 2, first_name: "b", language_code: "ar-EG" });
+  await call(env, "/api/me", { today }, { id: 3, first_name: "c" });
+  const res = await worker.fetch(new Request("https://x.test/stats/wh"), env);
+  const s = await res.json();
+  assert.equal(s.total_users, 3);
+  assert.deepEqual(s.by_language.map((x) => x.lang).sort(), ["ar-eg", "fr", "unknown"]);
+  const bad = await worker.fetch(new Request("https://x.test/stats/nope"), env);
+  assert.equal(bad.status, 404);
+});
