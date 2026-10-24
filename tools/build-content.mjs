@@ -248,7 +248,7 @@ if (existsSync(INC)) {
 // ---------- الترجمات (tools/translations/<lang>/<lessonId>.json) ----------
 // الملف = نسخة كاملة من الدرس الإنجليزي بنص مترجم. يجب أن تتطابق البنية تمامًا، وتبقى كل الكلمات العربية والكتابة اللاتينية للنطق كما هي.
 const TR = new URL("./translations/", import.meta.url);
-const AR_RUN = /[\u0600-\u06FF\u0750-\u077F]+/g;
+const AR_RUN = /[\u0600-\u061E\u0620-\u06FF\u0750-\u077F]+/g;
 const translated = [];
 function validateTranslation(en, tr, lang) {
   const bad = (m) => { throw new Error(`translations/${lang}/${en.id}: ${m}`); };

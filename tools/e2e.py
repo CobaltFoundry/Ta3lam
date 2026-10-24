@@ -13,7 +13,7 @@ PORT = 8099
 LESSONS = {}
 for f in glob.glob(os.path.join(ROOT, "app/content/lessons/*.json")):
     d = json.load(open(f, encoding="utf-8"))
-    LESSONS[d["id"]] = d
+    LESSONS[os.path.basename(f)] = d  # يشمل ملفات الترجمة .fr.json
 BY_SIG = {}
 for l in LESSONS.values():
     for q in l["practice"] + l["quiz"]:

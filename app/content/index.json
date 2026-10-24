@@ -400,6 +400,96 @@
          }
         }
        ]
+      },
+      {
+       "id": "nt-l3-u4",
+       "title": {
+        "ar": "المجرورات والإضافة",
+        "en": "Genitive and idafa"
+       },
+       "lessons": [
+        {
+         "id": "nt-l3-u4-01",
+         "title": {
+          "ar": "حروف الجر",
+          "en": "Prepositions"
+         }
+        },
+        {
+         "id": "nt-l3-u4-02",
+         "title": {
+          "ar": "الإضافة",
+          "en": "Idafa"
+         }
+        },
+        {
+         "id": "nt-l3-u4-03",
+         "title": {
+          "ar": "الأسماء الخمسة",
+          "en": "The five nouns"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l3-u5",
+       "title": {
+        "ar": "التوابع (١)",
+        "en": "Followers (1)"
+       },
+       "lessons": [
+        {
+         "id": "nt-l3-u5-01",
+         "title": {
+          "ar": "النعت",
+          "en": "The adjective"
+         }
+        },
+        {
+         "id": "nt-l3-u5-02",
+         "title": {
+          "ar": "العطف بالحروف",
+          "en": "Coordination with conjunctions"
+         }
+        },
+        {
+         "id": "nt-l3-u5-03",
+         "title": {
+          "ar": "التوكيد المعنوي",
+          "en": "Emphasis with a meaning word"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l3-u6",
+       "title": {
+        "ar": "مسائل خاصة",
+        "en": "Special topics"
+       },
+       "lessons": [
+        {
+         "id": "nt-l3-u6-01",
+         "title": {
+          "ar": "الممنوع من الصرف",
+          "en": "The diptote"
+         }
+        },
+        {
+         "id": "nt-l3-u6-02",
+         "title": {
+          "ar": "العدد والمعدود (٣ إلى ١٠)",
+          "en": "Numbers 3–10 and their counted noun"
+         }
+        },
+        {
+         "id": "nt-l3-u6-03",
+         "title": {
+          "ar": "أسلوب الشرط",
+          "en": "Conditional sentences"
+         }
+        }
+       ]
       }
      ]
     }
