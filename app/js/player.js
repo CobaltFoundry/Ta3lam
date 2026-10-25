@@ -99,6 +99,32 @@ export function runPlayer(o) {
       else if (q.type === "match") matchView(q, body, foot);
     }
 
+    function reportSheet(q) {
+      let kind = null;
+      const note = h("textarea", { class: "rp-note", maxlength: "300", rows: "3", placeholder: t.reportNote });
+      const send = h("button", { class: "btn primary", type: "button", disabled: true });
+      send.textContent = t.reportSend;
+      const kinds = Object.entries(t.reportKinds).map(([k, label]) =>
+        h("button", { class: "rp-kind", type: "button", "aria-pressed": "false", onclick: (e) => {
+          kind = k; send.disabled = false;
+          kinds.forEach((b) => b.setAttribute("aria-pressed", "false"));
+          e.currentTarget.setAttribute("aria-pressed", "true");
+        } }, label));
+      const close = () => sheet.remove();
+      send.addEventListener("click", async () => {
+        send.disabled = true;
+        let ok = true;
+        try { await o.onReport(q, kind, note.value.trim()); } catch { ok = false; }
+        close();
+        o.toast && o.toast(ok ? t.reportThanks : t.reportFail);
+      });
+      const sheet = h("div", { class: "rp-back", onclick: (e) => { if (e.target === sheet) close(); } },
+        h("div", { class: "rp-sheet", dir, role: "dialog" },
+          h("strong", {}, t.reportTitle), kinds, note,
+          h("div", { class: "rp-row" }, h("button", { class: "btn", type: "button", onclick: close }, t.close), send)));
+      root.append(sheet);
+    }
+
     const choiceBtn = (label, idx, cls, onclick, disabled) =>
       h("button", { class: `choice ${cls}`, type: "button", onclick, disabled, "aria-pressed": cls.includes("sel") ? "true" : "false" },
         h("span", { class: "key" }, String(idx + 1)), h("span", { class: "lbl" }, rich(label)));
@@ -116,7 +142,8 @@ export function runPlayer(o) {
         h("div", { class: "fb", role: "status" },
           h("strong", {}, msg),
           !st.correct && answerText ? h("div", { class: "fb-ans" }, t.correctAnswerIs, richEl("span", {}, answerText)) : null,
-          q.explain ? richEl("div", { class: "fb-exp" }, q.explain) : null),
+          q.explain ? richEl("div", { class: "fb-exp" }, q.explain) : null,
+          o.onReport && q.id ? h("button", { class: "report-link", type: "button", onclick: () => reportSheet(q) }, "⚑ " + t.report) : null),
         h("button", { class: "btn primary", type: "button", onclick: advance }, t.cont),
       );
     }

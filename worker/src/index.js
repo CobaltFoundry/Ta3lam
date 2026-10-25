@@ -72,7 +72,55 @@ async function snapshot(env, tgId, today) {
 }
 
 // ---------- نقاط الـ API ----------
+let reportsReady = false;
+async function ensureReports(env) {
+  if (reportsReady) return;
+  await env.DB.prepare(`CREATE TABLE IF NOT EXISTS reports (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, tg_id INTEGER NOT NULL, question_id TEXT NOT NULL,
+    kind TEXT NOT NULL, note TEXT, lang TEXT, created_at TEXT DEFAULT (datetime('now')), notified INTEGER DEFAULT 0,
+    UNIQUE (tg_id, question_id))`).run();
+  reportsReady = true;
+}
+const REPORT_KINDS = ["wrong", "unclear", "typo", "other"];
+
+async function ownerReports(env) {
+  await ensureReports(env);
+  const grouped = (await env.DB.prepare(
+    `SELECT question_id, COUNT(*) AS n, GROUP_CONCAT(DISTINCT kind) AS kinds, MAX(created_at) AS last
+     FROM reports GROUP BY question_id ORDER BY n DESC, last DESC LIMIT 200`).all()).results || [];
+  const notes = (await env.DB.prepare(
+    "SELECT question_id, kind, note, lang, created_at FROM reports WHERE note IS NOT NULL AND note <> '' ORDER BY id DESC LIMIT 100").all()).results || [];
+  return { total: grouped.reduce((a, r) => a + r.n, 0), by_question: grouped, notes };
+}
+
+async function sendReportDigest(env, hour) {
+  const chat = env.OWNER_CHAT_ID;
+  if (!chat || hour !== 18) return; // ملخص يومي عند ١٨ بتوقيت UTC (نحو ٨–٩ مساءً بالقاهرة)
+  await ensureReports(env);
+  const fresh = (await env.DB.prepare("SELECT question_id, COUNT(*) AS n FROM reports WHERE notified = 0 GROUP BY question_id ORDER BY n DESC LIMIT 15").all()).results || [];
+  if (!fresh.length) return;
+  const total = fresh.reduce((a, r) => a + r.n, 0);
+  const text = `📝 بلاغات جديدة: ${total}\n` + fresh.map((r) => `• ${r.question_id} ×${r.n}`).join("\n") + "\n\nالتفاصيل: /reports من متصفحك.";
+  const res = await tgApi(env, "sendMessage", { chat_id: chat, text });
+  if (res && res.ok) await env.DB.prepare("UPDATE reports SET notified = 1 WHERE notified = 0").run();
+}
+
 const routes = {
+  async "/api/report"(env, req, tg, b) {
+    if (typeof b.questionId !== "string" || !/^[a-z0-9-]+_(p|q)\d{1,3}$/.test(b.questionId)) throw httpErr(400, "bad questionId");
+    if (!REPORT_KINDS.includes(b.kind)) throw httpErr(400, "bad kind");
+    await ensureReports(env);
+    const note = typeof b.note === "string" ? b.note.trim().slice(0, 300) : "";
+    const lang = LANGS.includes(b.lang) ? b.lang : null;
+    const recent = await env.DB.prepare("SELECT COUNT(*) AS n FROM reports WHERE tg_id = ? AND created_at >= datetime('now','-1 day')").bind(tg.id).first();
+    if (recent && recent.n >= 30) throw httpErr(429, "too many reports");
+    await env.DB.prepare(
+      `INSERT INTO reports (tg_id, question_id, kind, note, lang) VALUES (?, ?, ?, ?, ?)
+       ON CONFLICT (tg_id, question_id) DO UPDATE SET kind = excluded.kind, note = excluded.note, lang = excluded.lang, created_at = datetime('now'), notified = 0`
+    ).bind(tg.id, b.questionId, b.kind, note || null, lang).run();
+    return { ok: true };
+  },
+
   async "/api/me"(env, req, tg, b) {
     const today = cleanToday(b.today);
     await getOrCreateUser(env, tg, today);
@@ -240,6 +288,11 @@ export default {
         return json(env, req, await ownerStats(env, new Date().toISOString().slice(0, 10)));
       }
 
+      // بلاغات الأخطاء للمالك: افتح /reports/<WEBHOOK_SECRET>
+      if (url.pathname === `/reports/${env.WEBHOOK_SECRET}` && env.WEBHOOK_SECRET && req.method === "GET") {
+        return json(env, req, await ownerReports(env));
+      }
+
       // إعداد لمرة واحدة من متصفح الموبايل: افتح /setup/<SETUP_SECRET>
       if (url.pathname === `/setup/${env.SETUP_SECRET}` && env.SETUP_SECRET) {
         const hook = await tgApi(env, "setWebhook", {
@@ -273,5 +326,6 @@ export default {
 
   async scheduled(event, env, ctx) {
     ctx.waitUntil(sendReminders(env));
+    ctx.waitUntil(sendReportDigest(env, new Date().getUTCHours()));
   },
 };

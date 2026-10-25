@@ -294,6 +294,36 @@
          }
         }
        ]
+      },
+      {
+       "id": "nt-l2-u5",
+       "title": {
+        "ar": "تدريبات شاملة",
+        "en": "Comprehensive practice"
+       },
+       "lessons": [
+        {
+         "id": "nt-l2-u5-01",
+         "title": {
+          "ar": "أقسام الكلام والجملة",
+          "en": "Parts of speech and sentences"
+         }
+        },
+        {
+         "id": "nt-l2-u5-02",
+         "title": {
+          "ar": "علامات الإعراب",
+          "en": "Inflectional markers"
+         }
+        },
+        {
+         "id": "nt-l2-u5-03",
+         "title": {
+          "ar": "المثنى والجمع",
+          "en": "Dual and plural forms"
+         }
+        }
+       ]
       }
      ]
     },
@@ -487,6 +517,264 @@
          "title": {
           "ar": "أسلوب الشرط",
           "en": "Conditional sentences"
+         }
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "l4",
+     "title": {
+      "ar": "المستوى ٤ · الصرف",
+      "en": "Level 4 · Morphology"
+     },
+     "units": [
+      {
+       "id": "nt-l4-u1",
+       "title": {
+        "ar": "الميزان الصرفي",
+        "en": "Morphological scale"
+       },
+       "lessons": [
+        {
+         "id": "nt-l4-u1-01",
+         "title": {
+          "ar": "الجذر",
+          "en": "The root"
+         }
+        },
+        {
+         "id": "nt-l4-u1-02",
+         "title": {
+          "ar": "الميزان الصرفي",
+          "en": "The morphological scale"
+         }
+        },
+        {
+         "id": "nt-l4-u1-03",
+         "title": {
+          "ar": "الفعل المجرد والمزيد",
+          "en": "The simple and augmented verb"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l4-u2",
+       "title": {
+        "ar": "الاشتقاق",
+        "en": "Derivation"
+       },
+       "lessons": [
+        {
+         "id": "nt-l4-u2-01",
+         "title": {
+          "ar": "اسم الفاعل",
+          "en": "The Active Participle"
+         }
+        },
+        {
+         "id": "nt-l4-u2-02",
+         "title": {
+          "ar": "اسم المفعول",
+          "en": "The Passive Participle"
+         }
+        },
+        {
+         "id": "nt-l4-u2-03",
+         "title": {
+          "ar": "اسم المكان",
+          "en": "Nouns of Place"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l4-u3",
+       "title": {
+        "ar": "الفعل المعتل",
+        "en": "The weak verb"
+       },
+       "lessons": [
+        {
+         "id": "nt-l4-u3-01",
+         "title": {
+          "ar": "الصحيح والمعتل",
+          "en": "Sound and weak verbs"
+         }
+        },
+        {
+         "id": "nt-l4-u3-02",
+         "title": {
+          "ar": "أنواع المعتل",
+          "en": "Types of weak verbs"
+         }
+        },
+        {
+         "id": "nt-l4-u3-03",
+         "title": {
+          "ar": "الهمزة ليست حرف علة",
+          "en": "Hamza is not a weak letter"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l4-u4",
+       "title": {
+        "ar": "الأفعال: المجهول والأمر والنهي",
+        "en": "Verbs: passive, imperative, prohibition"
+       },
+       "lessons": [
+        {
+         "id": "nt-l4-u4-01",
+         "title": {
+          "ar": "المبني للمجهول",
+          "en": "The passive verb"
+         }
+        },
+        {
+         "id": "nt-l4-u4-02",
+         "title": {
+          "ar": "الأمر",
+          "en": "The imperative"
+         }
+        },
+        {
+         "id": "nt-l4-u4-03",
+         "title": {
+          "ar": "النهي",
+          "en": "The prohibition"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l4-u5",
+       "title": {
+        "ar": "الجموع والنسب والتصغير",
+        "en": "Plurals, nisba and diminutives"
+       },
+       "lessons": [
+        {
+         "id": "nt-l4-u5-01",
+         "title": {
+          "ar": "جمع التكسير",
+          "en": "Broken plurals"
+         }
+        },
+        {
+         "id": "nt-l4-u5-02",
+         "title": {
+          "ar": "النسب",
+          "en": "Nisba"
+         }
+        },
+        {
+         "id": "nt-l4-u5-03",
+         "title": {
+          "ar": "التصغير",
+          "en": "Diminutives"
+         }
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "l5",
+     "title": {
+      "ar": "المستوى ٥ · البلاغة والعروض",
+      "en": "Level 5 · Rhetoric and prosody"
+     },
+     "units": [
+      {
+       "id": "nt-l5-u1",
+       "title": {
+        "ar": "علم البيان",
+        "en": "Imagery (bayan)"
+       },
+       "lessons": [
+        {
+         "id": "nt-l5-u1-01",
+         "title": {
+          "ar": "التشبيه",
+          "en": "Simile (tashbih)"
+         }
+        },
+        {
+         "id": "nt-l5-u1-02",
+         "title": {
+          "ar": "الاستعارة",
+          "en": "Metaphor (isti'ara)"
+         }
+        },
+        {
+         "id": "nt-l5-u1-03",
+         "title": {
+          "ar": "الكناية",
+          "en": "Metonymy (kinaya)"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l5-u2",
+       "title": {
+        "ar": "علم المعاني",
+        "en": "Semantics (maani)"
+       },
+       "lessons": [
+        {
+         "id": "nt-l5-u2-01",
+         "title": {
+          "ar": "الخبر والإنشاء",
+          "en": "Informative and non-informative speech"
+         }
+        },
+        {
+         "id": "nt-l5-u2-02",
+         "title": {
+          "ar": "أساليب الإنشاء الطلبي",
+          "en": "Request-based styles (talabi)"
+         }
+        },
+        {
+         "id": "nt-l5-u2-03",
+         "title": {
+          "ar": "القصر بـ«ما وإلا»",
+          "en": "Restriction with ما and إلا"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l5-u3",
+       "title": {
+        "ar": "علم البديع",
+        "en": "Embellishment (badi)"
+       },
+       "lessons": [
+        {
+         "id": "nt-l5-u3-01",
+         "title": {
+          "ar": "الطباق",
+          "en": "Antithesis (tibaq)"
+         }
+        },
+        {
+         "id": "nt-l5-u3-02",
+         "title": {
+          "ar": "المقابلة",
+          "en": "Parallelism (muqabala)"
+         }
+        },
+        {
+         "id": "nt-l5-u3-03",
+         "title": {
+          "ar": "الجناس والسجع",
+          "en": "Paronomasia and rhymed prose"
          }
         }
        ]

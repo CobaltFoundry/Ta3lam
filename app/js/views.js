@@ -120,16 +120,27 @@ export function progressView(c) {
       card(t.streak, num(me.user.streak, lang), icon("flame", 26, "var(--flame-d)", "var(--flame)")),
       card(t.bestStreak, num(me.user.best_streak, lang), icon("flame", 26, "var(--muted)")),
       card(t.lessonsPassed, `${num(passed, lang)}/${num(lessons.length, lang)}`, icon("check", 26, "var(--primary)"))));
-  const seen = new Set();
-  for (const n of nodes) {
-    if (seen.has(n.unit.id)) continue;
-    seen.add(n.unit.id);
-    const ls = lessons.filter((x) => x.unit.id === n.unit.id);
+  const ring = (pct, size, stroke, cls) => {
+    const r = (size - stroke) / 2, circ = 2 * Math.PI * r;
+    return svg(`<svg class="${cls}" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" aria-hidden="true">
+      <circle cx="${size / 2}" cy="${size / 2}" r="${r}" fill="none" stroke="var(--line)" stroke-width="${stroke}"/>
+      <circle cx="${size / 2}" cy="${size / 2}" r="${r}" fill="none" stroke="var(--primary)" stroke-width="${stroke}" stroke-linecap="round"
+        stroke-dasharray="${circ.toFixed(1)}" stroke-dashoffset="${(circ * (1 - pct / 100)).toFixed(1)}" transform="rotate(-90 ${size / 2} ${size / 2})"/></svg>`);
+  };
+  const pct = lessons.length ? Math.round((passed / lessons.length) * 100) : 0;
+  const cur = nodes.find((n) => n.state === "current");
+  root.append(h("div", { class: "ring-card", role: "img", "aria-label": `${num(pct, lang)}%` },
+    h("div", { class: "ring-big" }, ring(pct, 190, 18, "ring-svg"),
+      h("div", { class: "ring-c" }, h("b", {}, `${num(pct, lang)}${lang === "ar" ? "٪" : "%"}`), h("small", {}, t.progOf(num(passed, lang), num(lessons.length, lang))))),
+    h("div", { class: "ring-sub" }, cur ? t.progAt(pick(cur.level.title, lang)) : t.greetDone)));
+  const levels = [];
+  for (const n of lessons) if (!levels.some((l) => l.id === n.level.id)) levels.push(n.level);
+  root.append(h("div", { class: "ring-mini" }, levels.map((lv) => {
+    const ls = lessons.filter((x) => x.level.id === lv.id);
     const d = ls.filter((x) => x.state === "done").length;
-    root.append(h("div", { class: "unit-prog" },
-      h("div", { class: "up-row" }, h("span", {}, pick(n.unit.title, lang)), h("b", {}, `${num(d, lang)}/${num(ls.length, lang)}`)),
-      h("div", { class: "bar thin" }, h("div", { class: "bar-fill", style: { width: `${ls.length ? (d / ls.length) * 100 : 0}%` } }))));
-  }
+    const p = ls.length ? Math.round((d / ls.length) * 100) : 0;
+    return h("div", { class: "rm" }, ring(p, 46, 6, "rm-svg"), h("span", {}, `${t.level} ${num(lv.id.slice(1), lang)}`), h("b", {}, `${num(p, lang)}${lang === "ar" ? "٪" : "%"}`));
+  })));
   return root;
 }
 

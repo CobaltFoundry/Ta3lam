@@ -148,6 +148,9 @@ def main():
             page.locator(".swatch").nth(0).click()
             page.locator(".nav-btn").nth(2).click()
             page.screenshot(path=f"{SHOTS}/09-progress.png")
+            check(page.locator(".ring-svg").count() == 1 and page.locator(".ring-c b").inner_text().strip() != "", "progress ring shows a percentage")
+            check(page.locator(".ring-mini .rm").count() >= 1, "per-level mini rings shown")
+            check(page.locator(".unit-prog").count() == 0, "old unit list removed")
 
             # 6) مسار الناطقين (RTL) ودرس كامل
             page.locator(".nav-btn").nth(3).click()
@@ -165,7 +168,7 @@ def main():
             page.locator(".result .btn.primary").click()
 
             # 7) كل دروس المسار تُلعب بلا أخطاء برمجية (يمشي على كل العقد)
-            for _ in range(80):
+            for _ in range(250):
                 page.wait_for_selector(".node")
                 cur = page.locator(".node.current")
                 if cur.count() == 0: break

@@ -138,7 +138,8 @@ async function onNode(n) {
   } finally { S.busy = false; render(); }
 }
 
-const playerBase = () => ({ t: t(), dir: S.me.user.track === "native" ? "rtl" : "ltr", haptic, confirmLeave });
+const playerBase = () => ({ t: t(), dir: S.me.user.track === "native" ? "rtl" : "ltr", haptic, confirmLeave, toast,
+  onReport: (q, kind, note) => call("/api/report", { questionId: q.id, kind, note, lang: lang() }) });
 
 function showResult(res, extra = {}) {
   return new Promise((resolve) => {

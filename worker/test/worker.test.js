@@ -207,3 +207,18 @@ test("تسجيل language_code وإحصائيات المالك", async () => {
   const bad = await worker.fetch(new Request("https://x.test/stats/nope"), env);
   assert.equal(bad.status, 404);
 });
+
+test("بلاغات الأخطاء: حفظ وتجميع ورفض المدخلات السيئة", async () => {
+  const env = mkEnv();
+  const u1 = { id: 11, first_name: "a" }, u2 = { id: 12, first_name: "b" };
+  const r = await call(env, "/api/report", { questionId: "nt-l1-u4-02_p1", kind: "wrong", note: "x", lang: "ar" }, u1);
+  assert.equal(r.data.ok, true);
+  await call(env, "/api/report", { questionId: "nt-l1-u4-02_p1", kind: "typo" }, u1); // تحديث لا تكرار
+  await call(env, "/api/report", { questionId: "nt-l1-u4-02_p1", kind: "unclear" }, u2);
+  const s = await (await worker.fetch(new Request("https://x.test/reports/wh"), env)).json();
+  assert.equal(s.total, 2);
+  assert.equal(s.by_question[0].n, 2);
+  assert.equal((await worker.fetch(new Request("https://x.test/reports/no"), env)).status, 404);
+  assert.equal((await call(env, "/api/report", { questionId: "'; drop", kind: "wrong" }, u1)).status, 400);
+  assert.equal((await call(env, "/api/report", { questionId: "a-b_q1", kind: "zzz" }, u1)).status, 400);
+});

@@ -98,6 +98,8 @@ async function localCall(path, b) {
       save(s);
       return { xp, ...snapshot(s, today) };
     }
+    case "/api/report": return { ok: true };
+
     default: throw new Error("unknown route " + path);
   }
 }

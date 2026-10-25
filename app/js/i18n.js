@@ -1,6 +1,9 @@
 // نصوص الواجهة (عربي / إنجليزي)
 export const T = {
   ar: {
+    report: "بلّغ عن خطأ", reportTitle: "ما المشكلة في هذا السؤال؟",
+    reportKinds: { wrong: "الإجابة الصحيحة غير صحيحة", unclear: "السؤال غير واضح", typo: "خطأ إملائي أو في التشكيل", other: "شيء آخر" },
+    reportNote: "اكتب ملاحظتك (اختياري)", reportSend: "إرسال", reportThanks: "شكرًا! وصلنا بلاغك 🌿", reportFail: "تعذّر الإرسال، حاول لاحقًا",
     appName: "تَعلّمْ",
     home: "الرئيسية", review: "مراجعة", progress: "تقدّمي", me: "حسابي",
     start: "ابدأ", cont: "متابعة", check: "تحقّق", next: "التالي", close: "إغلاق",
@@ -30,7 +33,7 @@ export const T = {
     resRepeat: "الدرس يحتاج إعادة. هذه المرة بتركيز أكبر.",
     weak: "نقاط للمراجعة", retryQuiz: "أعد الاختبار", studyAgain: "ادرس الدرس من جديد", backHome: "العودة للخريطة",
     reviewDone: "انتهت المراجعة", xpGained: (n) => `+${n} نقطة`,
-    progTitle: "تقدّمي", streak: "السلسلة", lessonsPassed: "دروس ناجحة", bestStreak: "أطول سلسلة", totalXp: "نقاط الخبرة",
+    progTitle: "تقدّمي", progOf: (a, b) => `${a} من ${b} درسًا`, progAt: (l) => `أنت الآن في: ${l}`, streak: "السلسلة", lessonsPassed: "دروس ناجحة", bestStreak: "أطول سلسلة", totalXp: "نقاط الخبرة",
     meTitle: "حسابي", track: "المسار", switchTrack: "غيّر المسار",
     theme: "المظهر", language: "لغة الواجهة", reminder: "تذكير يومي", off: "بدون",
     themeNames: { warm: "دافئ", night: "ليلي", sage: "أخضر هادئ", telegram: "مثل تليجرام" },
@@ -53,6 +56,9 @@ export const T = {
     hourFmt: (h) => `${h}:00`,
   },
   en: {
+    report: "Report a mistake", reportTitle: "What's wrong with this question?",
+    reportKinds: { wrong: "The correct answer is wrong", unclear: "The question is unclear", typo: "Typo or diacritics error", other: "Something else" },
+    reportNote: "Add a note (optional)", reportSend: "Send", reportThanks: "Thanks! Your report was received 🌿", reportFail: "Couldn't send, try again later",
     appName: "Ta3lam",
     home: "Home", review: "Review", progress: "Progress", me: "Me",
     start: "Start", cont: "Continue", check: "Check", next: "Next", close: "Close",
@@ -82,7 +88,7 @@ export const T = {
     resRepeat: "This lesson needs another go. Take it slowly this time.",
     weak: "Points to review", retryQuiz: "Retake the quiz", studyAgain: "Study the lesson again", backHome: "Back to the map",
     reviewDone: "Review complete", xpGained: (n) => `+${n} XP`,
-    progTitle: "My progress", streak: "Streak", lessonsPassed: "Lessons passed", bestStreak: "Best streak", totalXp: "Total XP",
+    progTitle: "My progress", progOf: (a, b) => `${a} of ${b} lessons`, progAt: (l) => `You are now in: ${l}`, streak: "Streak", lessonsPassed: "Lessons passed", bestStreak: "Best streak", totalXp: "Total XP",
     meTitle: "My account", track: "Track", switchTrack: "Switch track",
     theme: "Theme", language: "Interface language", reminder: "Daily reminder", off: "Off",
     themeNames: { warm: "Warm", night: "Night", sage: "Sage", telegram: "Match Telegram" },
@@ -105,6 +111,9 @@ export const T = {
     hourFmt: (h) => `${String(h).padStart(2, "0")}:00`,
   },
   fr: {
+    report: "Signaler une erreur", reportTitle: "Quel est le problème avec cette question ?",
+    reportKinds: { wrong: "La bonne réponse est fausse", unclear: "La question n'est pas claire", typo: "Faute de frappe ou de voyelles", other: "Autre chose" },
+    reportNote: "Ajoutez une remarque (facultatif)", reportSend: "Envoyer", reportThanks: "Merci ! Votre signalement a bien été reçu 🌿", reportFail: "Envoi impossible, réessayez plus tard",
     appName: "Ta3lam",
     home: "Accueil", review: "Révision", progress: "Progrès", me: "Moi",
     start: "Commencer", cont: "Continuer", check: "Vérifier", next: "Suivant", close: "Fermer",
@@ -134,7 +143,7 @@ export const T = {
     resRepeat: "Cette leçon mérite un nouvel essai. Prenez votre temps.",
     weak: "Points à revoir", retryQuiz: "Refaire le quiz", studyAgain: "Revoir la leçon", backHome: "Retour à la carte",
     reviewDone: "Révision terminée", xpGained: (n) => `+${n} XP`,
-    progTitle: "Mes progrès", streak: "Série", lessonsPassed: "Leçons réussies", bestStreak: "Meilleure série", totalXp: "XP total",
+    progTitle: "Mes progrès", progOf: (a, b) => `${a} leçons sur ${b}`, progAt: (l) => `Vous êtes à : ${l}`, streak: "Série", lessonsPassed: "Leçons réussies", bestStreak: "Meilleure série", totalXp: "XP total",
     meTitle: "Mon compte", track: "Parcours", switchTrack: "Changer de parcours",
     theme: "Thème", language: "Langue de l'interface", reminder: "Rappel quotidien", off: "Désactivé",
     themeNames: { warm: "Chaud", night: "Nuit", sage: "Sauge", telegram: "Comme Telegram" },

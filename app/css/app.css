@@ -117,8 +117,17 @@ html[dir="rtl"] .bubble::before { transform: rotate(-45deg); }
 .stat-card { background: var(--card); border: 2px solid var(--line); border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 2px; }
 .sc-v { font-size: 26px; font-weight: 800; }
 .sc-l { font-size: 13px; color: var(--muted); }
-.unit-prog { margin-bottom: 14px; }
-.up-row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 15px; }
+.ring-card { background: var(--card); border: 2px solid var(--line); border-radius: 22px; padding: 18px; text-align: center; }
+.ring-big { position: relative; width: 190px; height: 190px; margin: 4px auto 10px; }
+.ring-svg { display: block; }
+.ring-svg circle:last-child { transition: stroke-dashoffset 0.6s ease; }
+.ring-c { position: absolute; inset: 0; display: grid; place-content: center; }
+.ring-c b { font-size: 42px; line-height: 1.1; }
+.ring-c small { display: block; font-size: 13px; color: var(--muted); margin-top: 4px; }
+.ring-sub { color: var(--muted); font-size: 15px; }
+.ring-mini { display: flex; gap: 8px; margin: 16px 0 6px; flex-wrap: wrap; justify-content: space-around; }
+.rm { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 12px; color: var(--muted); min-width: 64px; }
+.rm b { color: var(--text); font-size: 13px; }
 .bar { height: 14px; background: var(--line); border-radius: 999px; overflow: hidden; flex: 1; }
 .bar.thin { height: 10px; }
 .bar-fill { height: 100%; background: var(--primary); border-radius: 999px; transition: width 0.3s; }
@@ -227,3 +236,11 @@ html[dir="rtl"] .bubble::before { transform: rotate(-45deg); }
 .place-card { background: var(--card); border: 2px solid var(--line); border-radius: 18px; padding: 14px 16px; margin: 6px 0 14px; display: flex; flex-direction: column; gap: 8px; }
 .place-card h2 { margin: 0; font-size: 18px; }
 .place-card p { margin: 0; color: var(--muted); font-size: 15px; }
+
+.report-link { background: none; border: 0; padding: 6px 0; margin-top: 4px; font: inherit; font-size: 13px; color: var(--text); opacity: 0.6; text-decoration: underline; cursor: pointer; }
+.rp-back { position: absolute; inset: 0; background: rgba(0,0,0,.45); display: flex; align-items: flex-end; z-index: 5; }
+.rp-sheet { width: 100%; background: var(--bg); border-radius: 20px 20px 0 0; padding: 18px 16px 22px; display: flex; flex-direction: column; gap: 8px; }
+.rp-kind { text-align: start; font: inherit; font-weight: 700; padding: 11px 14px; border-radius: 14px; border: 2px solid var(--line); background: var(--card); color: var(--text); cursor: pointer; }
+.rp-kind[aria-pressed="true"] { border-color: var(--primary, #2f7d5b); }
+.rp-note { font: inherit; padding: 10px 12px; border-radius: 14px; border: 2px solid var(--line); background: var(--card); color: var(--text); resize: none; }
+.rp-row { display: flex; gap: 8px; } .rp-row .btn { flex: 1; }
