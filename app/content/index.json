@@ -778,6 +778,66 @@
          }
         }
        ]
+      },
+      {
+       "id": "nt-l5-u4",
+       "title": {
+        "ar": "مدخل إلى العروض",
+        "en": "Introduction to prosody"
+       },
+       "lessons": [
+        {
+         "id": "nt-l5-u4-01",
+         "title": {
+          "ar": "ما علم العروض؟",
+          "en": "What is prosody?"
+         }
+        },
+        {
+         "id": "nt-l5-u4-02",
+         "title": {
+          "ar": "المتحرك والساكن",
+          "en": "Voweled and unvoweled letters"
+         }
+        },
+        {
+         "id": "nt-l5-u4-03",
+         "title": {
+          "ar": "الكتابة العروضية",
+          "en": "Prosodic writing"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l5-u5",
+       "title": {
+        "ar": "التفعيلات والبحور",
+        "en": "Feet and meters"
+       },
+       "lessons": [
+        {
+         "id": "nt-l5-u5-01",
+         "title": {
+          "ar": "التفعيلات الأساسية",
+          "en": "Basic feet"
+         }
+        },
+        {
+         "id": "nt-l5-u5-02",
+         "title": {
+          "ar": "البحور الصافية",
+          "en": "Pure meters"
+         }
+        },
+        {
+         "id": "nt-l5-u5-03",
+         "title": {
+          "ar": "بحر الطويل",
+          "en": "The long meter"
+         }
+        }
+       ]
       }
      ]
     }
