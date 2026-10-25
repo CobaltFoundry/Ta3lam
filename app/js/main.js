@@ -1,6 +1,6 @@
 // نقطة الدخول: الحالة، التنقل، وربط المشغّل بالخادم.
 import { call, isDemo, telegram } from "./api.js";
-import { loadIndex, loadLesson, setContentLang, flattenTrack, lessonOfQuestion, unitTestQuestions, placementPlan, placementOutcome } from "./content.js";
+import { loadIndex, loadLesson, setContentLang, flattenTrack, lessonOfQuestion, unitTestQuestions, finalExamQuestions, placementPlan, placementOutcome } from "./content.js";
 import { runPlayer } from "./player.js";
 import { homeView, reviewView, progressView, meView, onboardingView, resultView, placementResultView, navView, errorView } from "./views.js";
 import { T } from "./i18n.js";
@@ -175,8 +175,8 @@ async function playLesson(lessonId, title) {
 
 async function playUnitTest(n) {
   for (;;) {
-    const questions = await unitTestQuestions(n.unit, 15);
-    const r = await runPlayer({ ...playerBase(), title: t().unitTest, questions });
+    const questions = n.unit.final ? await finalExamQuestions(trackObj()) : await unitTestQuestions(n.unit, 15);
+    const r = await runPlayer({ ...playerBase(), title: n.unit.final ? t().finalExam : t().unitTest, questions });
     if (!r) return;
     const resp = await submit(n.id, r);
     const weak = r.wrongIds.map((id) => questions.find((q) => q.id === id)).filter(Boolean);

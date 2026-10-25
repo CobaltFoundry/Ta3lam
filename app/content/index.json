@@ -840,6 +840,144 @@
        ]
       }
      ]
+    },
+    {
+     "id": "l6",
+     "title": {
+      "ar": "المستوى ٦ · الاحتراف",
+      "en": "Level 6 · Mastery"
+     },
+     "units": [
+      {
+       "id": "nt-l6-u1",
+       "title": {
+        "ar": "أخطاء إعرابية شائعة",
+        "en": "Common grammar mistakes"
+       },
+       "lessons": [
+        {
+         "id": "nt-l6-u1-01",
+         "title": {
+          "ar": "المثنى وجمع المذكر السالم في موضعهما",
+          "en": "Dual and sound masculine plural in the right case"
+         }
+        },
+        {
+         "id": "nt-l6-u1-02",
+         "title": {
+          "ar": "الأسماء الخمسة والممنوع من الصرف",
+          "en": "The five nouns and diptotes"
+         }
+        },
+        {
+         "id": "nt-l6-u1-03",
+         "title": {
+          "ar": "اسم كان وخبرها، واسم إنّ",
+          "en": "Kana and Inna: subject and predicate"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l6-u2",
+       "title": {
+        "ar": "التعبير الكتابي",
+        "en": "Writing"
+       },
+       "lessons": [
+        {
+         "id": "nt-l6-u2-01",
+         "title": {
+          "ar": "بناء الفقرة",
+          "en": "Building a Paragraph"
+         }
+        },
+        {
+         "id": "nt-l6-u2-02",
+         "title": {
+          "ar": "أدوات الربط",
+          "en": "Linking Words"
+         }
+        },
+        {
+         "id": "nt-l6-u2-03",
+         "title": {
+          "ar": "ترتيب الفقرة وحذف الجملة الدخيلة",
+          "en": "Ordering a Paragraph and Removing the Irrelevant Sentence"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l6-u3",
+       "title": {
+        "ar": "التدقيق اللغوي",
+        "en": "Proofreading"
+       },
+       "lessons": [
+        {
+         "id": "nt-l6-u3-01",
+         "title": {
+          "ar": "خطوات المدقق",
+          "en": "The proofreader's steps"
+         }
+        },
+        {
+         "id": "nt-l6-u3-02",
+         "title": {
+          "ar": "الإملاء والترقيم",
+          "en": "Spelling and punctuation"
+         }
+        },
+        {
+         "id": "nt-l6-u3-03",
+         "title": {
+          "ar": "الإعراب وتدقيق نص كامل",
+          "en": "Grammar and full-text proofreading"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l6-u4",
+       "title": {
+        "ar": "البلاغة في النصوص",
+        "en": "Rhetoric in texts"
+       },
+       "lessons": [
+        {
+         "id": "nt-l6-u4-01",
+         "title": {
+          "ar": "الصور البيانية في القرآن",
+          "en": "Figures of speech in the Quran"
+         }
+        },
+        {
+         "id": "nt-l6-u4-02",
+         "title": {
+          "ar": "المحسنات البديعية في القرآن",
+          "en": "Rhetorical devices in the Quran"
+         }
+        },
+        {
+         "id": "nt-l6-u4-03",
+         "title": {
+          "ar": "من الحديث والحكمة، وتحليل شامل",
+          "en": "Hadith, wisdom, and comprehensive analysis"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l6-final",
+       "final": true,
+       "title": {
+        "ar": "الاختبار النهائي الشامل",
+        "en": "Final comprehensive exam"
+       },
+       "lessons": []
+      }
+     ]
     }
    ]
   },

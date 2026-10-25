@@ -245,6 +245,31 @@ if (existsSync(INC)) {
   }
 }
 
+// ---------- تعديلات الجودة (tools/overrides/*.json): {questionId: السؤال البديل}. تُطبَّق بعد الدمج وتحتفظ بالمعرّف ----------
+const OVR = new URL("./overrides/", import.meta.url);
+if (existsSync(OVR)) {
+  for (const f of readdirSync(OVR).filter((f) => f.endsWith(".json")).sort()) {
+    let o;
+    try { o = JSON.parse(readFileSync(new URL(f, OVR), "utf8")); } catch (e) { throw new Error(`overrides/${f}: invalid JSON (${e.message})`); }
+    for (const [qid, repl] of Object.entries(o)) {
+      const lesson = all.find((l) => qid.startsWith(l.id + "_"));
+      const part = /_p\d+$/.test(qid) ? "practice" : "quiz";
+      const i = lesson ? lesson[part].findIndex((q) => q.id === qid) : -1;
+      if (i < 0) throw new Error(`overrides/${f}: no question ${qid}`);
+      lesson[part][i] = { ...repl, id: qid };
+    }
+  }
+}
+
+// ---------- الاختبار النهائي: وحدة بلا دروس، يُبنى اختبارها من أسئلة كل وحدات المسار ----------
+{
+  const nat = index.tracks.find((t) => t.id === "native");
+  const l6 = nat && nat.levels.find((l) => l.id === "l6");
+  if (l6 && !l6.units.some((u) => u.final)) {
+    l6.units.push({ id: "nt-l6-final", final: true, title: { ar: "الاختبار النهائي الشامل", en: "Final comprehensive exam" }, lessons: [] });
+  }
+}
+
 // ---------- الترجمات (tools/translations/<lang>/<lessonId>.json) ----------
 // الملف = نسخة كاملة من الدرس الإنجليزي بنص مترجم. يجب أن تتطابق البنية تمامًا، وتبقى كل الكلمات العربية والكتابة اللاتينية للنطق كما هي.
 const TR = new URL("./translations/", import.meta.url);

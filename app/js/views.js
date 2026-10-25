@@ -51,7 +51,7 @@ export function homeView(c) {
       h("div", {},
         h("div", { class: "ub-sub" }, `${pick(g.level.title, lang)}`),
         h("div", { class: "ub-title" }, pick(g.unit.title, lang))),
-      h("span", { class: "ub-count" }, `${num(doneCount, lang)}/${num(lessons.length, lang)}`)));
+      g.unit.final ? null : h("span", { class: "ub-count" }, `${num(doneCount, lang)}/${num(lessons.length, lang)}`)));
     root.append(pathView(g.items, c));
   }
   return root;
@@ -82,7 +82,7 @@ function pathView(items, c) {
       : n.state === "locked" ? icon("lock", 30, "var(--lock-ic)")
       : n.kind === "test" ? icon("flag", 38, "var(--on-primary)") : icon("book", 40, "var(--on-primary)");
     const name = pick(n.title, lang);
-    const label = n.kind === "test" ? t.unitTest : name;
+    const label = n.kind === "test" ? (n.unit.final ? t.finalExam : t.unitTest) : name;
     const aria = `${label}${n.state === "done" ? " ✓" : n.state === "locked" ? " 🔒" : ""}`;
     const btn = h("button", {
       class: `node ${n.state} ${n.kind}`, type: "button", "aria-label": aria,

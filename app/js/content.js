@@ -41,6 +41,17 @@ export async function unitTestQuestions(unit, count = 15) {
   return a.slice(0, Math.min(count, a.length));
 }
 
+/** الاختبار النهائي: سؤال واحد عشوائي من اختبار درس عشوائي في كل وحدة من وحدات المسار. */
+export async function finalExamQuestions(track) {
+  const units = track.levels.flatMap((lv) => lv.units).filter((u) => !u.final && u.lessons.length);
+  const qs = await Promise.all(units.map(async (u) => {
+    const l = await loadLesson(u.lessons[Math.floor(Math.random() * u.lessons.length)].id);
+    return l.quiz[Math.floor(Math.random() * l.quiz.length)];
+  }));
+  for (let i = qs.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [qs[i], qs[j]] = [qs[j], qs[i]]; }
+  return qs.slice(0, 40);
+}
+
 const PER_UNIT = 4, MAX_UNITS = 6;
 
 /** خطة اختبار تحديد المستوى: عدة وحدات موزّعة على المسار بالتساوي، ولكل وحدة 4 أسئلة من اختبارات دروسها بالتناوب. */
