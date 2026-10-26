@@ -350,4 +350,12 @@ mkdirSync(new URL("lessons/", OUT), { recursive: true });
 for (const l of all) writeFileSync(new URL(`lessons/${l.id}.json`, OUT), JSON.stringify(l));
 for (const { lang, lesson } of translated) writeFileSync(new URL(`lessons/${lesson.id}.${lang}.json`, OUT), JSON.stringify(lesson));
 writeFileSync(new URL("index.json", OUT), JSON.stringify(index, null, 1));
+// ثابت لمستويات المنهج الرئيسي: يعرفه الخادم لمنح أوسمة إنهاء المستويات
+{
+  const nt = index.tracks.find((t) => t.id === "native");
+  const lv = {};
+  for (const l of nt.levels) lv[`nt-${l.id}`] = l.units.flatMap((u) => u.lessons.map((x) => x.id));
+  writeFileSync(new URL("../worker/src/levels.js", import.meta.url),
+    `// يُولَّد تلقائيًا من tools/build-content.mjs — لا تعدّله يدويًا\nexport const LEVEL_LESSONS = ${JSON.stringify(lv)};\nexport const FINAL_ID = "nt-l6-final-test";\n`);
+}
 console.log(`OK: ${all.length} lessons, ${all.reduce((n, l) => n + l.practice.length + l.quiz.length, 0)} questions`);

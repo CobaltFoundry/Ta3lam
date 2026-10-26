@@ -20,6 +20,18 @@ for l in LESSONS.values():
         key = (q["prompt"], tuple(sorted(q.get("options", []))) or tuple(sorted(p[0] for p in q.get("pairs", []))))
         BY_SIG.setdefault(key, []).append(q)
 
+CELEBRATIONS = []
+def wait_result(page):
+    """ينتظر شاشة النتيجة، ويغلق شاشات الاحتفال (أوسمة/رتب) التي تظهر قبلها"""
+    for _ in range(40):
+        if page.locator(".result").count(): return
+        if page.locator(".celebrate").count():
+            CELEBRATIONS.append(page.locator(".celebrate .cb-kick").inner_text())
+            page.locator(".celebrate .btn.primary").click()
+        page.wait_for_timeout(250)
+    page.wait_for_selector(".result", timeout=1000)
+
+
 def exact(t): return re.compile(r"^\s*" + re.escape(t) + r"\s*$")
 
 problems = []
@@ -105,8 +117,10 @@ def main():
             page.locator(".foot .btn.primary").click(); page.locator(".foot .btn.primary").click()
             page.screenshot(path=f"{SHOTS}/03b-teach-letter2.png")
             play(page, shot="q-learner")
-            page.wait_for_selector(".result")
+            wait_result(page)
             check("Passed" in page.locator(".result h1").inner_text(), "perfect lesson passes")
+            check(len(CELEBRATIONS) >= 1, "first perfect lesson shows a badge celebration")
+            check(page.locator(".result .chip").count() >= 2, "result shows xp and gems chips")
             page.screenshot(path=f"{SHOTS}/04-result-pass.png")
             page.locator(".result .btn.primary").click()
             page.wait_for_selector(".node")
@@ -117,7 +131,7 @@ def main():
             page.locator(".node.current").click()
             page.wait_for_selector(".player")
             play(page, wrong_every=2)
-            page.wait_for_selector(".result")
+            wait_result(page)
             decision_failed = "Passed" not in page.locator(".result h1").inner_text()
             check(decision_failed, "lesson with many mistakes does not pass")
             check(page.locator(".weak-item").count() > 0, "result lists weak points")
@@ -135,17 +149,21 @@ def main():
             page.locator(".screen .btn.primary").click()
             page.wait_for_selector(".player")
             play(page)
-            page.wait_for_selector(".result")
+            wait_result(page)
             page.locator(".result .btn.primary").click()
             page.wait_for_selector(".nav")
             check(page.locator(".badge").count() == 0, "review cleared after answering correctly")
 
             # 5) الثيمات واللغة والتقدم
-            page.locator(".nav-btn").nth(3).click()
+            page.locator(".nav-btn").nth(4).click()
             page.locator(".swatch").nth(1).click()
             check(page.evaluate("document.documentElement.dataset.theme") == "night", "night theme applied")
             page.screenshot(path=f"{SHOTS}/08-me-night.png")
             page.locator(".swatch").nth(0).click()
+            page.locator(".nav-btn").nth(3).click()
+            page.wait_for_selector(".badges .bd-item")
+            check(page.locator(".bd-item").count() == 24, "badges screen lists 24 badges")
+            check(page.locator(".bd-item.on").count() >= 1, "earned badge shown as unlocked")
             page.locator(".nav-btn").nth(2).click()
             page.screenshot(path=f"{SHOTS}/09-progress.png")
             check(page.locator(".ring-svg").count() == 1 and page.locator(".ring-c b").inner_text().strip() != "", "progress ring shows a percentage")
@@ -153,7 +171,7 @@ def main():
             check(page.locator(".unit-prog").count() == 0, "old unit list removed")
 
             # 6) مسار الناطقين (RTL) ودرس كامل
-            page.locator(".nav-btn").nth(3).click()
+            page.locator(".nav-btn").nth(4).click()
             page.locator(".seg").nth(0).locator(".seg-btn").nth(0).click()
             page.wait_for_selector(".node")
             check(page.evaluate("document.documentElement.dir") == "rtl", "native track is RTL")
@@ -162,7 +180,7 @@ def main():
             page.wait_for_selector(".player")
             page.screenshot(path=f"{SHOTS}/11-native-teach.png")
             play(page, shot="q-native")
-            page.wait_for_selector(".result")
+            wait_result(page)
             check("أحسنت" in page.locator(".result").inner_text() or page.locator(".result .res-score").count() == 1, "native lesson completes")
             page.screenshot(path=f"{SHOTS}/12-native-result.png")
             page.locator(".result .btn.primary").click()
@@ -175,7 +193,7 @@ def main():
                 cur.click()
                 page.wait_for_selector(".player")
                 play(page)
-                page.wait_for_selector(".result")
+                wait_result(page)
                 if "Passed" not in page.locator(".result h1").inner_text() and "نجحت" not in page.locator(".result h1").inner_text():
                     check(False, "native chain lesson failed unexpectedly"); break
                 page.locator(".result .btn.primary").click()
@@ -183,7 +201,7 @@ def main():
             page.screenshot(path=f"{SHOTS}/13-native-done.png")
 
             # 8) مسار الأجانب كاملًا (حروف + حركات + تحيات + اختبارات الوحدات)
-            page.locator(".nav-btn").nth(3).click()
+            page.locator(".nav-btn").nth(4).click()
             page.locator(".seg").nth(0).locator(".seg-btn").nth(1).click()
             page.wait_for_selector(".node")
             played = 0
@@ -194,7 +212,7 @@ def main():
                 cur.click()
                 page.wait_for_selector(".player")
                 play(page)
-                page.wait_for_selector(".result")
+                wait_result(page)
                 if "Passed" not in page.locator(".result h1").inner_text():
                     check(False, "learner chain lesson failed unexpectedly"); break
                 played += 1

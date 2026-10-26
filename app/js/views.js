@@ -9,7 +9,8 @@ function topStats(c) {
   const { me, t, lang } = c;
   return h("div", { class: "stats" },
     h("span", { class: "stat", "aria-label": t.streakLbl(num(me.user.streak, lang)) }, icon("flame", 22, "var(--flame-d)", "var(--flame)"), h("b", {}, num(me.user.streak, lang))),
-    h("span", { class: "stat", "aria-label": t.xpLbl(num(me.user.xp, lang)) }, icon("star", 22, "var(--gold-d)", "var(--gold)"), h("b", {}, num(me.user.xp, lang))));
+    h("span", { class: "stat", "aria-label": t.xpLbl(num(me.user.xp, lang)) }, icon("star", 22, "var(--gold-d)", "var(--gold)"), h("b", {}, num(me.user.xp, lang))),
+    h("span", { class: "stat", "aria-label": `${t.gemsLbl}: ${me.gamify?.gems || 0}` }, icon("gem", 22, "var(--primary-d)", "var(--primary-soft)"), h("b", {}, num(me.gamify?.gems || 0, lang))));
 }
 
 // ───────────── الرئيسية: خريطة المسار ─────────────
@@ -202,6 +203,7 @@ export function resultView(c) {
       h("p", { class: "lead" }, msg),
       h("div", { class: "res-chips" },
         h("span", { class: "chip gold" }, icon("star", 18, "var(--gold-d)", "var(--gold)"), t.xpGained(num(res.xp, lang))),
+        res.gems ? h("span", { class: "chip" }, icon("gem", 18, "var(--primary-d)", "var(--primary-soft)"), t.gemsPlus(num(res.gems, lang))) : null,
         res.streak ? h("span", { class: "chip" }, icon("flame", 18, "var(--flame-d)", "var(--flame)"), num(res.streak, lang)) : null),
       res.weak && res.weak.length ? h("section", { class: "weak" }, h("h2", {}, t.weak),
         res.weak.slice(0, 5).map((q) => h("div", { class: "weak-item" }, richEl("div", { class: "w-q" }, q.prompt), richEl("div", { class: "w-e" }, q.explain)))) : null),
@@ -237,7 +239,7 @@ export function navView(c) {
     h("span", {}, label));
   return h("nav", { class: "nav" },
     item("home", t.home, "home", 0), item("review", t.review, "cards", me.dueCount),
-    item("progress", t.progress, "chart", 0), item("me", t.me, "user", 0));
+    item("progress", t.progress, "chart", 0), item("badges", t.badgesTab, "medal", 0), item("me", t.me, "user", 0));
 }
 
 export function errorView(c) {

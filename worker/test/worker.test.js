@@ -222,3 +222,81 @@ test("بلاغات الأخطاء: حفظ وتجميع ورفض المدخلات
   assert.equal((await call(env, "/api/report", { questionId: "'; drop", kind: "wrong" }, u1)).status, 400);
   assert.equal((await call(env, "/api/report", { questionId: "a-b_q1", kind: "zzz" }, u1)).status, 400);
 });
+
+// ---------- الأوسمة والرتب والدرر ----------
+import * as G from "../src/gamify.js";
+import { LEVEL_LESSONS } from "../src/levels.js";
+
+test("الأوسمة: أسبوع السبت وإجازة السلسلة", () => {
+  assert.equal(G.weekStart("2026-10-24"), "2026-10-24"); // السبت
+  assert.equal(G.weekStart("2026-10-30"), "2026-10-24"); // الجمعة
+  assert.equal(G.weekStart("2026-10-25"), "2026-10-24"); // الأحد
+  const s = G.blankState(); s.freezes = 1;
+  assert.equal(G.applyFreeze(s, "2026-10-20", "2026-10-22"), "2026-10-21"); // فاته يوم واحد
+  assert.equal(s.freezes, 0);
+  s.freezes = 1;
+  assert.equal(G.applyFreeze(s, "2026-10-18", "2026-10-22"), "2026-10-18"); // فاته أكثر من يوم: لا تُستهلك
+  assert.equal(s.freezes, 1);
+  assert.equal(G.applyFreeze(s, "2026-10-21", "2026-10-22"), "2026-10-21");
+});
+
+test("الأوسمة: الرتب بحسب النقاط", () => {
+  assert.equal(G.rankOf(0), 0);
+  assert.equal(G.rankOf(999), 1);
+  assert.equal(G.rankOf(1000), 2);
+  assert.equal(G.rankOf(99999), 6);
+});
+
+test("الأوسمة: درس كامل يمنح أوسمة ودررًا مرة واحدة فقط", () => {
+  const s = G.blankState();
+  const ev = { lessonId: "nt-l1-u1-01", correct: 12, total: 12, decision: "pass", hour: 2, today: "2026-10-26", lastActive: null, streak: 1, passedIds: new Set(["nt-l1-u1-01"]) };
+  const a = G.onLesson(s, ev);
+  for (const id of ["first", "flawless", "owl"]) assert.ok(a.newBadges.includes(id), id);
+  assert.equal(a.gained, 12 + 10 * a.newBadges.length);
+  const again = G.onLesson(s, { ...ev, lastActive: "2026-10-26" });
+  assert.deepEqual(again.newBadges, []); // لا تكرار
+  assert.equal(s.perfectIds.length, 1);   // نفس الدرس لا يُحسب كاملًا مرتين
+});
+
+test("الأوسمة: إنهاء مستوى كامل ومنع الغش بالتكرار", () => {
+  const s = G.blankState();
+  const ids = LEVEL_LESSONS["nt-l1"];
+  const all = new Set(ids);
+  const almost = new Set(ids.slice(1));
+  assert.ok(!G.onLesson(s, { lessonId: ids[1], correct: 8, total: 8, decision: "pass", hour: null, today: "2026-10-26", lastActive: null, streak: 1, passedIds: almost }).newBadges.includes("lvl1"));
+  assert.ok(G.onLesson(s, { lessonId: ids[0], correct: 8, total: 8, decision: "pass", hour: null, today: "2026-10-26", lastActive: "2026-10-26", streak: 1, passedIds: all }).newBadges.includes("lvl1"));
+});
+
+test("الأوسمة: هدف الأسبوع، المتجر، والحالة التالفة", () => {
+  const s = G.blankState(); s.goalDays = 3;
+  const out = [];
+  for (const [d, last] of [["2026-10-24", null], ["2026-10-25", "2026-10-24"], ["2026-10-26", "2026-10-25"]]) {
+    out.push(G.onReview(s, { right: 0, mastered: 0, today: d, lastActive: last, streak: 1 }));
+  }
+  assert.ok(out[2].newBadges.includes("goal"));
+  assert.equal(G.onReview(s, { right: 0, mastered: 0, today: "2026-10-27", lastActive: "2026-10-26", streak: 1 }).newBadges.length, 0);
+  s.gems = 99; assert.equal(G.buyFreeze(s), "gems");
+  s.gems = 250; assert.equal(G.buyFreeze(s), "ok"); assert.equal(G.buyFreeze(s), "ok"); assert.equal(G.buyFreeze(s), "max");
+  assert.equal(s.gems, 50); assert.equal(s.freezes, 2);
+  assert.equal(G.setGoal(s, 4), false);
+  const bad = G.cleanState({ gems: -5, freezes: 99, badges: { hack: "x", first: "2026-01-01" }, goalDays: 99 });
+  assert.equal(bad.gems, 0); assert.equal(bad.freezes, 2); assert.deepEqual(Object.keys(bad.badges), ["first"]); assert.equal(bad.goalDays, 5);
+});
+
+test("API: الأوسمة تصل في الرد وتُحفظ للمستخدم", async () => {
+  const env = mkEnv();
+  const today = new Date().toISOString().slice(0, 10);
+  let r = await call(env, "/api/lesson/complete", { lessonId: "nt-l1-u1-01", total: 8, correct: 8, wrongIds: [], today, hour: 1 });
+  assert.equal(r.status, 200);
+  assert.ok(r.data.award.newBadges.includes("first") && r.data.award.newBadges.includes("owl"));
+  assert.ok(r.data.gamify.gems >= 8);
+  r = await call(env, "/api/lesson/complete", { lessonId: "nt-l1-u1-01", total: 8, correct: 8, wrongIds: [], today, hour: 99 });
+  assert.deepEqual(r.data.award.newBadges, []);
+  r = await call(env, "/api/me", { today });
+  assert.ok(r.data.gamify.badges.first);
+  r = await call(env, "/api/goal", { today, days: 7 }); assert.equal(r.data.gamify.goalDays, 7);
+  r = await call(env, "/api/goal", { today, days: 4 }); assert.equal(r.status, 400);
+  r = await call(env, "/api/shop/freeze", { today }); assert.equal(r.data.result, "gems");
+  r = await call(env, "/api/report", { questionId: "nt-l1-u1-01_q1", kind: "typo", today });
+  assert.ok(r.data.award.newBadges.includes("eagle"));
+});

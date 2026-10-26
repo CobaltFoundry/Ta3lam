@@ -1,6 +1,7 @@
 import { validateInitData } from "./auth.js";
 import { decide, xpFor, cleanToday, updateStreak, cleanIds, isId, PASS } from "./engine.js";
-import { nextState, newMistake } from "./srs.js";
+import { nextState, newMistake, MASTERED } from "./srs.js";
+import { cleanState, applyFreeze, onLesson, onReview, onReport, buyFreeze, setGoal, view as gview, rankOf } from "./gamify.js";
 
 const TRACKS = ["native", "learner"];
 const THEMES = ["warm", "night", "sage", "telegram"];
@@ -64,22 +65,39 @@ async function ownerStats(env, today) {
   };
 }
 
+const gamifyReady = new WeakSet();
+async function loadG(env, tgId) {
+  if (!gamifyReady.has(env.DB)) {
+    await env.DB.prepare("CREATE TABLE IF NOT EXISTS gamify (tg_id INTEGER PRIMARY KEY, data TEXT NOT NULL, updated_at TEXT DEFAULT (datetime('now')))").run();
+    gamifyReady.add(env.DB);
+  }
+  const row = await env.DB.prepare("SELECT data FROM gamify WHERE tg_id = ?").bind(tgId).first();
+  let raw = null;
+  try { raw = row ? JSON.parse(row.data) : null; } catch { raw = null; }
+  return cleanState(raw);
+}
+const saveG = (env, tgId, g) => env.DB.prepare(
+  "INSERT INTO gamify (tg_id, data, updated_at) VALUES (?, ?, datetime('now')) ON CONFLICT(tg_id) DO UPDATE SET data = excluded.data, updated_at = datetime('now')"
+).bind(tgId, JSON.stringify(g)).run();
+const cleanHour = (h) => (Number.isInteger(h) && h >= 0 && h <= 23 ? h : null);
+
 async function snapshot(env, tgId, today) {
   const user = await env.DB.prepare("SELECT tg_id, first_name, track, ui_lang, theme, xp, streak, best_streak, last_active_date, reminder_hour FROM users WHERE tg_id = ?").bind(tgId).first();
   const prog = await env.DB.prepare("SELECT lesson_id, best_score, status, attempts FROM progress WHERE tg_id = ?").bind(tgId).all();
   const due = await env.DB.prepare("SELECT COUNT(*) AS n FROM reviews WHERE tg_id = ? AND due_date <= ?").bind(tgId, today).first();
-  return { user, progress: prog.results || [], dueCount: due?.n || 0 };
+  const g = await loadG(env, tgId);
+  return { user, progress: prog.results || [], dueCount: due?.n || 0, gamify: gview(g, today) };
 }
 
 // ---------- نقاط الـ API ----------
-let reportsReady = false;
+const reportsReady = new WeakSet();
 async function ensureReports(env) {
-  if (reportsReady) return;
+  if (reportsReady.has(env.DB)) return;
   await env.DB.prepare(`CREATE TABLE IF NOT EXISTS reports (
     id INTEGER PRIMARY KEY AUTOINCREMENT, tg_id INTEGER NOT NULL, question_id TEXT NOT NULL,
     kind TEXT NOT NULL, note TEXT, lang TEXT, created_at TEXT DEFAULT (datetime('now')), notified INTEGER DEFAULT 0,
     UNIQUE (tg_id, question_id))`).run();
-  reportsReady = true;
+  reportsReady.add(env.DB);
 }
 const REPORT_KINDS = ["wrong", "unclear", "typo", "other"];
 
@@ -118,7 +136,28 @@ const routes = {
       `INSERT INTO reports (tg_id, question_id, kind, note, lang) VALUES (?, ?, ?, ?, ?)
        ON CONFLICT (tg_id, question_id) DO UPDATE SET kind = excluded.kind, note = excluded.note, lang = excluded.lang, created_at = datetime('now'), notified = 0`
     ).bind(tg.id, b.questionId, b.kind, note || null, lang).run();
-    return { ok: true };
+    const g = await loadG(env, tg.id);
+    const award = onReport(g, cleanToday(b.today));
+    if (award.newBadges.length) await saveG(env, tg.id, g);
+    return { ok: true, award };
+  },
+
+  async "/api/shop/freeze"(env, req, tg, b) {
+    const today = cleanToday(b.today);
+    await getOrCreateUser(env, tg, today);
+    const g = await loadG(env, tg.id);
+    const res = buyFreeze(g);
+    if (res === "ok") await saveG(env, tg.id, g);
+    return { result: res, ...(await snapshot(env, tg.id, today)) };
+  },
+
+  async "/api/goal"(env, req, tg, b) {
+    const today = cleanToday(b.today);
+    await getOrCreateUser(env, tg, today);
+    const g = await loadG(env, tg.id);
+    if (!setGoal(g, b.days)) throw httpErr(400, "bad goal");
+    await saveG(env, tg.id, g);
+    return snapshot(env, tg.id, today);
   },
 
   async "/api/me"(env, req, tg, b) {
@@ -152,7 +191,8 @@ const routes = {
     const score = correct / total;
     const decision = decide(score);
     const xp = xpFor({ correct, total, decision });
-    const streak = updateStreak(user.streak, user.last_active_date, today);
+    const g = await loadG(env, tg.id);
+    const streak = updateStreak(user.streak, applyFreeze(g, user.last_active_date, today), today);
     const wrong = cleanIds(b.wrongIds);
 
     const stmts = [
@@ -173,7 +213,12 @@ const routes = {
         .bind(tg.id, qid, m.box, m.due_date));
     }
     await env.DB.batch(stmts);
-    return { decision, xp, streak, ...(await snapshot(env, tg.id, today)) };
+    const prog = (await env.DB.prepare("SELECT lesson_id FROM progress WHERE tg_id = ? AND status = 'passed'").bind(tg.id).all()).results || [];
+    const award = onLesson(g, { lessonId: b.lessonId, correct, total, decision, hour: cleanHour(b.hour), today,
+      lastActive: user.last_active_date, streak, passedIds: new Set(prog.map((r) => r.lesson_id)) });
+    await saveG(env, tg.id, g);
+    award.rankUp = rankOf(user.xp + xp) > rankOf(user.xp) ? rankOf(user.xp + xp) : null;
+    return { decision, xp, streak, award, ...(await snapshot(env, tg.id, today)) };
   },
 
   // اختبار تحديد المستوى: يعلّم الدروس المتخطّاة كناجحة دون نقاط خبرة، ويضيف الأسئلة الخاطئة للمراجعة.
@@ -207,7 +252,7 @@ const routes = {
     const today = cleanToday(b.today);
     const results = Array.isArray(b.results) ? b.results.slice(0, 50) : [];
     const user = await getOrCreateUser(env, tg, today);
-    let right = 0;
+    let right = 0, mastered = 0;
     const stmts = [];
     for (const r of results) {
       if (!r || !isId(r.id)) continue;
@@ -215,14 +260,19 @@ const routes = {
       if (!row) continue;
       const ns = nextState(row.box, !!r.correct, today);
       if (r.correct) right++;
+      if (r.correct && ns.box === MASTERED) mastered++;
       stmts.push(env.DB.prepare("UPDATE reviews SET box = ?, due_date = ? WHERE tg_id = ? AND question_id = ?").bind(ns.box, ns.due_date, tg.id, r.id));
     }
     const xp = right * 5;
-    const streak = updateStreak(user.streak, user.last_active_date, today);
+    const g = await loadG(env, tg.id);
+    const streak = updateStreak(user.streak, applyFreeze(g, user.last_active_date, today), today);
     stmts.push(env.DB.prepare("UPDATE users SET xp = xp + ?, streak = ?, best_streak = MAX(best_streak, ?), last_active_date = ? WHERE tg_id = ?")
       .bind(xp, streak, streak, today, tg.id));
     await env.DB.batch(stmts);
-    return { xp, ...(await snapshot(env, tg.id, today)) };
+    const award = onReview(g, { right, mastered, today, lastActive: user.last_active_date, streak });
+    await saveG(env, tg.id, g);
+    award.rankUp = rankOf(user.xp + xp) > rankOf(user.xp) ? rankOf(user.xp + xp) : null;
+    return { xp, award, ...(await snapshot(env, tg.id, today)) };
   },
 };
 

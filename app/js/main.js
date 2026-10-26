@@ -3,6 +3,8 @@ import { call, isDemo, telegram } from "./api.js";
 import { loadIndex, loadLesson, setContentLang, flattenTrack, lessonOfQuestion, unitTestQuestions, finalExamQuestions, placementPlan, placementOutcome } from "./content.js";
 import { runPlayer } from "./player.js";
 import { homeView, reviewView, progressView, meView, onboardingView, resultView, placementResultView, navView, errorView } from "./views.js";
+import { badgesView, celebrateView } from "./badges.js";
+import { BADGE_GEMS } from "./shared/gamify.js";
 import { T } from "./i18n.js";
 import { h, localDate } from "./util.js";
 
@@ -83,7 +85,7 @@ function ctx() {
   if (!S.me.user.track) return base;
   return {
     ...base, track: trackObj(), nodes: nodesWithState(),
-    onNode: onNode, onStartReview: startReview, onSetting: saveSettings, hapticOn: hapticOn(), onHaptic: setHaptic, onPlacement: startPlacement,
+    onNode: onNode, onStartReview: startReview, onSetting: saveSettings, onGoal, onBuyFreeze, hapticOn: hapticOn(), onHaptic: setHaptic, onPlacement: startPlacement,
   };
 }
 
@@ -96,7 +98,7 @@ function render() {
     return;
   }
   const c = ctx();
-  const screens = { home: homeView, review: reviewView, progress: progressView, me: meView };
+  const screens = { home: homeView, review: reviewView, progress: progressView, badges: badgesView, me: meView };
   view.replaceChildren(screens[S.tab](c));
   nav.replaceChildren(navView(c));
   view.scrollTo?.(0, 0);
@@ -139,7 +141,35 @@ async function onNode(n) {
 }
 
 const playerBase = () => ({ t: t(), dir: S.me.user.track === "native" ? "rtl" : "ltr", haptic, confirmLeave, toast,
-  onReport: (q, kind, note) => call("/api/report", { questionId: q.id, kind, note, lang: lang() }) });
+  onReport: async (q, kind, note) => { const r = await call("/api/report", { questionId: q.id, kind, note, lang: lang(), today: today() }); await celebrate(r.award); } });
+
+const adoptMe = (r) => { S.me = { user: r.user, progress: r.progress, dueCount: r.dueCount, gamify: r.gamify }; };
+
+/** يعرض شاشات الاحتفال بالأوسمة الجديدة ثم الرتبة الجديدة */
+async function celebrate(award) {
+  if (!award) return;
+  const steps = [...(award.newBadges || []).map((id) => ({ kind: "badge", id, gems: BADGE_GEMS })), ...(award.rankUp != null ? [{ kind: "rank", rank: award.rankUp }] : [])];
+  for (const st of steps) {
+    haptic("success");
+    await new Promise((resolve) => {
+      const el = celebrateView({ t: t(), lang: lang(), ...st, onDone: () => { el.remove(); document.body.classList.remove("no-scroll"); resolve(); } });
+      $("overlay").append(el);
+      document.body.classList.add("no-scroll");
+    });
+  }
+}
+
+async function onGoal(days) {
+  try { adoptMe(await call("/api/goal", { days, today: today() })); render(); } catch { toast(t().loadError); }
+}
+async function onBuyFreeze() {
+  try {
+    const r = await call("/api/shop/freeze", { today: today() });
+    adoptMe(r);
+    toast(r.result === "ok" ? t().freezeDone : r.result === "max" ? t().freezeMaxed : t().freezeNoGems);
+    render();
+  } catch { toast(t().loadError); }
+}
 
 function showResult(res, extra = {}) {
   return new Promise((resolve) => {
@@ -151,8 +181,9 @@ function showResult(res, extra = {}) {
 }
 
 async function submit(lessonId, r) {
-  const resp = await call("/api/lesson/complete", { lessonId, total: r.total, correct: r.correct, wrongIds: r.wrongIds, today: today() });
-  S.me = { user: resp.user, progress: resp.progress, dueCount: resp.dueCount };
+  const resp = await call("/api/lesson/complete", { lessonId, total: r.total, correct: r.correct, wrongIds: r.wrongIds, today: today(), hour: new Date().getHours() });
+  adoptMe(resp);
+  await celebrate(resp.award);
   return resp;
 }
 
@@ -166,7 +197,7 @@ async function playLesson(lessonId, title) {
     const resp = await submit(lessonId, r);
     const all = [...lesson.practice, ...lesson.quiz];
     const weak = r.wrongIds.map((id) => all.find((q) => q.id === id)).filter(Boolean);
-    const action = await showResult({ decision: resp.decision, xp: resp.xp, streak: resp.streak, correct: r.correct, total: r.total }, { weak });
+    const action = await showResult({ decision: resp.decision, xp: resp.xp, gems: resp.award?.gained, streak: resp.streak, correct: r.correct, total: r.total }, { weak });
     if (action === "retry") mode = "quiz";
     else if (action === "study") mode = "full";
     else return;
@@ -180,7 +211,7 @@ async function playUnitTest(n) {
     if (!r) return;
     const resp = await submit(n.id, r);
     const weak = r.wrongIds.map((id) => questions.find((q) => q.id === id)).filter(Boolean);
-    const action = await showResult({ decision: resp.decision, xp: resp.xp, streak: resp.streak, correct: r.correct, total: r.total }, { weak });
+    const action = await showResult({ decision: resp.decision, xp: resp.xp, gems: resp.award?.gained, streak: resp.streak, correct: r.correct, total: r.total }, { weak });
     if (action === "home") return;
   }
 }
@@ -196,7 +227,7 @@ async function startPlacement() {
     if (!r) return;
     const out = placementOutcome(track, plan, r.results);
     const resp = await call("/api/placement", { passedIds: out.passedIds, wrongIds: r.wrongIds, today: today() });
-    S.me = { user: resp.user, progress: resp.progress, dueCount: resp.dueCount };
+    adoptMe(resp);
     S.tab = "home";
     await new Promise((resolve) => {
       const el = placementResultView({ t: t(), lang: lang(), dir: playerBase().dir, out, onDone: () => { el.remove(); resolve(); } });
@@ -222,8 +253,9 @@ async function startReview() {
     const r = await runPlayer({ ...playerBase(), title: t().reviewTitle, questions });
     if (!r) return;
     const resp = await call("/api/review/answer", { results: r.results, today: today() });
-    S.me = { user: resp.user, progress: resp.progress, dueCount: resp.dueCount };
-    await showResult({ decision: "pass", xp: resp.xp, streak: resp.user.streak, correct: r.correct, total: r.total, weak: [] });
+    adoptMe(resp);
+    await celebrate(resp.award);
+    await showResult({ decision: "pass", xp: resp.xp, gems: resp.award?.gained, streak: resp.user.streak, correct: r.correct, total: r.total, weak: [] });
   } catch (e) {
     console.error(e);
     toast(t().loadError);

@@ -244,3 +244,47 @@ html[dir="rtl"] .bubble::before { transform: rotate(-45deg); }
 .rp-kind[aria-pressed="true"] { border-color: var(--primary, #2f7d5b); }
 .rp-note { font: inherit; padding: 10px 12px; border-radius: 14px; border: 2px solid var(--line); background: var(--card); color: var(--text); resize: none; }
 .rp-row { display: flex; gap: 8px; } .rp-row .btn { flex: 1; }
+
+/* ───── الأوسمة والرتب ───── */
+.bd-top { display: flex; align-items: center; justify-content: space-between; }
+.rank-card { background: var(--text); color: var(--bg); border-radius: 22px; padding: 18px; margin: 12px 0; display: flex; flex-direction: column; gap: 12px; }
+.rk-row { display: flex; align-items: center; gap: 14px; }
+.rk-num { width: 56px; height: 56px; border-radius: 50%; background: var(--gold); color: var(--on-gold); display: grid; place-items: center; font-weight: 800; font-size: 24px; flex: none; }
+.rk-txt { flex: 1; display: flex; flex-direction: column; }
+.rk-txt b { font-size: 26px; line-height: 1.2; }
+.rk-txt small, .rk-of, .rk-more { opacity: 0.85; font-size: 13px; }
+.rk-bar { height: 10px; border-radius: 99px; background: rgba(255,255,255,0.2); overflow: hidden; }
+.rk-bar i { display: block; height: 100%; background: var(--gold); border-radius: 99px; }
+.bd-card { background: var(--card); border: 2px solid var(--line); border-radius: 18px; padding: 14px 16px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 10px; }
+.bd-row { display: flex; justify-content: space-between; align-items: center; font-size: 16px; }
+.bd-val { font-weight: 800; color: var(--primary-d); }
+.bd-note { color: var(--muted); font-size: 13px; line-height: 1.5; }
+.goal-dots { display: flex; gap: 8px; }
+.goal-dots i { flex: 1; height: 12px; border-radius: 99px; background: var(--line); }
+.goal-dots i.on { background: var(--primary); }
+.bd-group { margin-top: 20px; }
+.bd-group h2 { display: flex; align-items: baseline; gap: 10px; margin: 0 0 12px; font-size: 18px; }
+.bd-group h2 small { color: var(--muted); font-size: 13px; font-weight: 600; }
+.bd-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px 8px; }
+.bd-item { display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; }
+.bd-item b { font-size: 14px; line-height: 1.25; }
+.bd-item small { color: var(--muted); font-size: 12px; line-height: 1.35; }
+.bd-item:not(.on) b { color: var(--muted); }
+.rank-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.rank-list li { display: flex; align-items: center; gap: 12px; background: var(--card); border: 2px solid var(--line); border-radius: 14px; padding: 10px 14px; }
+.rank-list li b { flex: 1; font-size: 17px; }
+.rank-list li small { color: var(--muted); }
+.rank-list li.cur { border-color: var(--primary); background: var(--primary-soft); }
+.rank-list .rl-n { width: 32px; height: 32px; border-radius: 50%; background: var(--lock); color: var(--lock-ic); display: grid; place-items: center; font-weight: 800; }
+.rank-list li.done .rl-n { background: var(--primary); color: var(--on-primary); }
+.rank-list li.cur .rl-n { background: var(--gold); color: var(--on-gold); }
+.bd-foot { text-align: center; margin: 16px 0 0; }
+.celebrate { position: fixed; inset: 0; z-index: 40; background: var(--bg); display: flex; flex-direction: column; animation: rise 0.25s; }
+.cb-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 14px; padding: 24px; }
+.cb-kick { font-weight: 800; color: var(--gold-d); font-size: 18px; }
+.cb-body h1 { margin: 0; font-size: 34px; }
+.cb-sub { margin: 0; color: var(--muted); font-size: 16px; line-height: 1.6; }
+.cb-rank { width: 150px; height: 150px; border-radius: 50%; background: var(--gold); color: var(--on-gold); display: grid; place-items: center; font-size: 64px; font-weight: 800; box-shadow: 0 6px 0 var(--gold-d); }
+.celebrate .medal { animation: pop 0.5s cubic-bezier(0.2, 1.4, 0.4, 1); }
+@keyframes pop { from { transform: scale(0.3) rotate(-20deg); opacity: 0; } to { transform: none; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .celebrate, .celebrate .medal { animation: none; } }
