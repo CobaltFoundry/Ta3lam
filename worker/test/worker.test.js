@@ -242,8 +242,9 @@ test("الأوسمة: أسبوع السبت وإجازة السلسلة", () => 
 
 test("الأوسمة: الرتب بحسب النقاط", () => {
   assert.equal(G.rankOf(0), 0);
-  assert.equal(G.rankOf(999), 1);
-  assert.equal(G.rankOf(1000), 2);
+  assert.equal(G.rankOf(1999), 0);
+  assert.equal(G.rankOf(2000), 1);
+  assert.equal(G.rankOf(7500), 3);
   assert.equal(G.rankOf(99999), 6);
 });
 

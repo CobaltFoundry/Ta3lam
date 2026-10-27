@@ -3,7 +3,7 @@
 import { LEVEL_LESSONS, FINAL_ID } from "./levels.js";
 import { addDays } from "./srs.js";
 
-export const RANK_XP = [0, 250, 1000, 2000, 4000, 7000, 12000];
+export const RANK_XP = [0, 2000, 4500, 7500, 11000, 14500, 20000];
 export const rankOf = (xp) => {
   let r = 0;
   for (let i = 0; i < RANK_XP.length; i++) if ((xp || 0) >= RANK_XP[i]) r = i;

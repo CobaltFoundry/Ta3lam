@@ -324,6 +324,80 @@
          }
         }
        ]
+      },
+      {
+       "id": "nt-l2-u6",
+       "title": {
+        "ar": "الضمير",
+        "en": "Pronouns"
+       },
+       "lessons": [
+        {
+         "id": "nt-l2-u6-01",
+         "title": {
+          "ar": "الضمير: معناه وأقسامه",
+          "en": "The pronoun: meaning and types"
+         }
+        },
+        {
+         "id": "nt-l2-u6-02",
+         "title": {
+          "ar": "ضمائر الرفع المتصلة بالفعل",
+          "en": "Attached subject pronouns"
+         }
+        },
+        {
+         "id": "nt-l2-u6-03",
+         "title": {
+          "ar": "ضمائر النصب والجر المتصلة",
+          "en": "Attached object and possessive pronouns"
+         }
+        },
+        {
+         "id": "nt-l2-u6-04",
+         "title": {
+          "ar": "الضمير المستتر",
+          "en": "The hidden pronoun"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l2-u7",
+       "title": {
+        "ar": "النكرة والمعرفة: العلم والإشارة والموصول",
+        "en": "Definite and indefinite nouns"
+       },
+       "lessons": [
+        {
+         "id": "nt-l2-u7-01",
+         "title": {
+          "ar": "النكرة والمعرفة",
+          "en": "Indefinite and definite nouns"
+         }
+        },
+        {
+         "id": "nt-l2-u7-02",
+         "title": {
+          "ar": "العلم",
+          "en": "The proper noun"
+         }
+        },
+        {
+         "id": "nt-l2-u7-03",
+         "title": {
+          "ar": "اسم الإشارة",
+          "en": "The demonstrative"
+         }
+        },
+        {
+         "id": "nt-l2-u7-04",
+         "title": {
+          "ar": "الاسم الموصول",
+          "en": "The relative pronoun"
+         }
+        }
+       ]
       }
      ]
     },
