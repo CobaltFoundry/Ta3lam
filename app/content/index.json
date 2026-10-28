@@ -594,6 +594,322 @@
          }
         }
        ]
+      },
+      {
+       "id": "nt-l3-u7",
+       "title": {
+        "ar": "النواسخ (٢): ظنّ وأخواتها",
+        "en": "Verbs like zanna"
+       },
+       "lessons": [
+        {
+         "id": "nt-l3-u7-01",
+         "title": {
+          "ar": "ظنَّ وأخواتها: أفعال الظن",
+          "en": "Zanna and sisters: verbs of belief"
+         }
+        },
+        {
+         "id": "nt-l3-u7-02",
+         "title": {
+          "ar": "أفعال اليقين وأفعال التحويل",
+          "en": "Verbs of certainty and transformation"
+         }
+        },
+        {
+         "id": "nt-l3-u7-03",
+         "title": {
+          "ar": "التمييز بين كان وإنّ وظنّ",
+          "en": "Telling kana, inna and zanna apart"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l3-u8",
+       "title": {
+        "ar": "النواسخ (٣): المقاربة والرجاء و«لا» النافية للجنس",
+        "en": "Verbs of approach and la of negation"
+       },
+       "lessons": [
+        {
+         "id": "nt-l3-u8-01",
+         "title": {
+          "ar": "أفعال المقاربة والشروع والرجاء",
+          "en": "Verbs of approach, beginning and hope"
+         }
+        },
+        {
+         "id": "nt-l3-u8-02",
+         "title": {
+          "ar": "«لا» النافية للجنس",
+          "en": "La of absolute negation"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l3-u9",
+       "title": {
+        "ar": "النداء والتعجب",
+        "en": "Vocative and exclamation"
+       },
+       "lessons": [
+        {
+         "id": "nt-l3-u9-01",
+         "title": {
+          "ar": "أسلوب النداء وأدواته",
+          "en": "The vocative and its particles"
+         }
+        },
+        {
+         "id": "nt-l3-u9-02",
+         "title": {
+          "ar": "إعراب المنادى: المضموم والمنصوب",
+          "en": "Case of the vocative noun"
+         }
+        },
+        {
+         "id": "nt-l3-u9-03",
+         "title": {
+          "ar": "التعجب بـ«ما أفعلَهُ»",
+          "en": "Exclamation with ma af'alahu"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l3-u10",
+       "title": {
+        "ar": "المدح والذم والتحذير",
+        "en": "Praise, blame and warning"
+       },
+       "lessons": [
+        {
+         "id": "nt-l3-u10-01",
+         "title": {
+          "ar": "«نِعْمَ» و«بِئْسَ»",
+          "en": "Ni'ma and bi'sa"
+         }
+        },
+        {
+         "id": "nt-l3-u10-02",
+         "title": {
+          "ar": "المخصوص بالمدح والذم",
+          "en": "The specified subject of praise or blame"
+         }
+        },
+        {
+         "id": "nt-l3-u10-03",
+         "title": {
+          "ar": "التحذير والإغراء",
+          "en": "Warning and urging"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l3-u11",
+       "title": {
+        "ar": "التوابع (٢): البدل والتوكيد اللفظي",
+        "en": "Appositives and repetition"
+       },
+       "lessons": [
+        {
+         "id": "nt-l3-u11-01",
+         "title": {
+          "ar": "البدل",
+          "en": "The substitute (badal)"
+         }
+        },
+        {
+         "id": "nt-l3-u11-02",
+         "title": {
+          "ar": "بدل البعض وبدل الاشتمال",
+          "en": "Part-of-whole and attribute substitutes"
+         }
+        },
+        {
+         "id": "nt-l3-u11-03",
+         "title": {
+          "ar": "التوكيد اللفظي",
+          "en": "Verbal emphasis by repetition"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l3-u12",
+       "title": {
+        "ar": "النعت بالجملة والعطف بـ«لا» و«بل»",
+        "en": "Clause adjectives and la/bal coordination"
+       },
+       "lessons": [
+        {
+         "id": "nt-l3-u12-01",
+         "title": {
+          "ar": "النعت جملة وشبه جملة",
+          "en": "Adjectival clauses and phrases"
+         }
+        },
+        {
+         "id": "nt-l3-u12-02",
+         "title": {
+          "ar": "العطف بـ«لا» و«بل»",
+          "en": "Coordination with la and bal"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l3-u13",
+       "title": {
+        "ar": "المنصوبات (٣): المعية والتمييز والحال",
+        "en": "More accusatives: accompaniment, specification, circumstantial clauses"
+       },
+       "lessons": [
+        {
+         "id": "nt-l3-u13-01",
+         "title": {
+          "ar": "المفعول معه",
+          "en": "The accompanied object (maf'ul ma'ah)"
+         }
+        },
+        {
+         "id": "nt-l3-u13-02",
+         "title": {
+          "ar": "تمييز النسبة",
+          "en": "Specification of a statement"
+         }
+        },
+        {
+         "id": "nt-l3-u13-03",
+         "title": {
+          "ar": "الحال جملة وشبه جملة",
+          "en": "Circumstantial clauses and phrases"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l3-u14",
+       "title": {
+        "ar": "الاستثناء: المفرَّغ وغير وسوى وخلا وعدا",
+        "en": "Exception: incomplete, ghayr/siwa, khala/ada"
+       },
+       "lessons": [
+        {
+         "id": "nt-l3-u14-01",
+         "title": {
+          "ar": "الاستثناء المفرَّغ",
+          "en": "The incomplete exception (mufarragh)"
+         }
+        },
+        {
+         "id": "nt-l3-u14-02",
+         "title": {
+          "ar": "المستثنى بغير وسوى",
+          "en": "Exception with ghayr and siwa"
+         }
+        },
+        {
+         "id": "nt-l3-u14-03",
+         "title": {
+          "ar": "المستثنى بخلا وعدا وحاشا",
+          "en": "Exception with khala, ada, hasha"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l3-u15",
+       "title": {
+        "ar": "نواصب المضارع",
+        "en": "Particles that put the present verb in the subjunctive"
+       },
+       "lessons": [
+        {
+         "id": "nt-l3-u15-01",
+         "title": {
+          "ar": "لن",
+          "en": "Lan: future negation"
+         }
+        },
+        {
+         "id": "nt-l3-u15-02",
+         "title": {
+          "ar": "أنْ وكي",
+          "en": "An and kay"
+         }
+        },
+        {
+         "id": "nt-l3-u15-03",
+         "title": {
+          "ar": "لام التعليل",
+          "en": "Lam of purpose"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l3-u16",
+       "title": {
+        "ar": "جوازم المضارع",
+        "en": "Particles that jussive the present verb"
+       },
+       "lessons": [
+        {
+         "id": "nt-l3-u16-01",
+         "title": {
+          "ar": "لم",
+          "en": "Lam: past negation"
+         }
+        },
+        {
+         "id": "nt-l3-u16-02",
+         "title": {
+          "ar": "لا الناهية ولام الأمر",
+          "en": "La of prohibition and lam of command"
+         }
+        },
+        {
+         "id": "nt-l3-u16-03",
+         "title": {
+          "ar": "أدوات الشرط الجازمة",
+          "en": "Conditional particles"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l3-u17",
+       "title": {
+        "ar": "الأفعال الخمسة وجزم المعتل",
+        "en": "The five verbs and weak-ending verbs"
+       },
+       "lessons": [
+        {
+         "id": "nt-l3-u17-01",
+         "title": {
+          "ar": "الأفعال الخمسة",
+          "en": "The five verbs"
+         }
+        },
+        {
+         "id": "nt-l3-u17-02",
+         "title": {
+          "ar": "الأفعال الخمسة مع النواصب والجوازم",
+          "en": "The five verbs after lan and lam"
+         }
+        },
+        {
+         "id": "nt-l3-u17-03",
+         "title": {
+          "ar": "جزم المضارع المعتل الآخر",
+          "en": "Jussive of weak-ending verbs"
+         }
+        }
+       ]
       }
      ]
     },
