@@ -1,12 +1,12 @@
 name = "ta3lam-api"
 main = "src/index.js"
-compatibility_date = "2025-01-01"
+compatibility_date = "2026-10-19"
 
 [vars]
 # رابط الميني آب على GitHub Pages (غيّره لرابطك)
-APP_URL = "https://YOUR-GITHUB-USERNAME.github.io/ta3lam/"
+APP_URL = "https://cobaltfoundry.github.io/Ta3lam/"
 # الأصل المسموح له باستدعاء الـ API (نفس الدومين بدون مسار)
-ALLOWED_ORIGIN = "https://YOUR-GITHUB-USERNAME.github.io"
+ALLOWED_ORIGIN = "https://cobaltfoundry.github.io"
 
 # تذكير يومي: يشتغل كل ساعة
 [triggers]
@@ -16,6 +16,6 @@ crons = ["0 * * * *"]
 [[d1_databases]]
 binding = "DB"
 database_name = "ta3lam"
-database_id = "PUT-YOUR-D1-ID-HERE"
+database_id = "0d36cc24-3de7-4628-a143-1fc5f1c1babb"
 
 # الأسرار (لا تُكتب هنا أبدًا): BOT_TOKEN, WEBHOOK_SECRET, SETUP_SECRET
