@@ -910,6 +910,66 @@
          }
         }
        ]
+      },
+      {
+       "id": "nt-l3-u18",
+       "title": {
+        "ar": "الأعداد المركبة من ١١ إلى ١٩",
+        "en": "Compound numbers 11-19"
+       },
+       "lessons": [
+        {
+         "id": "nt-l3-u18-01",
+         "title": {
+          "ar": "أحد عشر واثنا عشر",
+          "en": "Eleven and twelve"
+         }
+        },
+        {
+         "id": "nt-l3-u18-02",
+         "title": {
+          "ar": "من ثلاثة عشر إلى تسعة عشر",
+          "en": "Thirteen to nineteen"
+         }
+        },
+        {
+         "id": "nt-l3-u18-03",
+         "title": {
+          "ar": "الأعداد من ١ إلى ١٩: تطبيقات",
+          "en": "Numbers 1-19: practice"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l3-u19",
+       "title": {
+        "ar": "العقود والمعطوف والمئة والألف",
+        "en": "Tens, compound-with-and, hundred and thousand"
+       },
+       "lessons": [
+        {
+         "id": "nt-l3-u19-01",
+         "title": {
+          "ar": "العقود: عشرون إلى تسعون",
+          "en": "The tens: twenty to ninety"
+         }
+        },
+        {
+         "id": "nt-l3-u19-02",
+         "title": {
+          "ar": "الأعداد المعطوفة: واحد وعشرون إلى تسعة وتسعون",
+          "en": "Compound-with-and numbers 21-99"
+         }
+        },
+        {
+         "id": "nt-l3-u19-03",
+         "title": {
+          "ar": "المئة والألف",
+          "en": "Hundred and thousand"
+         }
+        }
+       ]
       }
      ]
     },
@@ -1066,6 +1126,149 @@
          "title": {
           "ar": "التصغير",
           "en": "Diminutives"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l4-u6",
+       "title": {
+        "ar": "المشتقات (٢): من غير الثلاثي والصفة المشبهة والمبالغة",
+        "en": "More derivatives: non-triliteral, adjectives, intensives"
+       },
+       "lessons": [
+        {
+         "id": "nt-l4-u6-01",
+         "title": {
+          "ar": "اسم الفاعل واسم المفعول من غير الثلاثي",
+          "en": "Active and passive participles from derived verbs"
+         }
+        },
+        {
+         "id": "nt-l4-u6-02",
+         "title": {
+          "ar": "الصفة المشبهة",
+          "en": "The adjective of permanent quality"
+         }
+        },
+        {
+         "id": "nt-l4-u6-03",
+         "title": {
+          "ar": "صيغ المبالغة",
+          "en": "Intensive forms"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l4-u7",
+       "title": {
+        "ar": "اسم التفضيل واسم الآلة",
+        "en": "Comparative and instrument nouns"
+       },
+       "lessons": [
+        {
+         "id": "nt-l4-u7-01",
+         "title": {
+          "ar": "اسم التفضيل",
+          "en": "The comparative/superlative"
+         }
+        },
+        {
+         "id": "nt-l4-u7-02",
+         "title": {
+          "ar": "اسم الآلة",
+          "en": "The instrument noun"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l4-u8",
+       "title": {
+        "ar": "المصدر",
+        "en": "The verbal noun (masdar)"
+       },
+       "lessons": [
+        {
+         "id": "nt-l4-u8-01",
+         "title": {
+          "ar": "مصدر الفعل الثلاثي",
+          "en": "The masdar of triliteral verbs"
+         }
+        },
+        {
+         "id": "nt-l4-u8-02",
+         "title": {
+          "ar": "مصدر الفعل غير الثلاثي",
+          "en": "The masdar of derived verbs"
+         }
+        },
+        {
+         "id": "nt-l4-u8-03",
+         "title": {
+          "ar": "المصدر الصناعي واسم المرة",
+          "en": "Artificial masdar and noun of instance"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l4-u9",
+       "title": {
+        "ar": "تصريف المعتل والمضعف",
+        "en": "Conjugating weak and doubled verbs"
+       },
+       "lessons": [
+        {
+         "id": "nt-l4-u9-01",
+         "title": {
+          "ar": "الأجوف مع تاء الفاعل",
+          "en": "Hollow verbs with the subject ta"
+         }
+        },
+        {
+         "id": "nt-l4-u9-02",
+         "title": {
+          "ar": "المثال والناقص في المضارع والأمر",
+          "en": "Assimilated and defective verbs: present and imperative"
+         }
+        },
+        {
+         "id": "nt-l4-u9-03",
+         "title": {
+          "ar": "المضعّف",
+          "en": "Doubled verbs"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l4-u10",
+       "title": {
+        "ar": "الجمع والنسب والتصغير (٢)",
+        "en": "Plurals, relative adjectives and diminutives (2)"
+       },
+       "lessons": [
+        {
+         "id": "nt-l4-u10-01",
+         "title": {
+          "ar": "أوزان جمع التكسير الشائعة",
+          "en": "Common broken-plural patterns"
+         }
+        },
+        {
+         "id": "nt-l4-u10-02",
+         "title": {
+          "ar": "النسب إلى المختوم بتاء مربوطة",
+          "en": "Relative adjectives from nouns ending in ta marbuta"
+         }
+        },
+        {
+         "id": "nt-l4-u10-03",
+         "title": {
+          "ar": "التصغير: المؤنث والرباعي",
+          "en": "Diminutives: feminine and four-letter nouns"
          }
         }
        ]
