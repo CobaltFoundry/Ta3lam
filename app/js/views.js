@@ -32,7 +32,7 @@ export function homeView(c) {
       topStats(c)),
     ...(c.isDemo ? [h("div", { class: "demo-banner", role: "note" }, t.demoBanner)] : []),
     h("div", { class: "mascot-row" }, mascot(me.dueCount > 0 ? "think" : "happy", 84), h("div", { class: "bubble" }, greet)),
-    ...(!nodes.some((n) => n.state === "done") ? [h("div", { class: "place-card" },
+    ...(track.id !== "bridge" && !nodes.some((n) => n.state === "done") ? [h("div", { class: "place-card" },
       h("h2", {}, t.placementCardH), h("p", {}, t.placementCardP),
       h("button", { class: "btn ghost", type: "button", onclick: c.onPlacement }, t.placementBtn))] : []),
   );
@@ -166,9 +166,11 @@ export function meView(c) {
     h("h1", {}, t.meTitle),
     me.user.first_name ? h("p", { class: "lead small" }, me.user.first_name) : null,
     h("section", { class: "set" }, h("h2", {}, t.track),
-      seg([["native", "أتقن العربية"], ["learner", "Learn Arabic"]], me.user.track, (v) => c.onSetting({ track: v }))),
-    h("section", { class: "set" }, h("h2", {}, t.placementMe), h("p", { class: "lead small" }, t.placementMeSub),
-      h("button", { class: "btn ghost", type: "button", onclick: c.onPlacement }, t.placementBtn)),
+      seg([["native", "أتقن العربية"], ["bridge", "جسر العامية"], ["learner", "Learn Arabic"]], me.user.track, (v) => c.onSetting({ track: v }))),
+    h("section", { class: "set" }, h("h2", {}, t.shareTitle), h("p", { class: "lead small" }, t.shareMeSub),
+      h("button", { class: "btn ghost", type: "button", onclick: c.onShare }, t.shareLbl)),
+    ...(me.user.track !== "bridge" ? [h("section", { class: "set" }, h("h2", {}, t.placementMe), h("p", { class: "lead small" }, t.placementMeSub),
+      h("button", { class: "btn ghost", type: "button", onclick: c.onPlacement }, t.placementBtn))] : []),
     h("section", { class: "set" }, h("h2", {}, t.language), seg(Object.entries(t.langNames), lang, (v) => c.onSetting({ ui_lang: v }))),
     h("section", { class: "set" }, h("h2", {}, t.theme), themes),
     h("section", { class: "set" }, h("h2", {}, t.vibration), seg([[true, t.on], [false, t.offV]], c.hapticOn, (v) => c.onHaptic(v))),
@@ -186,6 +188,7 @@ export function onboardingView(c) {
     h("h1", {}, "تَعلّمْ · Ta3lam"),
     h("p", { class: "lead" }, "ما الذي تريد أن تتعلّمه؟ / What do you want to learn?"),
     card("native", t.trackNative, t.trackNativeSub, "rtl"),
+    card("bridge", t.trackBridge, t.trackBridgeSub, "rtl"),
     card("learner", t.trackLearner, t.trackLearnerSub, "ltr"));
 }
 
@@ -196,6 +199,7 @@ export function resultView(c) {
   const msg = res.decision === "pass" ? t.resPass : res.decision === "review" ? t.resReview : t.resRepeat;
   const root = h("div", { class: "result", dir: c.dir });
   root.append(
+    h("button", { class: "icon-btn", type: "button", "aria-label": t.shareLbl, style: "position:absolute;top:14px;right:14px;z-index:2", onclick: c.onShare }, icon("share", 22, "var(--primary-d)")),
     h("div", { class: "res-body" },
       mascot(mood, 120),
       h("h1", {}, res.decision === "pass" ? t.passed : t.tryAgain),
@@ -245,4 +249,19 @@ export function navView(c) {
 export function errorView(c) {
   return h("div", { class: "screen center" }, mascot("think", 110), h("p", { class: "lead" }, c.t.loadError),
     h("button", { class: "btn primary wide", type: "button", onclick: c.onRetry }, c.t.retry));
+}
+
+// ───────────── ورقة المشاركة ─────────────
+export function shareSheet(c) {
+  const { t } = c;
+  const opt = (id, label, glyph) => h("button", { class: "share-opt", type: "button", onclick: () => c.onPick(id) },
+    h("span", { class: "share-ic", "aria-hidden": "true" }, glyph), h("span", {}, label));
+  const sheet = h("div", { class: "sheet-back", onclick: (e) => { if (e.target === sheet) c.onClose(); } },
+    h("div", { class: "sheet", role: "dialog", "aria-modal": "true", "aria-label": t.shareTitle },
+      h("h2", {}, t.shareTitle),
+      h("div", { class: "share-grid" },
+        opt("telegram", "Telegram", "✈"), opt("whatsapp", "WhatsApp", "✆"), opt("facebook", "Facebook", "f"), opt("x", "X", "𝕏"),
+        opt("copy", t.shareCopy, "⧉"), ...(c.canNative ? [opt("more", t.shareMore, "⋯")] : [])),
+      h("button", { class: "btn ghost", type: "button", onclick: c.onClose }, t.shareClose)));
+  return sheet;
 }

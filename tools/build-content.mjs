@@ -199,6 +199,7 @@ const index = {
         ],
       }],
     },
+    { id: "bridge", title: { ar: "جسر العامية للفصحى", en: "Bridge from Egyptian to Standard Arabic" }, levels: [] },
   ],
 };
 
@@ -208,11 +209,11 @@ const index = {
 const hasTitle = (t) => t && typeof t.ar === "string" && t.ar && typeof t.en === "string" && t.en;
 function mergeIncoming(spec, file) {
   const bad = (m) => { throw new Error(`incoming/${file}: ${m}`); };
-  if (!["native", "learner"].includes(spec.track)) bad("track must be native|learner");
+  if (!["native", "learner", "bridge"].includes(spec.track)) bad("track must be native|learner|bridge");
   if (!/^l\d+$/.test(spec.level || "")) bad("level must look like l2");
   if (!hasTitle(spec.levelTitle)) bad("levelTitle needs ar+en");
   if (!Array.isArray(spec.units) || !spec.units.length) bad("units missing");
-  const prefix = spec.track === "native" ? "nt" : "ln";
+  const prefix = { native: "nt", learner: "ln", bridge: "br" }[spec.track];
   const track = index.tracks.find((t) => t.id === spec.track);
   let level = track.levels.find((l) => l.id === spec.level);
   if (!level) { level = { id: spec.level, title: spec.levelTitle, units: [] }; track.levels.push(level); }

@@ -2,7 +2,7 @@
 import { call, isDemo, telegram } from "./api.js";
 import { loadIndex, loadLesson, setContentLang, flattenTrack, lessonOfQuestion, unitTestQuestions, finalExamQuestions, placementPlan, placementOutcome } from "./content.js";
 import { runPlayer } from "./player.js";
-import { homeView, reviewView, progressView, meView, onboardingView, resultView, placementResultView, navView, errorView } from "./views.js";
+import { homeView, reviewView, progressView, meView, onboardingView, resultView, placementResultView, navView, errorView, shareSheet } from "./views.js";
 import { badgesView, celebrateView } from "./badges.js";
 import { BADGE_GEMS } from "./shared/gamify.js";
 import { T } from "./i18n.js";
@@ -85,7 +85,7 @@ function ctx() {
   if (!S.me.user.track) return base;
   return {
     ...base, track: trackObj(), nodes: nodesWithState(),
-    onNode: onNode, onStartReview: startReview, onSetting: saveSettings, onGoal, onBuyFreeze, hapticOn: hapticOn(), onHaptic: setHaptic, onPlacement: startPlacement,
+    onNode: onNode, onStartReview: startReview, onSetting: saveSettings, onGoal, onBuyFreeze, hapticOn: hapticOn(), onHaptic: setHaptic, onPlacement: startPlacement, onShare: openShare,
   };
 }
 
@@ -117,7 +117,7 @@ function showError(retry) {
 
 // ───────────── الإعدادات ─────────────
 async function saveSettings(patch) {
-  if (patch.track && !("ui_lang" in patch)) patch = { ...patch, ui_lang: patch.track === "native" ? "ar" : learnerLang() };
+  if (patch.track && !("ui_lang" in patch)) patch = { ...patch, ui_lang: patch.track !== "learner" ? "ar" : learnerLang() };
   try {
     const r = await call("/api/settings", { ...patch, today: today() });
     S.me = r;
@@ -140,7 +140,45 @@ async function onNode(n) {
   } finally { S.busy = false; render(); }
 }
 
-const playerBase = () => ({ t: t(), dir: S.me.user.track === "native" ? "rtl" : "ltr", haptic, confirmLeave, toast,
+// ───────────── المشاركة ─────────────
+const BOT_LINK = "https://t.me/Ta3almAppBot";
+function openExternal(url) {
+  try {
+    if (telegram && /^https:\/\/t\.me\//.test(url) && telegram.openTelegramLink) telegram.openTelegramLink(url);
+    else if (telegram?.openLink) telegram.openLink(url);
+    else window.open(url, "_blank", "noopener");
+  } catch { window.open(url, "_blank", "noopener"); }
+}
+async function copyText(txt) {
+  try { await navigator.clipboard.writeText(txt); return true; } catch { /* نجرّب الطريقة القديمة */ }
+  try {
+    const ta = h("textarea", { style: { position: "fixed", opacity: "0" } }, txt); document.body.append(ta); ta.select();
+    const ok = document.execCommand("copy"); ta.remove(); return ok;
+  } catch { return false; }
+}
+function openShare() {
+  const text = t().shareText, enc = encodeURIComponent;
+  const urls = {
+    telegram: `https://t.me/share/url?url=${enc(BOT_LINK)}&text=${enc(text)}`,
+    whatsapp: `https://wa.me/?text=${enc(`${text}\n${BOT_LINK}`)}`,
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${enc(BOT_LINK)}`,
+    x: `https://twitter.com/intent/tweet?text=${enc(text)}&url=${enc(BOT_LINK)}`,
+  };
+  const close = () => { el.remove(); document.body.classList.remove("no-scroll"); };
+  const el = shareSheet({
+    t: t(), canNative: typeof navigator.share === "function", onClose: close,
+    onPick: async (id) => {
+      if (id === "copy") { const ok = await copyText(BOT_LINK); toast(ok ? t().shareCopied : BOT_LINK); }
+      else if (id === "more") { try { await navigator.share({ title: "Ta3lam", text, url: BOT_LINK }); } catch { /* أُلغيت */ } }
+      else openExternal(urls[id]);
+      close();
+    },
+  });
+  $("overlay").append(el);
+  document.body.classList.add("no-scroll");
+}
+
+const playerBase = () => ({ t: t(), dir: S.me.user.track !== "learner" ? "rtl" : "ltr", haptic, confirmLeave, toast,
   onReport: async (q, kind, note) => { const r = await call("/api/report", { questionId: q.id, kind, note, lang: lang(), today: today() }); await celebrate(r.award); } });
 
 const adoptMe = (r) => { S.me = { user: r.user, progress: r.progress, dueCount: r.dueCount, gamify: r.gamify }; };
@@ -174,7 +212,7 @@ async function onBuyFreeze() {
 function showResult(res, extra = {}) {
   return new Promise((resolve) => {
     const ov = $("overlay");
-    const el = resultView({ t: t(), lang: lang(), dir: playerBase().dir, res: { ...res, ...extra }, onAction: (a) => { el.remove(); resolve(a); } });
+    const el = resultView({ t: t(), lang: lang(), dir: playerBase().dir, res: { ...res, ...extra }, onShare: openShare, onAction: (a) => { el.remove(); resolve(a); } });
     ov.append(el);
     document.body.classList.add("no-scroll");
   }).finally(() => document.body.classList.remove("no-scroll"));

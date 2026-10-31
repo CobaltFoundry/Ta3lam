@@ -37,6 +37,7 @@ const ICONS = {
   star: '<polygon points="12 3 14.7 9 21 9.6 16.2 13.8 17.8 20 12 16.7 6.2 20 7.8 13.8 3 9.6 9.3 9"/>',
   gem: '<path d="M6 4h12l4 6-10 11L2 10z"/><path d="M2 10h20"/>',
   medal: '<circle cx="12" cy="9" r="6"/><path d="M8.5 14L7 21l5-3 5 3-1.5-7"/>',
+  share: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-4M8.6 13.5l6.8 4"/>',
   swap: '<path d="M7 7h12l-3-3M17 17H5l3 3"/>',
 };
 export function icon(name, size = 24, stroke = "currentColor", fill = "none") {

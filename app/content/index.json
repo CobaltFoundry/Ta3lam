@@ -1571,6 +1571,264 @@
        "lessons": []
       }
      ]
+    },
+    {
+     "id": "l7",
+     "title": {
+      "ar": "المستوى ٧ · الفصحى المهنية",
+      "en": "Level 7 · Professional Arabic"
+     },
+     "units": [
+      {
+       "id": "nt-l7-u1",
+       "title": {
+        "ar": "الرسالة الرسمية",
+        "en": "The formal letter"
+       },
+       "lessons": [
+        {
+         "id": "nt-l7-u1-01",
+         "title": {
+          "ar": "أجزاء الرسالة الرسمية",
+          "en": "Parts of a formal letter"
+         }
+        },
+        {
+         "id": "nt-l7-u1-02",
+         "title": {
+          "ar": "صيغ الافتتاح والختام",
+          "en": "Openings and closings"
+         }
+        },
+        {
+         "id": "nt-l7-u1-03",
+         "title": {
+          "ar": "الإحالة والإعلام والطلب",
+          "en": "Referring, informing and requesting"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l7-u2",
+       "title": {
+        "ar": "الطلب والاعتذار والشكوى",
+        "en": "Requests, apologies and complaints"
+       },
+       "lessons": [
+        {
+         "id": "nt-l7-u2-01",
+         "title": {
+          "ar": "الطلب والاستئذان",
+          "en": "Requests and permission"
+         }
+        },
+        {
+         "id": "nt-l7-u2-02",
+         "title": {
+          "ar": "الاعتذار والشكر",
+          "en": "Apologies and thanks"
+         }
+        },
+        {
+         "id": "nt-l7-u2-03",
+         "title": {
+          "ar": "الشكوى والرفض والتأكيد",
+          "en": "Complaints, polite refusals and confirmations"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l7-u3",
+       "title": {
+        "ar": "التقرير والمحضر",
+        "en": "Reports and minutes"
+       },
+       "lessons": [
+        {
+         "id": "nt-l7-u3-01",
+         "title": {
+          "ar": "بنية التقرير",
+          "en": "Structure of a report"
+         }
+        },
+        {
+         "id": "nt-l7-u3-02",
+         "title": {
+          "ar": "لغة التقرير الموضوعية",
+          "en": "Objective report language"
+         }
+        },
+        {
+         "id": "nt-l7-u3-03",
+         "title": {
+          "ar": "محضر الاجتماع",
+          "en": "Meeting minutes"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l7-u4",
+       "title": {
+        "ar": "السيرة الذاتية وخطاب التقديم",
+        "en": "CV and cover letter"
+       },
+       "lessons": [
+        {
+         "id": "nt-l7-u4-01",
+         "title": {
+          "ar": "السيرة الذاتية",
+          "en": "The CV"
+         }
+        },
+        {
+         "id": "nt-l7-u4-02",
+         "title": {
+          "ar": "أفعال الإنجاز وحروفها",
+          "en": "Achievement verbs and their prepositions"
+         }
+        },
+        {
+         "id": "nt-l7-u4-03",
+         "title": {
+          "ar": "خطاب التقديم والمقابلة",
+          "en": "Cover letter and interview"
+         }
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "l8",
+     "title": {
+      "ar": "المستوى ٨ · الثروة اللغوية",
+      "en": "Level 8 · Vocabulary"
+     },
+     "units": [
+      {
+       "id": "nt-l8-u1",
+       "title": {
+        "ar": "الأضداد",
+        "en": "Opposites"
+       },
+       "lessons": [
+        {
+         "id": "nt-l8-u1-01",
+         "title": {
+          "ar": "أضداد الصفات الخلقية",
+          "en": "Opposites of character traits"
+         }
+        },
+        {
+         "id": "nt-l8-u1-02",
+         "title": {
+          "ar": "أضداد الأفعال",
+          "en": "Opposites of verbs"
+         }
+        },
+        {
+         "id": "nt-l8-u1-03",
+         "title": {
+          "ar": "أضداد الأسماء المعنوية",
+          "en": "Opposites of abstract nouns"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l8-u2",
+       "title": {
+        "ar": "كلمة بمعنيين",
+        "en": "One word, two meanings"
+       },
+       "lessons": [
+        {
+         "id": "nt-l8-u2-01",
+         "title": {
+          "ar": "كلمة بمعنيين: عين وساق وورق",
+          "en": "One word, two meanings: eye, leg, paper"
+         }
+        },
+        {
+         "id": "nt-l8-u2-02",
+         "title": {
+          "ar": "كلمة بمعنيين: فصل وذهب وخال",
+          "en": "One word, two meanings: season, gold, uncle"
+         }
+        },
+        {
+         "id": "nt-l8-u2-03",
+         "title": {
+          "ar": "السياق يحدد المعنى",
+          "en": "Context decides meaning"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l8-u3",
+       "title": {
+        "ar": "أسماء الحيوان",
+        "en": "Animal names"
+       },
+       "lessons": [
+        {
+         "id": "nt-l8-u3-01",
+         "title": {
+          "ar": "أسماء صغار الحيوان",
+          "en": "Names of young animals"
+         }
+        },
+        {
+         "id": "nt-l8-u3-02",
+         "title": {
+          "ar": "أصوات الحيوان",
+          "en": "Animal sounds"
+         }
+        },
+        {
+         "id": "nt-l8-u3-03",
+         "title": {
+          "ar": "مساكن الحيوان",
+          "en": "Animal homes"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l8-u4",
+       "title": {
+        "ar": "الأمثال والحكم",
+        "en": "Proverbs"
+       },
+       "lessons": [
+        {
+         "id": "nt-l8-u4-01",
+         "title": {
+          "ar": "أمثال في العلم والوقت",
+          "en": "Proverbs on learning and time"
+         }
+        },
+        {
+         "id": "nt-l8-u4-02",
+         "title": {
+          "ar": "أمثال في الصحبة والأخلاق",
+          "en": "Proverbs on friendship and character"
+         }
+        },
+        {
+         "id": "nt-l8-u4-03",
+         "title": {
+          "ar": "أمثال في الحذر والتجربة",
+          "en": "Proverbs on caution and experience"
+         }
+        }
+       ]
+      }
+     ]
     }
    ]
   },
@@ -1722,6 +1980,145 @@
           "ar": "مِنْ أَيْنَ أَنْتَ؟",
           "en": "Where are you from?",
           "fr": "D’où venez-vous ?"
+         }
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "bridge",
+   "title": {
+    "ar": "جسر العامية للفصحى",
+    "en": "Bridge from Egyptian to Standard Arabic"
+   },
+   "levels": [
+    {
+     "id": "l1",
+     "title": {
+      "ar": "جسر العامية",
+      "en": "Bridge from colloquial Egyptian",
+      "fr": "Niveau 1 · Phrases simples"
+     },
+     "units": [
+      {
+       "id": "br-l1-u1",
+       "title": {
+        "ar": "جسر العامية: الاستفهام والزمن والإشارة",
+        "en": "Bridge: questions, time and pointing words"
+       },
+       "lessons": [
+        {
+         "id": "br-l1-u1-01",
+         "title": {
+          "ar": "أدوات الاستفهام",
+          "en": "Question words"
+         }
+        },
+        {
+         "id": "br-l1-u1-02",
+         "title": {
+          "ar": "كلمات الزمن والحال",
+          "en": "Time and manner words"
+         }
+        },
+        {
+         "id": "br-l1-u1-03",
+         "title": {
+          "ar": "كلمات الإشارة والموصول",
+          "en": "Pointing and relative words"
+         }
+        }
+       ]
+      },
+      {
+       "id": "br-l1-u2",
+       "title": {
+        "ar": "جسر العامية: الأفعال اليومية",
+        "en": "Bridge: everyday verbs"
+       },
+       "lessons": [
+        {
+         "id": "br-l1-u2-01",
+         "title": {
+          "ar": "أفعال شائعة (١)",
+          "en": "Common verbs (1)"
+         }
+        },
+        {
+         "id": "br-l1-u2-02",
+         "title": {
+          "ar": "الأفعال التي تبدأ بـ«ات» في العامية",
+          "en": "Colloquial verbs that start with 'it-'"
+         }
+        },
+        {
+         "id": "br-l1-u2-03",
+         "title": {
+          "ar": "المضارع والمستقبل",
+          "en": "Present and future"
+         }
+        }
+       ]
+      },
+      {
+       "id": "br-l1-u3",
+       "title": {
+        "ar": "جسر العامية: الضمائر والنفي والمكان",
+        "en": "Bridge: pronouns, negation and place"
+       },
+       "lessons": [
+        {
+         "id": "br-l1-u3-01",
+         "title": {
+          "ar": "ضمائر المخاطب والمتكلمين",
+          "en": "You and we pronouns"
+         }
+        },
+        {
+         "id": "br-l1-u3-02",
+         "title": {
+          "ar": "النفي: مش وما…ش وموجود",
+          "en": "Negation"
+         }
+        },
+        {
+         "id": "br-l1-u3-03",
+         "title": {
+          "ar": "كلمات المكان",
+          "en": "Place words"
+         }
+        }
+       ]
+      },
+      {
+       "id": "br-l1-u4",
+       "title": {
+        "ar": "جسر العامية: من الجملة العامية إلى الفصحى",
+        "en": "Bridge: whole sentences"
+       },
+       "lessons": [
+        {
+         "id": "br-l1-u4-01",
+         "title": {
+          "ar": "التعبير عن الرغبة",
+          "en": "Expressing wishes"
+         }
+        },
+        {
+         "id": "br-l1-u4-02",
+         "title": {
+          "ar": "جمل عامية كاملة",
+          "en": "Whole colloquial sentences"
+         }
+        },
+        {
+         "id": "br-l1-u4-03",
+         "title": {
+          "ar": "عبارات المجاملة والتحية",
+          "en": "Polite phrases"
          }
         }
        ]

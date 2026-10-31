@@ -3,7 +3,7 @@ import { decide, xpFor, cleanToday, updateStreak, cleanIds, isId, PASS } from ".
 import { nextState, newMistake, MASTERED } from "./srs.js";
 import { cleanState, applyFreeze, onLesson, onReview, onReport, buyFreeze, setGoal, view as gview, rankOf } from "./gamify.js";
 
-const TRACKS = ["native", "learner"];
+const TRACKS = ["native", "learner", "bridge"];
 const THEMES = ["warm", "night", "sage", "telegram"];
 const LANGS = ["ar", "en", "fr"];
 
