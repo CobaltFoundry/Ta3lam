@@ -30,7 +30,7 @@ const PASS_FINAL = 0.8;
 
 export const blankState = () => ({
   gems: 0, correct: 0, reviewCorrect: 0, perfectIds: [], lessonsDay: "", lessonsToday: 0,
-  weekKey: "", weekDays: 0, goalDays: 5, goalClaimed: "", freezes: 0, badges: {},
+  weekKey: "", weekDays: 0, goalDays: 5, goalClaimed: "", freezes: 0, badges: {}, dailyDay: "",
 });
 
 /** يدمج حالة محفوظة (قد تكون ناقصة أو تالفة) في حالة سليمة */
@@ -45,6 +45,7 @@ export function cleanState(raw) {
   s.goalDays = GOALS.includes(raw.goalDays) ? raw.goalDays : 5;
   s.goalClaimed = typeof raw.goalClaimed === "string" ? raw.goalClaimed : "";
   s.freezes = Math.min(n(raw.freezes), FREEZE_MAX);
+  s.dailyDay = typeof raw.dailyDay === "string" ? raw.dailyDay.slice(0, 10) : "";
   if (raw.badges && typeof raw.badges === "object") for (const [k, v] of Object.entries(raw.badges)) if (BADGE_IDS.has(k)) s.badges[k] = String(v).slice(0, 10);
   return s;
 }
@@ -163,5 +164,5 @@ export function setGoal(s, days) {
 export function view(s, today) {
   const cur = weekStart(today) === s.weekKey;
   return { gems: s.gems, freezes: s.freezes, goalDays: s.goalDays, weekDays: cur ? s.weekDays : 0,
-    badges: s.badges, correct: s.correct, perfect: s.perfectIds.length };
+    badges: s.badges, correct: s.correct, perfect: s.perfectIds.length, dailyDone: s.dailyDay === today };
 }

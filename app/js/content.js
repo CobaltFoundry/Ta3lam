@@ -83,3 +83,27 @@ export function placementOutcome(track, plan, results) {
   const passedIds = skipped.flatMap((u) => [...u.lessons.map((l) => l.id), `${u.id}-test`]);
   return { passedIds, skippedUnits: skipped.length, nextUnit: units[last + 1] || null };
 }
+
+/** تحدي اليوم: ٥ أسئلة ثابتة لهذا اليوم، من دروس أنهاها المتعلم (نفس التاريخ = نفس الأسئلة) */
+export async function dailyQuestions(lessonIds, dateStr, count = 5, seen = new Set()) {
+  let h = 2166136261;
+  for (const ch of dateStr) h = Math.imul(h ^ ch.charCodeAt(0), 16777619);
+  const rnd = () => { h = (h + 0x6D2B79F5) | 0; let t = Math.imul(h ^ (h >>> 15), 1 | h); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  const ids = [...lessonIds];
+  for (let i = ids.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [ids[i], ids[j]] = [ids[j], ids[i]]; }
+  // نفضّل أسئلة لم تظهر في تحديات سابقة؛ فإن نفدت نرجع لما ظهر
+  const out = [], used = new Set();
+  for (let i = 0; i < ids.length && out.length < count; i += count) {
+    const lessons = (await Promise.all(ids.slice(i, i + count).map((id) => loadLesson(id).catch(() => null)))).filter(Boolean);
+    for (const l of lessons) {
+      if (out.length >= count) break;
+      const fresh = l.quiz.filter((q) => !seen.has(q.id) && !used.has(q.id));
+      if (fresh.length) { const q = fresh[Math.floor(rnd() * fresh.length)]; used.add(q.id); out.push(q); }
+    }
+  }
+  if (out.length < count) {
+    const rest = (await Promise.all(ids.slice(0, count).map((id) => loadLesson(id).catch(() => null)))).filter(Boolean).flatMap((l) => l.quiz).filter((q) => !used.has(q.id));
+    for (const q of rest) { if (out.length >= count) break; used.add(q.id); out.push(q); }
+  }
+  return out;
+}

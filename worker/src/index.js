@@ -250,21 +250,25 @@ const routes = {
 
   async "/api/review/answer"(env, req, tg, b) {
     const today = cleanToday(b.today);
-    const results = Array.isArray(b.results) ? b.results.slice(0, 50) : [];
+    const daily = !!b.daily;
+    const results = Array.isArray(b.results) ? b.results.slice(0, daily ? 5 : 50) : [];
     const user = await getOrCreateUser(env, tg, today);
+    const g = await loadG(env, tg.id);
+    // التحدي اليومي: مرة واحدة في اليوم تُحتسب، ويحسب XP حتى للأسئلة غير الموجودة في المراجعة
+    const dailyFresh = daily && g.dailyDay !== today;
     let right = 0, mastered = 0;
     const stmts = [];
-    for (const r of results) {
+    for (const r of (daily && !dailyFresh ? [] : results)) {
       if (!r || !isId(r.id)) continue;
       const row = await env.DB.prepare("SELECT box FROM reviews WHERE tg_id = ? AND question_id = ?").bind(tg.id, r.id).first();
-      if (!row) continue;
+      if (!row) { if (dailyFresh && r.correct) right++; continue; }
       const ns = nextState(row.box, !!r.correct, today);
       if (r.correct) right++;
       if (r.correct && ns.box === MASTERED) mastered++;
       stmts.push(env.DB.prepare("UPDATE reviews SET box = ?, due_date = ? WHERE tg_id = ? AND question_id = ?").bind(ns.box, ns.due_date, tg.id, r.id));
     }
     const xp = right * 5;
-    const g = await loadG(env, tg.id);
+    if (dailyFresh) g.dailyDay = today;
     const streak = updateStreak(user.streak, applyFreeze(g, user.last_active_date, today), today);
     stmts.push(env.DB.prepare("UPDATE users SET xp = xp + ?, streak = ?, best_streak = MAX(best_streak, ?), last_active_date = ? WHERE tg_id = ?")
       .bind(xp, streak, streak, today, tg.id));

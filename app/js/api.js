@@ -95,15 +95,17 @@ async function localCall(path, b) {
 
     case "/api/review/answer": {
       let right = 0, mastered = 0;
-      for (const r of (b.results || []).slice(0, 50)) {
+      const gd = cleanState(s.g), daily = !!b.daily, dailyFresh = daily && gd.dailyDay !== today;
+      for (const r of (daily && !dailyFresh ? [] : (b.results || []).slice(0, daily ? 5 : 50))) {
         const row = s.reviews[r?.id];
-        if (!row) continue;
+        if (!row) { if (dailyFresh && r?.correct) right++; continue; }
         if (r.correct) right++;
         const ns = nextState(row.box, !!r.correct, today);
         if (r.correct && ns.box === MASTERED) mastered++;
         s.reviews[r.id] = ns;
       }
       const g = cleanState(s.g), lastActive = s.user.last_active_date, xpBefore = s.user.xp;
+      if (dailyFresh) g.dailyDay = today;
       const xp = right * 5, streak = updateStreak(s.user.streak, applyFreeze(g, lastActive, today), today);
       Object.assign(s.user, { xp: s.user.xp + xp, streak, best_streak: Math.max(s.user.best_streak, streak), last_active_date: today });
       const award = onReview(g, { right, mastered, today, lastActive, streak });

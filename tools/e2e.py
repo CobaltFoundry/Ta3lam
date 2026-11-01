@@ -29,6 +29,7 @@ def wait_result(page):
             CELEBRATIONS.append(page.locator(".celebrate .cb-kick").inner_text())
             page.locator(".celebrate .btn.primary").click()
         page.wait_for_timeout(250)
+    page.screenshot(path=f"{SHOTS}/zz-no-result.png"); print("ERRS:", globals().get("ERRS")); print("STATE:", page.locator("body").inner_text()[:300].replace("\n"," | "))
     page.wait_for_selector(".result", timeout=1000)
 
 
@@ -91,7 +92,7 @@ def main():
             page = ctx.new_page()
             _shot = page.screenshot
             page.screenshot = lambda **k: (page.wait_for_timeout(450), _shot(**k))[1]
-            errors = []
+            errors = []; globals()["ERRS"] = errors
             page.on("pageerror", lambda e: errors.append(str(e)))
             page.on("console", lambda m: errors.append(m.text) if m.type == "error" and "Failed to load resource" not in m.text else None)
             page.goto(f"http://localhost:{PORT}/")
@@ -99,7 +100,7 @@ def main():
             # 1) اختيار المسار
             page.wait_for_selector(".track-card")
             page.screenshot(path=f"{SHOTS}/01-onboarding.png")
-            page.locator(".track-card").nth(1).click()
+            page.locator(".track-card").nth(2).click()
             page.wait_for_selector(".node")
             check(page.locator(".node.current").count() == 1, "learner: exactly one current node")
             check("null" not in page.locator(".home").inner_text(), "home screen has no stray 'null' text")
@@ -146,7 +147,7 @@ def main():
             check(page.locator(".badge").count() == 1, "review badge appears")
             page.locator(".nav-btn").nth(1).click()
             page.screenshot(path=f"{SHOTS}/07-review.png")
-            page.locator(".screen .btn.primary").click()
+            page.locator(".screen .btn.primary").first.click()
             page.wait_for_selector(".player")
             play(page)
             wait_result(page)

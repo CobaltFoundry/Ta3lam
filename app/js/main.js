@@ -2,6 +2,7 @@
 import { call, isDemo, telegram } from "./api.js";
 import { loadIndex, loadLesson, setContentLang, flattenTrack, lessonOfQuestion, unitTestQuestions, finalExamQuestions, placementPlan, placementOutcome } from "./content.js";
 import { runPlayer } from "./player.js";
+import { dailyQuestions } from "./content.js";
 import { homeView, reviewView, progressView, meView, onboardingView, resultView, placementResultView, navView, errorView, shareSheet } from "./views.js";
 import { badgesView, celebrateView } from "./badges.js";
 import { BADGE_GEMS } from "./shared/gamify.js";
@@ -85,7 +86,7 @@ function ctx() {
   if (!S.me.user.track) return base;
   return {
     ...base, track: trackObj(), nodes: nodesWithState(),
-    onNode: onNode, onStartReview: startReview, onSetting: saveSettings, onGoal, onBuyFreeze, hapticOn: hapticOn(), onHaptic: setHaptic, onPlacement: startPlacement, onShare: openShare,
+    onNode: onNode, onStartReview: startReview, onStartDaily: startDaily, onSetting: saveSettings, onGoal, onBuyFreeze, hapticOn: hapticOn(), onHaptic: setHaptic, onPlacement: startPlacement, onShare: openShare,
   };
 }
 
@@ -145,7 +146,7 @@ const BOT_LINK = "https://t.me/Ta3almAppBot";
 function openExternal(url) {
   try {
     if (telegram && /^https:\/\/t\.me\//.test(url) && telegram.openTelegramLink) telegram.openTelegramLink(url);
-    else if (telegram?.openLink) telegram.openLink(url);
+    else if (telegram?.openLink) telegram.openLink(url, { try_browser: true });
     else window.open(url, "_blank", "noopener");
   } catch { window.open(url, "_blank", "noopener"); }
 }
@@ -291,6 +292,29 @@ async function startReview() {
     const r = await runPlayer({ ...playerBase(), title: t().reviewTitle, questions });
     if (!r) return;
     const resp = await call("/api/review/answer", { results: r.results, today: today() });
+    adoptMe(resp);
+    await celebrate(resp.award);
+    await showResult({ decision: "pass", xp: resp.xp, gems: resp.award?.gained, streak: resp.user.streak, correct: r.correct, total: r.total, weak: [] });
+  } catch (e) {
+    console.error(e);
+    toast(t().loadError);
+  } finally { S.busy = false; render(); }
+}
+
+async function startDaily() {
+  if (S.busy) return;
+  const done = nodesWithState().filter((n) => n.kind === "lesson" && n.state === "done").map((n) => n.id);
+  if (!done.length) { toast(t().dailyNone); return; }
+  S.busy = true;
+  try {
+    let seen = new Set();
+    try { seen = new Set(JSON.parse(localStorage.getItem("ta3lam-daily-seen") || "[]")); } catch { /* بلا ذاكرة */ }
+    const questions = await dailyQuestions(done, today(), 5, seen);
+    if (!questions.length) { toast(t().loadError); return; }
+    const r = await runPlayer({ ...playerBase(), title: t().dailyTitle, questions });
+    if (!r) return;
+    try { localStorage.setItem("ta3lam-daily-seen", JSON.stringify([...seen, ...questions.map((q) => q.id)].slice(-600))); } catch { /* بلا ذاكرة */ }
+    const resp = await call("/api/review/answer", { results: r.results, today: today(), daily: true });
     adoptMe(resp);
     await celebrate(resp.award);
     await showResult({ decision: "pass", xp: resp.xp, gems: resp.award?.gained, streak: resp.user.streak, correct: r.correct, total: r.total, weak: [] });

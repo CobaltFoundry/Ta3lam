@@ -1829,6 +1829,195 @@
        ]
       }
      ]
+    },
+    {
+     "id": "l9",
+     "title": {
+      "ar": "المستوى ٩ · القراءة والفهم",
+      "en": "Level 9 · Reading comprehension"
+     },
+     "units": [
+      {
+       "id": "nt-l9-u1",
+       "title": {
+        "ar": "فهم المعنى",
+        "en": "Understanding meaning"
+       },
+       "lessons": [
+        {
+         "id": "nt-l9-u1-01",
+         "title": {
+          "ar": "الفكرة الرئيسية",
+          "en": "The main idea"
+         }
+        },
+        {
+         "id": "nt-l9-u1-02",
+         "title": {
+          "ar": "معنى الكلمة من السياق",
+          "en": "Word meaning from context"
+         }
+        },
+        {
+         "id": "nt-l9-u1-03",
+         "title": {
+          "ar": "التفاصيل الصريحة",
+          "en": "Explicit details"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l9-u2",
+       "title": {
+        "ar": "الاستنتاج والعلاقات",
+        "en": "Inference and relations"
+       },
+       "lessons": [
+        {
+         "id": "nt-l9-u2-01",
+         "title": {
+          "ar": "الاستنتاج",
+          "en": "Making inferences"
+         }
+        },
+        {
+         "id": "nt-l9-u2-02",
+         "title": {
+          "ar": "السبب والنتيجة",
+          "en": "Cause and effect"
+         }
+        },
+        {
+         "id": "nt-l9-u2-03",
+         "title": {
+          "ar": "المقارنة والتصنيف",
+          "en": "Comparing and classifying"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l9-u3",
+       "title": {
+        "ar": "اللغة في النص",
+        "en": "Language in the text"
+       },
+       "lessons": [
+        {
+         "id": "nt-l9-u3-01",
+         "title": {
+          "ar": "الإعراب من النص",
+          "en": "Parsing words from the text"
+         }
+        },
+        {
+         "id": "nt-l9-u3-02",
+         "title": {
+          "ar": "الإملاء في النص",
+          "en": "Spelling in the text"
+         }
+        },
+        {
+         "id": "nt-l9-u3-03",
+         "title": {
+          "ar": "الربط والجر في النص",
+          "en": "Connectors and prepositions in context"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l9-u4",
+       "title": {
+        "ar": "أسلوب الكاتب",
+        "en": "The writer's style"
+       },
+       "lessons": [
+        {
+         "id": "nt-l9-u4-01",
+         "title": {
+          "ar": "الحقيقة والرأي",
+          "en": "Fact and opinion"
+         }
+        },
+        {
+         "id": "nt-l9-u4-02",
+         "title": {
+          "ar": "غرض الكاتب",
+          "en": "The author's purpose"
+         }
+        },
+        {
+         "id": "nt-l9-u4-03",
+         "title": {
+          "ar": "ترتيب الجمل والعنوان",
+          "en": "Sentence order and titles"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l9-u5",
+       "title": {
+        "ar": "اختبار شامل ١",
+        "en": "Comprehensive test 1"
+       },
+       "lessons": [
+        {
+         "id": "nt-l9-u5-01",
+         "title": {
+          "ar": "مفردات وأمثال في نصوص",
+          "en": "Vocabulary and proverbs in texts"
+         }
+        },
+        {
+         "id": "nt-l9-u5-02",
+         "title": {
+          "ar": "إعراب وإملاء وربط في نصوص",
+          "en": "Grammar, spelling and connectors in texts"
+         }
+        },
+        {
+         "id": "nt-l9-u5-03",
+         "title": {
+          "ar": "فهم واستنتاج في نصوص",
+          "en": "Comprehension and inference in texts"
+         }
+        }
+       ]
+      },
+      {
+       "id": "nt-l9-u6",
+       "title": {
+        "ar": "اختبار شامل ٢",
+        "en": "Comprehensive test 2"
+       },
+       "lessons": [
+        {
+         "id": "nt-l9-u6-01",
+         "title": {
+          "ar": "مفردات وأمثال في نصوص",
+          "en": "Vocabulary and proverbs in texts"
+         }
+        },
+        {
+         "id": "nt-l9-u6-02",
+         "title": {
+          "ar": "إعراب وإملاء وربط في نصوص",
+          "en": "Grammar, spelling and connectors in texts"
+         }
+        },
+        {
+         "id": "nt-l9-u6-03",
+         "title": {
+          "ar": "فهم واستنتاج في نصوص",
+          "en": "Comprehension and inference in texts"
+         }
+        }
+       ]
+      }
+     ]
     }
    ]
   },

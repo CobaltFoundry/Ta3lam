@@ -106,7 +106,11 @@ export function reviewView(c) {
     h("h1", {}, t.reviewTitle),
     mascot(n > 0 ? "think" : "happy", 110),
     h("p", { class: "lead" }, n > 0 ? t.reviewDue(num(n, lang)) : t.reviewNone),
-    n > 0 ? h("button", { class: "btn primary wide", type: "button", onclick: c.onStartReview }, t.reviewStart) : null);
+    n > 0 ? h("button", { class: "btn primary wide", type: "button", onclick: c.onStartReview }, t.reviewStart) : null,
+    h("div", { class: "daily-card" },
+      h("h2", {}, t.dailyTitle),
+      h("p", { class: "lead" }, me.gamify?.dailyDone ? t.dailyDone : t.dailyDesc),
+      h("button", { class: me.gamify?.dailyDone ? "btn ghost wide" : "btn primary wide", type: "button", onclick: c.onStartDaily }, me.gamify?.dailyDone ? t.dailyAgain : t.dailyStart)));
 }
 
 // ───────────── التقدّم ─────────────
@@ -255,12 +259,12 @@ export function errorView(c) {
 export function shareSheet(c) {
   const { t } = c;
   const opt = (id, label, glyph) => h("button", { class: "share-opt", type: "button", onclick: () => c.onPick(id) },
-    h("span", { class: "share-ic", "aria-hidden": "true" }, glyph), h("span", {}, label));
+    h("span", { class: "share-ic" + (id === "telegram" ? " tg" : ""), "aria-hidden": "true" }, glyph), h("span", {}, label));
   const sheet = h("div", { class: "sheet-back", onclick: (e) => { if (e.target === sheet) c.onClose(); } },
     h("div", { class: "sheet", role: "dialog", "aria-modal": "true", "aria-label": t.shareTitle },
       h("h2", {}, t.shareTitle),
       h("div", { class: "share-grid" },
-        opt("telegram", "Telegram", "✈"), opt("whatsapp", "WhatsApp", "✆"), opt("facebook", "Facebook", "f"), opt("x", "X", "𝕏"),
+        opt("telegram", "Telegram", icon("plane", 22, "#fff")), opt("whatsapp", "WhatsApp", "✆"), opt("facebook", "Facebook", "f"), opt("x", "X", "𝕏"),
         opt("copy", t.shareCopy, "⧉"), ...(c.canNative ? [opt("more", t.shareMore, "⋯")] : [])),
       h("button", { class: "btn ghost", type: "button", onclick: c.onClose }, t.shareClose)));
   return sheet;
