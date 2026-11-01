@@ -1,0 +1,353 @@
+// نقطة الدخول: الحالة، التنقل، وربط المشغّل بالخادم.
+import { call, isDemo, telegram } from "./api.js";
+import { loadIndex, loadLesson, setContentLang, flattenTrack, lessonOfQuestion, unitTestQuestions, finalExamQuestions, placementPlan, placementOutcome } from "./content.js";
+import { runPlayer } from "./player.js";
+import { dailyQuestions } from "./content.js";
+import { homeView, reviewView, progressView, meView, onboardingView, resultView, placementResultView, navView, errorView, shareSheet } from "./views.js";
+import { badgesView, celebrateView } from "./badges.js";
+import { BADGE_GEMS } from "./shared/gamify.js";
+import { T } from "./i18n.js";
+import { h, localDate } from "./util.js";
+
+const S = { me: null, index: null, tab: "home", busy: false };
+const $ = (id) => document.getElementById(id);
+
+const lang = () => { const l = S.me?.user.ui_lang; return l === "en" || l === "fr" ? l : "ar"; };
+/** لغة واجهة المتعلّم الافتراضية: لغة تليجرام إن كانت فرنسية، وإلا الإنجليزية */
+const learnerLang = () => {
+  const cur = S.me?.user.ui_lang;
+  if (cur === "en" || cur === "fr") return cur;
+  const code = String(telegram?.initDataUnsafe?.user?.language_code || navigator.language || "").toLowerCase();
+  return code.startsWith("fr") ? "fr" : "en";
+};
+const t = () => T[lang()];
+const trackObj = () => S.index.tracks.find((x) => x.id === S.me.user.track);
+const today = () => localDate();
+
+// ───────────── المظهر واللغة ─────────────
+function applyLook() {
+  const u = S.me?.user;
+  const l = lang();
+  const root = document.documentElement;
+  root.lang = l;
+  root.dir = l === "ar" ? "rtl" : "ltr";
+  setContentLang(l);
+  root.dataset.theme = u?.theme || "warm";
+  document.title = T[l].appName;
+  if (telegram) {
+    try {
+      const bg = getComputedStyle(root).getPropertyValue("--bg").trim();
+      if (bg.startsWith("#")) { telegram.setHeaderColor(bg); telegram.setBackgroundColor(bg); }
+    } catch { /* نسخ قديمة */ }
+  }
+}
+
+const HK = "ta3lam.haptic";
+const hapticOn = () => { try { return localStorage.getItem(HK) !== "off"; } catch { return true; } };
+function setHaptic(on) {
+  try { localStorage.setItem(HK, on ? "on" : "off"); } catch { /* التخزين غير متاح */ }
+  render();
+  if (on) haptic("light");
+}
+
+const haptic = (kind) => {
+  const hf = hapticOn() ? telegram?.HapticFeedback : null;
+  if (!hf) return;
+  try { if (kind === "success" || kind === "error") hf.notificationOccurred(kind); else hf.impactOccurred("light"); } catch { /* تجاهل */ }
+};
+
+function toast(msg) {
+  const el = h("div", { class: "toast", role: "status" }, msg);
+  document.body.append(el);
+  setTimeout(() => el.remove(), 2400);
+}
+
+const confirmLeave = () => new Promise((res) => {
+  const msg = t().leaveConfirm;
+  if (telegram?.showConfirm) telegram.showConfirm(msg, (ok) => res(!!ok)); else res(window.confirm(msg));
+});
+
+// ───────────── عقد المسار وحالاتها ─────────────
+function nodesWithState() {
+  const passed = new Map(S.me.progress.map((p) => [p.lesson_id, p.status === "passed"]));
+  let open = true; // أول عقدة غير ناجحة = الحالية، وما بعدها مقفل
+  return flattenTrack(trackObj()).map((n) => {
+    let state;
+    if (passed.get(n.id)) state = "done";
+    else if (open) { state = "current"; open = false; }
+    else state = "locked";
+    return { ...n, state };
+  });
+}
+
+// ───────────── العرض ─────────────
+function ctx() {
+  const base = { t: t(), lang: lang(), me: S.me, isDemo, tab: S.tab, onTab: (id) => { S.tab = id; render(); } };
+  if (!S.me.user.track) return base;
+  return {
+    ...base, track: trackObj(), nodes: nodesWithState(),
+    onNode: onNode, onStartReview: startReview, onStartDaily: startDaily, onSetting: saveSettings, onGoal, onBuyFreeze, hapticOn: hapticOn(), onHaptic: setHaptic, onPlacement: startPlacement, onShare: openShare,
+  };
+}
+
+function render() {
+  const view = $("view"), nav = $("nav");
+  applyLook();
+  if (!S.me.user.track) {
+    nav.replaceChildren();
+    view.replaceChildren(onboardingView({ ...ctx(), onPickTrack: (track) => saveSettings({ track }) }));
+    return;
+  }
+  const c = ctx();
+  const screens = { home: homeView, review: reviewView, progress: progressView, badges: badgesView, me: meView };
+  view.replaceChildren(screens[S.tab](c));
+  nav.replaceChildren(navView(c));
+  view.scrollTo?.(0, 0);
+  window.scrollTo(0, 0);
+  // الرئيسية: انتقل إلى العقدة الحالية (آخر درس وصلت إليه)
+  if (S.tab === "home") {
+    const cur = view.querySelector(".node.current");
+    if (cur) requestAnimationFrame(() => cur.scrollIntoView({ block: "center", behavior: "auto" }));
+  }
+}
+
+function showError(retry) {
+  $("nav").replaceChildren();
+  $("view").replaceChildren(errorView({ t: t(), onRetry: retry }));
+}
+
+// ───────────── الإعدادات ─────────────
+async function saveSettings(patch) {
+  if (patch.track && !("ui_lang" in patch)) patch = { ...patch, ui_lang: patch.track !== "learner" ? "ar" : learnerLang() };
+  try {
+    const r = await call("/api/settings", { ...patch, today: today() });
+    S.me = r;
+    S.tab = patch.track ? "home" : S.tab;
+    render();
+  } catch { toast(t().loadError); }
+}
+
+// ───────────── اللعب ─────────────
+async function onNode(n) {
+  if (S.busy) return;
+  if (n.state === "locked") { toast(t().lockedToast); haptic("error"); return; }
+  S.busy = true;
+  try {
+    if (n.kind === "lesson") await playLesson(n.id, n.title[lang()] || n.title.en);
+    else await playUnitTest(n);
+  } catch (e) {
+    console.error(e);
+    toast(t().loadError);
+  } finally { S.busy = false; render(); }
+}
+
+// ───────────── المشاركة ─────────────
+const BOT_LINK = "https://t.me/Ta3almAppBot";
+function openExternal(url) {
+  try {
+    if (telegram && /^https:\/\/t\.me\//.test(url) && telegram.openTelegramLink) telegram.openTelegramLink(url);
+    else if (telegram?.openLink) telegram.openLink(url, { try_browser: true });
+    else window.open(url, "_blank", "noopener");
+  } catch { window.open(url, "_blank", "noopener"); }
+}
+async function copyText(txt) {
+  try { await navigator.clipboard.writeText(txt); return true; } catch { /* نجرّب الطريقة القديمة */ }
+  try {
+    const ta = h("textarea", { style: { position: "fixed", opacity: "0" } }, txt); document.body.append(ta); ta.select();
+    const ok = document.execCommand("copy"); ta.remove(); return ok;
+  } catch { return false; }
+}
+function openShare() {
+  const text = t().shareText, enc = encodeURIComponent;
+  const urls = {
+    telegram: `https://t.me/share/url?url=${enc(BOT_LINK)}&text=${enc(text)}`,
+    whatsapp: `https://wa.me/?text=${enc(`${text}\n${BOT_LINK}`)}`,
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${enc(BOT_LINK)}`,
+    x: `https://twitter.com/intent/tweet?text=${enc(text)}&url=${enc(BOT_LINK)}`,
+  };
+  const close = () => { el.remove(); document.body.classList.remove("no-scroll"); };
+  const el = shareSheet({
+    t: t(), canNative: typeof navigator.share === "function", onClose: close,
+    onPick: async (id) => {
+      if (id === "copy") { const ok = await copyText(BOT_LINK); toast(ok ? t().shareCopied : BOT_LINK); }
+      else if (id === "more") { try { await navigator.share({ title: "Ta3lam", text, url: BOT_LINK }); } catch { /* أُلغيت */ } }
+      else openExternal(urls[id]);
+      close();
+    },
+  });
+  $("overlay").append(el);
+  document.body.classList.add("no-scroll");
+}
+
+const playerBase = () => ({ t: t(), dir: S.me.user.track !== "learner" ? "rtl" : "ltr", haptic, confirmLeave, toast,
+  onReport: async (q, kind, note) => { const r = await call("/api/report", { questionId: q.id, kind, note, lang: lang(), today: today() }); await celebrate(r.award); } });
+
+const adoptMe = (r) => { S.me = { user: r.user, progress: r.progress, dueCount: r.dueCount, gamify: r.gamify }; };
+
+/** يعرض شاشات الاحتفال بالأوسمة الجديدة ثم الرتبة الجديدة */
+async function celebrate(award) {
+  if (!award) return;
+  const steps = [...(award.newBadges || []).map((id) => ({ kind: "badge", id, gems: BADGE_GEMS })), ...(award.rankUp != null ? [{ kind: "rank", rank: award.rankUp }] : [])];
+  for (const st of steps) {
+    haptic("success");
+    await new Promise((resolve) => {
+      const el = celebrateView({ t: t(), lang: lang(), ...st, onDone: () => { el.remove(); document.body.classList.remove("no-scroll"); resolve(); } });
+      $("overlay").append(el);
+      document.body.classList.add("no-scroll");
+    });
+  }
+}
+
+async function onGoal(days) {
+  try { adoptMe(await call("/api/goal", { days, today: today() })); render(); } catch { toast(t().loadError); }
+}
+async function onBuyFreeze() {
+  try {
+    const r = await call("/api/shop/freeze", { today: today() });
+    adoptMe(r);
+    toast(r.result === "ok" ? t().freezeDone : r.result === "max" ? t().freezeMaxed : t().freezeNoGems);
+    render();
+  } catch { toast(t().loadError); }
+}
+
+function showResult(res, extra = {}) {
+  return new Promise((resolve) => {
+    const ov = $("overlay");
+    const el = resultView({ t: t(), lang: lang(), dir: playerBase().dir, res: { ...res, ...extra }, onShare: openShare, onAction: (a) => { el.remove(); resolve(a); } });
+    ov.append(el);
+    document.body.classList.add("no-scroll");
+  }).finally(() => document.body.classList.remove("no-scroll"));
+}
+
+async function submit(lessonId, r) {
+  const resp = await call("/api/lesson/complete", { lessonId, total: r.total, correct: r.correct, wrongIds: r.wrongIds, today: today(), hour: new Date().getHours() });
+  adoptMe(resp);
+  await celebrate(resp.award);
+  return resp;
+}
+
+async function playLesson(lessonId, title) {
+  const lesson = await loadLesson(lessonId);
+  let mode = "full";
+  for (;;) {
+    const opts = mode === "full" ? { lesson } : { questions: lesson.quiz };
+    const r = await runPlayer({ ...playerBase(), title, ...opts });
+    if (!r) return;
+    const resp = await submit(lessonId, r);
+    const all = [...lesson.practice, ...lesson.quiz];
+    const weak = r.wrongIds.map((id) => all.find((q) => q.id === id)).filter(Boolean);
+    const action = await showResult({ decision: resp.decision, xp: resp.xp, gems: resp.award?.gained, streak: resp.streak, correct: r.correct, total: r.total }, { weak });
+    if (action === "retry") mode = "quiz";
+    else if (action === "study") mode = "full";
+    else return;
+  }
+}
+
+async function playUnitTest(n) {
+  for (;;) {
+    const questions = n.unit.final ? await finalExamQuestions(trackObj()) : await unitTestQuestions(n.unit, 15);
+    const r = await runPlayer({ ...playerBase(), title: n.unit.final ? t().finalExam : t().unitTest, questions });
+    if (!r) return;
+    const resp = await submit(n.id, r);
+    const weak = r.wrongIds.map((id) => questions.find((q) => q.id === id)).filter(Boolean);
+    const action = await showResult({ decision: resp.decision, xp: resp.xp, gems: resp.award?.gained, streak: resp.streak, correct: r.correct, total: r.total }, { weak });
+    if (action === "home") return;
+  }
+}
+
+async function startPlacement() {
+  if (S.busy) return;
+  S.busy = true;
+  try {
+    const track = trackObj();
+    const plan = await placementPlan(track);
+    const questions = plan.flatMap((p) => p.questions);
+    const r = await runPlayer({ ...playerBase(), title: t().placementTitle, questions });
+    if (!r) return;
+    const out = placementOutcome(track, plan, r.results);
+    const resp = await call("/api/placement", { passedIds: out.passedIds, wrongIds: r.wrongIds, today: today() });
+    adoptMe(resp);
+    S.tab = "home";
+    await new Promise((resolve) => {
+      const el = placementResultView({ t: t(), lang: lang(), dir: playerBase().dir, out, onDone: () => { el.remove(); resolve(); } });
+      $("overlay").append(el);
+    });
+  } catch (e) {
+    console.error(e);
+    toast(t().loadError);
+  } finally { S.busy = false; render(); }
+}
+
+async function startReview() {
+  if (S.busy) return;
+  S.busy = true;
+  try {
+    const { due } = await call("/api/review/due", { today: today() });
+    const lessonIds = [...new Set(due.map((d) => lessonOfQuestion(d.question_id)))];
+    const lessons = await Promise.all(lessonIds.map((id) => loadLesson(id).catch(() => null)));
+    const pool = new Map();
+    lessons.filter(Boolean).forEach((l) => [...l.practice, ...l.quiz].forEach((q) => pool.set(q.id, q)));
+    const questions = due.map((d) => pool.get(d.question_id)).filter(Boolean);
+    if (!questions.length) { toast(t().reviewNone); return; }
+    const r = await runPlayer({ ...playerBase(), title: t().reviewTitle, questions });
+    if (!r) return;
+    const resp = await call("/api/review/answer", { results: r.results, today: today() });
+    adoptMe(resp);
+    await celebrate(resp.award);
+    await showResult({ decision: "pass", xp: resp.xp, gems: resp.award?.gained, streak: resp.user.streak, correct: r.correct, total: r.total, weak: [] });
+  } catch (e) {
+    console.error(e);
+    toast(t().loadError);
+  } finally { S.busy = false; render(); }
+}
+
+async function startDaily() {
+  if (S.busy) return;
+  const done = nodesWithState().filter((n) => n.kind === "lesson" && n.state === "done").map((n) => n.id);
+  if (!done.length) { toast(t().dailyNone); return; }
+  S.busy = true;
+  try {
+    let seen = new Set();
+    try { seen = new Set(JSON.parse(localStorage.getItem("ta3lam-daily-seen") || "[]")); } catch { /* بلا ذاكرة */ }
+    // مستويات المسار الأساسي التي أنجز منها ٦٠٪ فأكثر → نسحب لها من بنك التحدي
+    const poolLevels = [];
+    if (S.me.user.track === "native") {
+      const byLv = new Map();
+      for (const n of nodesWithState().filter((x) => x.kind === "lesson")) {
+        const k = String(n.id).match(/^nt-(l\d+)-/)?.[1]; if (!k) continue;
+        const e = byLv.get(k) || { d: 0, t: 0 }; e.t++; if (n.state === "done") e.d++; byLv.set(k, e);
+      }
+      for (const [k, e] of byLv) if (e.d / e.t >= 0.6) poolLevels.push(k);
+    }
+    const questions = await dailyQuestions(done, today(), 5, seen, poolLevels);
+    if (!questions.length) { toast(t().loadError); return; }
+    const r = await runPlayer({ ...playerBase(), title: t().dailyTitle, questions });
+    if (!r) return;
+    try { localStorage.setItem("ta3lam-daily-seen", JSON.stringify([...seen, ...questions.map((q) => q.id)].slice(-600))); } catch { /* بلا ذاكرة */ }
+    const resp = await call("/api/review/answer", { results: r.results, today: today(), daily: true });
+    adoptMe(resp);
+    await celebrate(resp.award);
+    await showResult({ decision: "pass", xp: resp.xp, gems: resp.award?.gained, streak: resp.user.streak, correct: r.correct, total: r.total, weak: [] });
+  } catch (e) {
+    console.error(e);
+    toast(t().loadError);
+  } finally { S.busy = false; render(); }
+}
+
+// ───────────── الإقلاع ─────────────
+async function boot() {
+  if (telegram) { telegram.ready(); telegram.expand(); }
+  try {
+    const [index, me] = await Promise.all([loadIndex(), call("/api/me", { today: today() })]);
+    S.index = index;
+    S.me = me;
+    render();
+  } catch (e) {
+    console.error(e);
+    S.me ??= { user: { ui_lang: "ar", theme: "warm" }, progress: [], dueCount: 0 };
+    applyLook();
+    showError(() => location.reload());
+  }
+}
+
+boot();
