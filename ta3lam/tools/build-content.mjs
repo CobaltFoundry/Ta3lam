@@ -389,6 +389,7 @@ rmSync(new URL("lessons/", OUT), { recursive: true, force: true });
 mkdirSync(new URL("lessons/", OUT), { recursive: true });
 for (const l of all) writeFileSync(new URL(`lessons/${l.id}.json`, OUT), JSON.stringify(l));
 for (const { lang, lesson } of translated) writeFileSync(new URL(`lessons/${lesson.id}.${lang}.json`, OUT), JSON.stringify(lesson));
+index.build = new Date().toISOString().slice(0, 16).replace("T", " ");
 writeFileSync(new URL("index.json", OUT), JSON.stringify(index, null, 1));
 // ثابت لمستويات المنهج الرئيسي: يعرفه الخادم لمنح أوسمة إنهاء المستويات
 {

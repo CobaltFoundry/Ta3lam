@@ -2,7 +2,7 @@
 let indexP = null;
 const lessonCache = new Map();
 
-export const loadIndex = () => (indexP ??= fetch("content/index.json").then((r) => { if (!r.ok) throw new Error("index"); return r.json(); }));
+export const loadIndex = () => (indexP ??= fetch("content/index.json", { cache: "no-cache" }).then((r) => { if (!r.ok) throw new Error("index"); return r.json(); }));
 
 // لغة المحتوى: الترجمات (مثل الفرنسية) ملفات جانبية <id>.fr.json؛ إن لم توجد نرجع للأصل.
 let contentLang = "en";

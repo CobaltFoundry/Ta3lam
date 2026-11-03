@@ -179,7 +179,8 @@ export function meView(c) {
     h("section", { class: "set" }, h("h2", {}, t.theme), themes),
     h("section", { class: "set" }, h("h2", {}, t.vibration), seg([[true, t.on], [false, t.offV]], c.hapticOn, (v) => c.onHaptic(v))),
     h("section", { class: "set" }, h("h2", {}, t.reminder), hours),
-    c.isDemo ? h("p", { class: "demo-banner", role: "note" }, t.demoBanner) : null);
+    c.isDemo ? h("p", { class: "demo-banner", role: "note" }, t.demoBanner) : null,
+    c.build ? h("p", { class: "lead small", style: "text-align:center;opacity:.6;direction:ltr" }, "v " + c.build) : null);
 }
 
 // ───────────── اختيار المسار (أول مرة) ─────────────

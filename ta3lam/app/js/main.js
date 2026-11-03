@@ -82,7 +82,7 @@ function nodesWithState() {
 
 // ───────────── العرض ─────────────
 function ctx() {
-  const base = { t: t(), lang: lang(), me: S.me, isDemo, tab: S.tab, onTab: (id) => { S.tab = id; render(); } };
+  const base = { t: t(), lang: lang(), me: S.me, build: S.index?.build, isDemo, tab: S.tab, onTab: (id) => { S.tab = id; render(); } };
   if (!S.me.user.track) return base;
   return {
     ...base, track: trackObj(), nodes: nodesWithState(),
