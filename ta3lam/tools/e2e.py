@@ -1,3 +1,4 @@
+import os
 """اختبار شامل للواجهة في متصفح حقيقي (وضع تجريبي بدون خادم).
 التشغيل:  python3 tools/e2e.py   (من جذر المشروع؛ يشغّل خادمًا ثابتًا بنفسه)
 """
@@ -100,7 +101,7 @@ def main():
             # 1) اختيار المسار
             page.wait_for_selector(".track-card")
             page.screenshot(path=f"{SHOTS}/01-onboarding.png")
-            page.locator(".track-card").nth(2).click()
+            page.locator(".track-card").nth(1).click()
             page.wait_for_selector(".node")
             check(page.locator(".node.current").count() == 1, "learner: exactly one current node")
             check("null" not in page.locator(".home").inner_text(), "home screen has no stray 'null' text")
@@ -187,7 +188,7 @@ def main():
             page.locator(".result .btn.primary").click()
 
             # 7) كل دروس المسار تُلعب بلا أخطاء برمجية (يمشي على كل العقد)
-            for _ in range(250):
+            for _ in range(int(os.environ.get("NATIVE_LOOP","500"))):
                 page.wait_for_selector(".node")
                 cur = page.locator(".node.current")
                 if cur.count() == 0: break
@@ -214,8 +215,8 @@ def main():
                 page.wait_for_selector(".player")
                 play(page)
                 wait_result(page)
-                if "Passed" not in page.locator(".result h1").inner_text():
-                    check(False, "learner chain lesson failed unexpectedly"); break
+                if "Passed" not in page.locator(".result h1").inner_text() and "نجحت" not in page.locator(".result h1").inner_text():
+                    print("H1:", page.locator(".result h1").inner_text(), "| ERRS:", ERRS[-3:] if "ERRS" in globals() else ""); check(False, "learner chain lesson failed unexpectedly"); break
                 played += 1
                 page.locator(".result .btn.primary").click()
             check(page.locator(".node.locked").count() == 0 and page.locator(".node.current").count() == 0, f"learner track fully completable ({played} more nodes played)")
@@ -253,4 +254,5 @@ def main():
     print("\nRESULT:", "ALL OK" if not problems else f"{len(problems)} problem(s)")
     sys.exit(1 if problems else 0)
 
-main()
+if __name__ == "__main__":
+    main()

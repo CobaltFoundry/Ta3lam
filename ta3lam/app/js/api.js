@@ -11,7 +11,7 @@ export const isDemo = !initData || API_URL.includes("YOUR");
 export const telegram = tg || null;
 export const tgUser = tg?.initDataUnsafe?.user || null;
 
-const TRACKS = ["native", "learner", "bridge"], THEMES = ["warm", "night", "sage", "telegram"], LANGS = ["ar", "en", "fr"];
+const TRACKS = ["native", "learner"], THEMES = ["warm", "night", "sage", "telegram"], LANGS = ["ar", "en", "fr"];
 
 export async function call(path, payload = {}) {
   if (isDemo) return localCall(path, payload);
@@ -46,7 +46,7 @@ async function localCall(path, b) {
   const s = load();
   const today = cleanToday(b.today);
   switch (path) {
-    case "/api/me": return snapshot(s, today);
+    case "/api/me": if (s.user.track === "bridge") { s.user.track = "native"; save(s); } return snapshot(s, today);
 
     case "/api/settings":
       if (TRACKS.includes(b.track)) s.user.track = b.track;
