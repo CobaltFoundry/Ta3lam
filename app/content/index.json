@@ -190,6 +190,13 @@
          }
         },
         {
+         "id": "br-l1-u2-01",
+         "title": {
+          "ar": "أفعال شائعة (١)",
+          "en": "Common verbs (1)"
+         }
+        },
+        {
          "id": "nt-l2-u1-03",
          "title": {
           "ar": "الحرف والتمييز بين الأقسام الثلاثة",
@@ -254,6 +261,13 @@
          "title": {
           "ar": "علامات إعراب الفعل المضارع",
           "en": "Inflection Signs for Present Tense Verbs"
+         }
+        },
+        {
+         "id": "br-l1-u2-03",
+         "title": {
+          "ar": "المضارع والمستقبل",
+          "en": "Present and future"
          }
         }
        ]
@@ -340,6 +354,13 @@
          }
         },
         {
+         "id": "br-l1-u3-01",
+         "title": {
+          "ar": "ضمائر المخاطب والمتكلمين",
+          "en": "You and we pronouns"
+         }
+        },
+        {
          "id": "nt-l2-u6-02",
          "title": {
           "ar": "ضمائر الرفع المتصلة بالفعل",
@@ -396,6 +417,13 @@
           "ar": "الاسم الموصول",
           "en": "The relative pronoun"
          }
+        },
+        {
+         "id": "br-l1-u1-03",
+         "title": {
+          "ar": "كلمات الإشارة والموصول",
+          "en": "Pointing and relative words"
+         }
         }
        ]
       }
@@ -420,6 +448,13 @@
          "title": {
           "ar": "كان وأخواتها",
           "en": "Kāna and its sisters"
+         }
+        },
+        {
+         "id": "br-l1-u3-02",
+         "title": {
+          "ar": "النفي: مش وما…ش وموجود",
+          "en": "Negation"
          }
         },
         {
@@ -471,6 +506,20 @@
          "title": {
           "ar": "المفعول فيه (ظرفا الزمان والمكان)",
           "en": "Adverb of time and place"
+         }
+        },
+        {
+         "id": "br-l1-u1-02",
+         "title": {
+          "ar": "كلمات الزمن والحال",
+          "en": "Time and manner words"
+         }
+        },
+        {
+         "id": "br-l1-u3-03",
+         "title": {
+          "ar": "كلمات المكان",
+          "en": "Place words"
          }
         }
        ]
@@ -1007,6 +1056,13 @@
           "ar": "الفعل المجرد والمزيد",
           "en": "The simple and augmented verb"
          }
+        },
+        {
+         "id": "br-l1-u2-02",
+         "title": {
+          "ar": "الأفعال التي تبدأ بـ«ات» في العامية",
+          "en": "Colloquial verbs that start with 'it-'"
+         }
         }
        ]
       },
@@ -1334,6 +1390,13 @@
          }
         },
         {
+         "id": "br-l1-u1-01",
+         "title": {
+          "ar": "أدوات الاستفهام",
+          "en": "Question words"
+         }
+        },
+        {
          "id": "nt-l5-u2-03",
          "title": {
           "ar": "القصر بـ«ما وإلا»",
@@ -1498,6 +1561,13 @@
           "ar": "ترتيب الفقرة وحذف الجملة الدخيلة",
           "en": "Ordering a Paragraph and Removing the Irrelevant Sentence"
          }
+        },
+        {
+         "id": "br-l1-u4-02",
+         "title": {
+          "ar": "جمل عامية كاملة",
+          "en": "Whole colloquial sentences"
+         }
         }
        ]
       },
@@ -1601,6 +1671,13 @@
          }
         },
         {
+         "id": "br-l1-u4-03",
+         "title": {
+          "ar": "عبارات المجاملة والتحية",
+          "en": "Polite phrases"
+         }
+        },
+        {
          "id": "nt-l7-u1-03",
          "title": {
           "ar": "الإحالة والإعلام والطلب",
@@ -1621,6 +1698,13 @@
          "title": {
           "ar": "الطلب والاستئذان",
           "en": "Requests and permission"
+         }
+        },
+        {
+         "id": "br-l1-u4-01",
+         "title": {
+          "ar": "التعبير عن الرغبة",
+          "en": "Expressing wishes"
          }
         },
         {
@@ -2176,145 +2260,7 @@
      ]
     }
    ]
-  },
-  {
-   "id": "bridge",
-   "title": {
-    "ar": "جسر العامية للفصحى",
-    "en": "Bridge from Egyptian to Standard Arabic"
-   },
-   "levels": [
-    {
-     "id": "l1",
-     "title": {
-      "ar": "جسر العامية",
-      "en": "Bridge from colloquial Egyptian",
-      "fr": "Niveau 1 · Phrases simples"
-     },
-     "units": [
-      {
-       "id": "br-l1-u1",
-       "title": {
-        "ar": "جسر العامية: الاستفهام والزمن والإشارة",
-        "en": "Bridge: questions, time and pointing words"
-       },
-       "lessons": [
-        {
-         "id": "br-l1-u1-01",
-         "title": {
-          "ar": "أدوات الاستفهام",
-          "en": "Question words"
-         }
-        },
-        {
-         "id": "br-l1-u1-02",
-         "title": {
-          "ar": "كلمات الزمن والحال",
-          "en": "Time and manner words"
-         }
-        },
-        {
-         "id": "br-l1-u1-03",
-         "title": {
-          "ar": "كلمات الإشارة والموصول",
-          "en": "Pointing and relative words"
-         }
-        }
-       ]
-      },
-      {
-       "id": "br-l1-u2",
-       "title": {
-        "ar": "جسر العامية: الأفعال اليومية",
-        "en": "Bridge: everyday verbs"
-       },
-       "lessons": [
-        {
-         "id": "br-l1-u2-01",
-         "title": {
-          "ar": "أفعال شائعة (١)",
-          "en": "Common verbs (1)"
-         }
-        },
-        {
-         "id": "br-l1-u2-02",
-         "title": {
-          "ar": "الأفعال التي تبدأ بـ«ات» في العامية",
-          "en": "Colloquial verbs that start with 'it-'"
-         }
-        },
-        {
-         "id": "br-l1-u2-03",
-         "title": {
-          "ar": "المضارع والمستقبل",
-          "en": "Present and future"
-         }
-        }
-       ]
-      },
-      {
-       "id": "br-l1-u3",
-       "title": {
-        "ar": "جسر العامية: الضمائر والنفي والمكان",
-        "en": "Bridge: pronouns, negation and place"
-       },
-       "lessons": [
-        {
-         "id": "br-l1-u3-01",
-         "title": {
-          "ar": "ضمائر المخاطب والمتكلمين",
-          "en": "You and we pronouns"
-         }
-        },
-        {
-         "id": "br-l1-u3-02",
-         "title": {
-          "ar": "النفي: مش وما…ش وموجود",
-          "en": "Negation"
-         }
-        },
-        {
-         "id": "br-l1-u3-03",
-         "title": {
-          "ar": "كلمات المكان",
-          "en": "Place words"
-         }
-        }
-       ]
-      },
-      {
-       "id": "br-l1-u4",
-       "title": {
-        "ar": "جسر العامية: من الجملة العامية إلى الفصحى",
-        "en": "Bridge: whole sentences"
-       },
-       "lessons": [
-        {
-         "id": "br-l1-u4-01",
-         "title": {
-          "ar": "التعبير عن الرغبة",
-          "en": "Expressing wishes"
-         }
-        },
-        {
-         "id": "br-l1-u4-02",
-         "title": {
-          "ar": "جمل عامية كاملة",
-          "en": "Whole colloquial sentences"
-         }
-        },
-        {
-         "id": "br-l1-u4-03",
-         "title": {
-          "ar": "عبارات المجاملة والتحية",
-          "en": "Polite phrases"
-         }
-        }
-       ]
-      }
-     ]
-    }
-   ]
   }
- ]
+ ],
+ "build": "2026-11-03 05:01"
 }

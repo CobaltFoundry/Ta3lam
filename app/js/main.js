@@ -82,7 +82,7 @@ function nodesWithState() {
 
 // ───────────── العرض ─────────────
 function ctx() {
-  const base = { t: t(), lang: lang(), me: S.me, isDemo, tab: S.tab, onTab: (id) => { S.tab = id; render(); } };
+  const base = { t: t(), lang: lang(), me: S.me, build: S.index?.build, isDemo, tab: S.tab, onTab: (id) => { S.tab = id; render(); } };
   if (!S.me.user.track) return base;
   return {
     ...base, track: trackObj(), nodes: nodesWithState(),
@@ -309,7 +309,17 @@ async function startDaily() {
   try {
     let seen = new Set();
     try { seen = new Set(JSON.parse(localStorage.getItem("ta3lam-daily-seen") || "[]")); } catch { /* بلا ذاكرة */ }
-    const questions = await dailyQuestions(done, today(), 5, seen);
+    // مستويات المسار الأساسي التي أنجز منها ٦٠٪ فأكثر → نسحب لها من بنك التحدي
+    const poolLevels = [];
+    if (S.me.user.track === "native") {
+      const byLv = new Map();
+      for (const n of nodesWithState().filter((x) => x.kind === "lesson")) {
+        const k = String(n.id).match(/^nt-(l\d+)-/)?.[1]; if (!k) continue;
+        const e = byLv.get(k) || { d: 0, t: 0 }; e.t++; if (n.state === "done") e.d++; byLv.set(k, e);
+      }
+      for (const [k, e] of byLv) if (e.d / e.t >= 0.6) poolLevels.push(k);
+    }
+    const questions = await dailyQuestions(done, today(), 5, seen, poolLevels);
     if (!questions.length) { toast(t().loadError); return; }
     const r = await runPlayer({ ...playerBase(), title: t().dailyTitle, questions });
     if (!r) return;

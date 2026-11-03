@@ -3,7 +3,7 @@ import { decide, xpFor, cleanToday, updateStreak, cleanIds, isId, PASS } from ".
 import { nextState, newMistake, MASTERED } from "./srs.js";
 import { cleanState, applyFreeze, onLesson, onReview, onReport, buyFreeze, setGoal, view as gview, rankOf } from "./gamify.js";
 
-const TRACKS = ["native", "learner", "bridge"];
+const TRACKS = ["native", "learner"]; // «bridge» أُدمج في native؛ يُحوَّل القديم عند القراءة
 const THEMES = ["warm", "night", "sage", "telegram"];
 const LANGS = ["ar", "en", "fr"];
 
@@ -83,6 +83,7 @@ const cleanHour = (h) => (Number.isInteger(h) && h >= 0 && h <= 23 ? h : null);
 
 async function snapshot(env, tgId, today) {
   const user = await env.DB.prepare("SELECT tg_id, first_name, track, ui_lang, theme, xp, streak, best_streak, last_active_date, reminder_hour FROM users WHERE tg_id = ?").bind(tgId).first();
+  if (user && user.track === "bridge") { user.track = "native"; await env.DB.prepare("UPDATE users SET track = 'native' WHERE tg_id = ?").bind(tgId).run(); }
   const prog = await env.DB.prepare("SELECT lesson_id, best_score, status, attempts FROM progress WHERE tg_id = ?").bind(tgId).all();
   const due = await env.DB.prepare("SELECT COUNT(*) AS n FROM reviews WHERE tg_id = ? AND due_date <= ?").bind(tgId, today).first();
   const g = await loadG(env, tgId);

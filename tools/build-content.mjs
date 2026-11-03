@@ -262,6 +262,45 @@ if (existsSync(OVR)) {
   }
 }
 
+// ---------- دمج دروس «جسر العامية» داخل المسار الأساسي: كل درس بعد الدرس المقابل له ----------
+// المفتاح = درس الجسر، القيمة = الدرس الأساسي الذي يأتي بعده مباشرة. تبقى معرّفات br-* كما هي (لا يتغير تقدّم أحد).
+const BRIDGE_AFTER = {
+  "br-l1-u1-03": "nt-l2-u7-04", // الإشارة والموصول ← بعد «الاسم الموصول»
+  "br-l1-u2-01": "nt-l2-u1-02", // أفعال شائعة ← بعد «الفعل وأنواعه»
+  "br-l1-u2-03": "nt-l2-u3-03", // المضارع والمستقبل ← بعد «علامات إعراب المضارع»
+  "br-l1-u3-01": "nt-l2-u6-01", // ضمائر المخاطب والمتكلمين ← بعد «الضمير: معناه وأقسامه»
+  "br-l1-u3-02": "nt-l3-u1-01", // النفي (مش ← ليس) ← بعد «كان وأخواتها» (ليس)
+  "br-l1-u1-02": "nt-l3-u2-04", // الزمن ← بعد «المفعول فيه (ظرفا الزمان والمكان)»
+  "br-l1-u3-03": "nt-l3-u2-04", // المكان ← بعد الزمن
+  "br-l1-u2-02": "nt-l4-u1-03", // أفعال «ات» ← بعد «الفعل المجرد والمزيد»
+  "br-l1-u1-01": "nt-l5-u2-02", // الاستفهام ← بعد «أساليب الإنشاء الطلبي»
+  "br-l1-u4-02": "nt-l6-u2-03", // جمل عامية كاملة ← بعد «ترتيب الفقرة…» (بعد كل ما سبق)
+  "br-l1-u4-01": "nt-l7-u2-01", // التعبير عن الرغبة ← بعد «الطلب والاستئذان»
+  "br-l1-u4-03": "nt-l7-u1-02", // المجاملة والتحية ← بعد «صيغ الافتتاح والختام»
+};
+{
+  const nat = index.tracks.find((t) => t.id === "native");
+  const brg = index.tracks.find((t) => t.id === "bridge");
+  if (nat && brg) {
+    const refs = new Map(brg.levels.flatMap((l) => l.units.flatMap((u) => u.lessons.map((r) => [r.id, r]))));
+    const natUnits = nat.levels.flatMap((l) => l.units);
+    const lastAt = new Map(); // آخر درس مُدرج بعد كل مرساة (للحفاظ على الترتيب)
+    for (const [bid, aid] of Object.entries(BRIDGE_AFTER)) {
+      const r = refs.get(bid);
+      if (!r) throw new Error(`bridge lesson missing: ${bid}`);
+      const unit = natUnits.find((u) => u.lessons.some((x) => x.id === aid));
+      if (!unit) throw new Error(`anchor lesson missing: ${aid}`);
+      const anchor = lastAt.get(aid) || aid;
+      unit.lessons.splice(unit.lessons.findIndex((x) => x.id === anchor) + 1, 0, r);
+      lastAt.set(aid, bid);
+      all.find((l) => l.id === bid).track = "native";
+      refs.delete(bid);
+    }
+    if (refs.size) throw new Error("bridge lessons not placed: " + [...refs.keys()].join(","));
+    index.tracks = index.tracks.filter((t) => t.id !== "bridge");
+  }
+}
+
 // ---------- الاختبار النهائي: وحدة بلا دروس، يُبنى اختبارها من أسئلة كل وحدات المسار ----------
 {
   const nat = index.tracks.find((t) => t.id === "native");
@@ -350,6 +389,7 @@ rmSync(new URL("lessons/", OUT), { recursive: true, force: true });
 mkdirSync(new URL("lessons/", OUT), { recursive: true });
 for (const l of all) writeFileSync(new URL(`lessons/${l.id}.json`, OUT), JSON.stringify(l));
 for (const { lang, lesson } of translated) writeFileSync(new URL(`lessons/${lesson.id}.${lang}.json`, OUT), JSON.stringify(lesson));
+index.build = new Date().toISOString().slice(0, 16).replace("T", " ");
 writeFileSync(new URL("index.json", OUT), JSON.stringify(index, null, 1));
 // ثابت لمستويات المنهج الرئيسي: يعرفه الخادم لمنح أوسمة إنهاء المستويات
 {

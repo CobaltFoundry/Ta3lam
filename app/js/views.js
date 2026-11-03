@@ -32,7 +32,7 @@ export function homeView(c) {
       topStats(c)),
     ...(c.isDemo ? [h("div", { class: "demo-banner", role: "note" }, t.demoBanner)] : []),
     h("div", { class: "mascot-row" }, mascot(me.dueCount > 0 ? "think" : "happy", 84), h("div", { class: "bubble" }, greet)),
-    ...(track.id !== "bridge" && !nodes.some((n) => n.state === "done") ? [h("div", { class: "place-card" },
+    ...(!nodes.some((n) => n.state === "done") ? [h("div", { class: "place-card" },
       h("h2", {}, t.placementCardH), h("p", {}, t.placementCardP),
       h("button", { class: "btn ghost", type: "button", onclick: c.onPlacement }, t.placementBtn))] : []),
   );
@@ -170,16 +170,17 @@ export function meView(c) {
     h("h1", {}, t.meTitle),
     me.user.first_name ? h("p", { class: "lead small" }, me.user.first_name) : null,
     h("section", { class: "set" }, h("h2", {}, t.track),
-      seg([["native", "أتقن العربية"], ["bridge", "جسر العامية"], ["learner", "Learn Arabic"]], me.user.track, (v) => c.onSetting({ track: v }))),
+      seg([["native", "أتقن العربية"], ["learner", "Learn Arabic"]], me.user.track, (v) => c.onSetting({ track: v }))),
     h("section", { class: "set" }, h("h2", {}, t.shareTitle), h("p", { class: "lead small" }, t.shareMeSub),
       h("button", { class: "btn ghost", type: "button", onclick: c.onShare }, t.shareLbl)),
-    ...(me.user.track !== "bridge" ? [h("section", { class: "set" }, h("h2", {}, t.placementMe), h("p", { class: "lead small" }, t.placementMeSub),
-      h("button", { class: "btn ghost", type: "button", onclick: c.onPlacement }, t.placementBtn))] : []),
+    h("section", { class: "set" }, h("h2", {}, t.placementMe), h("p", { class: "lead small" }, t.placementMeSub),
+      h("button", { class: "btn ghost", type: "button", onclick: c.onPlacement }, t.placementBtn)),
     h("section", { class: "set" }, h("h2", {}, t.language), seg(Object.entries(t.langNames), lang, (v) => c.onSetting({ ui_lang: v }))),
     h("section", { class: "set" }, h("h2", {}, t.theme), themes),
     h("section", { class: "set" }, h("h2", {}, t.vibration), seg([[true, t.on], [false, t.offV]], c.hapticOn, (v) => c.onHaptic(v))),
     h("section", { class: "set" }, h("h2", {}, t.reminder), hours),
-    c.isDemo ? h("p", { class: "demo-banner", role: "note" }, t.demoBanner) : null);
+    c.isDemo ? h("p", { class: "demo-banner", role: "note" }, t.demoBanner) : null,
+    c.build ? h("p", { class: "lead small", style: "text-align:center;opacity:.6;direction:ltr" }, "v " + c.build) : null);
 }
 
 // ───────────── اختيار المسار (أول مرة) ─────────────
@@ -192,7 +193,6 @@ export function onboardingView(c) {
     h("h1", {}, "تَعلّمْ · Ta3lam"),
     h("p", { class: "lead" }, "ما الذي تريد أن تتعلّمه؟ / What do you want to learn?"),
     card("native", t.trackNative, t.trackNativeSub, "rtl"),
-    card("bridge", t.trackBridge, t.trackBridgeSub, "rtl"),
     card("learner", t.trackLearner, t.trackLearnerSub, "ltr"));
 }
 
